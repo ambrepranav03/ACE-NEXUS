@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ACE NEXUS | Your Profile</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <div class="onboarding-page">
+
+        <div class="onboarding-card">
+
+            <div class="onboarding-label">
+                ✦ BUILD YOUR NEXUS
+            </div>
+
+            <h1>
+                Tell us about
+                <span>your journey.</span>
+            </h1>
+
+            <p class="onboarding-intro">
+                We'll use your interests, skills, goals and location
+                to discover opportunities that actually fit you.
+            </p>
+
+            <div class="progress">
+                <div class="progress-fill"></div>
+            </div>
+
+            <div class="step-text">
+                STEP 1 OF 3
+            </div>
+
+            <div class="form-group">
+
+                <label>Your name</label>
+
+                <input
+                    type="text"
+                    placeholder="Enter your name"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label>College / University</label>
+
+                <input
+                    type="text"
+                    placeholder="Enter your college or university"
+                >
+
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group">
+                    <label>State</label>
+
+                    <input
+                        type="text"
+                        placeholder="e.g. Maharashtra"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label>City</label>
+
+                    <input
+                        type="text"
+                        placeholder="e.g. Pune"
+                    >
+                </div>
+
+            </div>
+
+            <a href="/onboarding2" class="continue-button">
+    Continue →
+</a>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
