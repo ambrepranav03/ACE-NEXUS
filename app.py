@@ -18,5 +18,9 @@ def onboarding2():
 def onboarding3():
     return render_template("onboarding3.html")
 
+@app.route("/dashboard")
+def dashboard():
+    return render_template("dashboard.html")
+
 if __name__ == "__main__":
     app.run(debug=True)

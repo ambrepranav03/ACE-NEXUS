@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>ACE NEXUS | Student Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     COSMIC BACKGROUND
+===================================================== -->
+
+<div class="dashboard-cosmos">
+
+    <div class="dashboard-stars"></div>
+
+    <div class="dashboard-milkyway"></div>
+
+    <div class="dashboard-smoke smoke-one"></div>
+
+    <div class="dashboard-smoke smoke-two"></div>
+
+    <div class="dashboard-wormhole">
+
+        <div class="wormhole-ring ring-one"></div>
+
+        <div class="wormhole-ring ring-two"></div>
+
+        <div class="wormhole-core"></div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     STUDENT DASHBOARD
+===================================================== -->
+
+<div class="student-dashboard">
+
+
+    <!-- =================================================
+         SIDEBAR
+    ================================================== -->
+
+    <aside class="dashboard-sidebar">
+
+
+        <!-- BRAND -->
+
+        <div class="brand">
+
+            <div class="brand-symbol">
+                ✦
+            </div>
+
+            <div>
+
+                <div class="brand-name">
+                    ACE <span>NEXUS</span>
+                </div>
+
+                <div class="brand-tagline">
+                    YOUR PATH. OUR UNIVERSE.
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- NEXUS -->
+
+        <div class="sidebar-group">
+
+            <div class="sidebar-title">
+                NEXUS
+            </div>
+
+
+            <a href="/dashboard"
+               class="sidebar-item active">
+
+                <span>⌂</span>
+                Dashboard
+
+            </a>
+
+
+            <a href="#"
+               class="sidebar-item">
+
+                <span>✦</span>
+                Discover
+
+            </a>
+
+
+            <a href="#applications"
+               class="sidebar-item"
+               id="applicationsNav">
+
+                <span>▣</span>
+                My Applications
+
+            </a>
+
+
+            <a href="#saved"
+               class="sidebar-item"
+               id="savedNav">
+
+                <span>♡</span>
+                Saved
+
+            </a>
+
+        </div>
+
+
+
+        <!-- AI TOOLS -->
+
+        <div class="sidebar-group">
+
+            <div class="sidebar-title">
+                AI TOOLS
+            </div>
+
+
+            <a href="#"
+               class="sidebar-item"
+               id="navigatorNav">
+
+                <span>◈</span>
+                Opportunity Navigator
+
+            </a>
+
+
+            <!-- ACE AI -->
+
+            <a href="#ace-ai"
+               class="sidebar-item"
+               id="aceAiNav">
+
+                <span>✧</span>
+                ACE AI
+
+            </a>
+
+        </div>
+
+
+
+        <!-- SETTINGS -->
+
+        <div class="sidebar-bottom">
+
+            <a href="#profile"
+               class="sidebar-item"
+               id="profileNav">
+
+                <span>⚙</span>
+                Profile & Settings
+
+            </a>
+
+        </div>
+
+
+
+        <!-- MINI PROFILE -->
+
+        <div class="student-mini-profile">
+
+            <div class="avatar">
+                P
+            </div>
+
+            <div class="student-info">
+
+                <strong>
+                    Student
+                </strong>
+
+                <span>
+                    Explore your universe
+                </span>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =================================================
+         MAIN DASHBOARD
+    ================================================== -->
+
+    <main class="dashboard-content">
+
+
+        <!-- HEADER -->
+
+        <header class="dashboard-header">
+
+            <div>
+
+                <div class="dashboard-kicker">
+                    YOUR OPPORTUNITY UNIVERSE
+                </div>
+
+                <h1>
+                    Good afternoon,
+                    <span>Explorer.</span>
+                </h1>
+
+                <p>
+                    Your next opportunity is closer than you think.
+                </p>
+
+            </div>
+
+
+            <div class="header-actions">
+
+                <button class="icon-button">
+                    ♧
+                </button>
+
+
+                <button
+                    class="profile-button"
+                    id="profileButton">
+
+                    P
+
+                </button>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- SEARCH -->
+
+        <section class="ai-search">
+
+            <div class="search-icon">
+                ⌕
+            </div>
+
+
+            <input
+                type="text"
+                id="opportunitySearch"
+                placeholder="Ask ACE — find hackathons, internships, workshops..."
+            >
+
+
+            <button id="searchButton">
+                ✦ Search
+            </button>
+
+        </section>
+
+
+
+        <!-- LOCATION -->
+
+        <section class="location-section">
+
+            <div class="section-label">
+                EXPLORE OPPORTUNITIES
+            </div>
+
+
+            <div class="location-filters">
+
+
+                <button
+                    class="location-filter active"
+                    data-location="Near Me">
+
+                    📍 Near Me
+
+                </button>
+
+
+                <button
+                    class="location-filter"
+                    data-location="My City">
+
+                    My City
+
+                </button>
+
+
+                <button
+                    class="location-filter"
+                    data-location="Anywhere in India">
+
+                    🇮🇳 Anywhere in India
+
+                </button>
+
+
+                <button
+                    class="location-filter"
+                    data-location="Online">
+
+                    🌐 Online
+
+                </button>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             DASHBOARD GRID
+        ================================================== -->
+
+        <div class="dashboard-grid">
+
+
+            <!-- OPPORTUNITIES -->
+
+            <section class="opportunity-section">
+
+                <div class="section-header">
+
+                    <div>
+
+                        <div class="section-label">
+                            AI MATCHED
+                        </div>
+
+                        <h2>
+                            Made for you
+                        </h2>
+
+                    </div>
+
+
+                    <a href="#">
+                        View all →
+                    </a>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- RIGHT SIDE -->
+
+            <aside class="dashboard-right">
+
+
+                <!-- NAVIGATOR -->
+
+                <section class="navigator-card">
+
+                    <div class="section-label">
+                        YOUR AI PATH
+                    </div>
+
+
+                    <h2>
+                        Opportunity
+                        <span>Navigator</span>
+                    </h2>
+
+
+                    <p>
+                        ACE understands your goals and helps
+                        you discover what to pursue next.
+                    </p>
+
+
+                    <div class="navigator-path">
+
+
+                        <div class="path-step completed">
+
+                            <div class="path-dot">
+                                ✓
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Profile completed
+                                </strong>
+
+                                <span>
+                                    Your foundation is ready
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="path-line"></div>
+
+
+                        <div class="path-step completed">
+
+                            <div class="path-dot">
+                                ✓
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Skills analyzed
+                                </strong>
+
+                                <span>
+                                    ACE mapped your strengths
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="path-line"></div>
+
+
+                        <div class="path-step current">
+
+                            <div class="path-dot">
+                                3
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Explore opportunities
+                                </strong>
+
+                                <span>
+                                    Discover your best matches
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="path-line"></div>
+
+
+                        <div class="path-step">
+
+                            <div class="path-dot">
+                                4
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Apply & build
+                                </strong>
+
+                                <span>
+                                    Take your next step
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <button class="navigator-button">
+                        Explore my path →
+                    </button>
+
+                </section>
+
+
+
+                <!-- ASK ACE -->
+
+                <section class="ask-ace">
+
+                    <div class="ask-ace-icon">
+                        ✦
+                    </div>
+
+
+                    <div class="section-label">
+                        ASK ACE
+                    </div>
+
+
+                    <h3>
+                        Your AI opportunity assistant
+                    </h3>
+
+
+                    <p>
+                        Ask about events, skills, applications,
+                        careers or anything you're exploring.
+                    </p>
+
+
+                    <button class="ask-ace-button">
+                        Start a conversation →
+                    </button>
+
+                </section>
+
+
+            </aside>
+
+        </div>
+
+
+    </main>
+
+</div>
+
+
+
+<!-- =====================================================
+     SAVED PANEL
+===================================================== -->
+
+<section
+    class="saved-panel"
+    id="savedPanel">
+
+
+    <div class="saved-panel-header">
+
+        <div>
+
+            <div class="section-label">
+                YOUR COLLECTION
+            </div>
+
+
+            <h2>
+                Saved Opportunities
+            </h2>
+
+
+            <p>
+                Opportunities you've saved for later.
+            </p>
+
+        </div>
+
+
+        <button
+            class="close-saved"
+            id="closeSaved">
+
+            ✕
+
+        </button>
+
+    </div>
+
+
+    <div
+        class="saved-opportunities"
+        id="savedOpportunities">
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     APPLICATIONS PANEL
+===================================================== -->
+
+<section
+    class="applications-panel"
+    id="applicationsPanel">
+
+
+    <div class="applications-header">
+
+        <div>
+
+            <div class="section-label">
+                YOUR JOURNEY
+            </div>
+
+
+            <h2>
+                My Applications
+            </h2>
+
+
+            <p>
+                Track every opportunity you've applied to.
+            </p>
+
+        </div>
+
+
+        <button
+            class="close-applications"
+            id="closeApplications">
+
+            ✕
+
+        </button>
+
+    </div>
+
+
+    <div class="application-stats">
+
+
+        <div>
+
+            <strong id="totalApplications">
+                0
+            </strong>
+
+            <span>
+                Applied
+            </span>
+
+        </div>
+
+
+        <div>
+
+            <strong id="reviewApplications">
+                0
+            </strong>
+
+            <span>
+                Under Review
+            </span>
+
+        </div>
+
+
+        <div>
+
+            <strong id="shortlistedApplications">
+                0
+            </strong>
+
+            <span>
+                Shortlisted
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+    <div
+        class="applications-list"
+        id="applicationsList">
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     PROFILE PANEL
+===================================================== -->
+
+<section
+    class="profile-panel"
+    id="profilePanel">
+
+
+    <div class="profile-panel-header">
+
+        <div>
+
+            <div class="section-label">
+                YOUR NEXUS IDENTITY
+            </div>
+
+
+            <h2>
+                Student Profile
+            </h2>
+
+
+            <p>
+                Your skills, goals and discovery preferences.
+            </p>
+
+        </div>
+
+
+        <button
+            class="close-profile"
+            id="closeProfile">
+
+            ✕
+
+        </button>
+
+    </div>
+
+
+
+    <div class="profile-hero">
+
+        <div class="profile-large-avatar">
+            P
+        </div>
+
+
+        <div>
+
+            <div class="profile-name">
+                Student
+            </div>
+
+
+            <div
+                class="profile-location"
+                id="profileLocation">
+
+                India
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="profile-section">
+
+        <div class="profile-section-title">
+            SKILLS
+        </div>
+
+
+        <div
+            class="profile-tags"
+            id="profileSkills">
+
+        </div>
+
+    </div>
+
+
+
+    <div class="profile-section">
+
+        <div class="profile-section-title">
+            CAREER GOALS
+        </div>
+
+
+        <div
+            class="profile-tags goals"
+            id="profileGoals">
+
+        </div>
+
+    </div>
+
+
+
+    <div class="profile-section">
+
+        <div class="profile-section-title">
+            OPPORTUNITY PREFERENCE
+        </div>
+
+
+        <div class="profile-preferences">
+
+
+            <div>
+
+                <span>
+                    Discovery
+                </span>
+
+                <strong>
+                    India-wide
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Personalization
+                </span>
+
+                <strong>
+                    AI Matched
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Platform
+                </span>
+
+                <strong>
+                    ACE NEXUS
+                </strong>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <button
+        class="profile-edit-button"
+        id="editProfileButton">
+
+        Edit my profile →
+
+    </button>
+
+</section>
+
+
+
+<!-- =====================================================
+     ACE AI PANEL
+===================================================== -->
+
+<section
+    class="ace-ai-panel"
+    id="aceAiPanel">
+
+
+    <!-- HEADER -->
+
+    <div class="ace-ai-header">
+
+        <div>
+
+            <div class="section-label">
+                ACE INTELLIGENCE
+            </div>
+
+
+            <h2>
+                ACE AI
+            </h2>
+
+
+            <p>
+                Your personal opportunity assistant.
+            </p>
+
+        </div>
+
+
+        <button
+            class="close-ace-ai"
+            id="closeAceAI">
+
+            ✕
+
+        </button>
+
+    </div>
+
+
+
+    <!-- STATUS -->
+
+    <div class="ace-ai-status">
+
+        <span class="ace-ai-dot"></span>
+
+        ACE is ready
+
+    </div>
+
+
+
+    <!-- MESSAGES -->
+
+    <div
+        class="ace-ai-messages"
+        id="aceAiMessages">
+
+
+        <div
+            class="ace-message ace-message-ai">
+
+
+            <div class="ace-message-avatar">
+                ✦
+            </div>
+
+
+            <div class="ace-message-bubble">
+
+                Hey Explorer 👋
+
+                <br><br>
+
+                I'm ACE. I can help you discover
+                opportunities, understand your
+                applications, and plan your next step.
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- SUGGESTIONS -->
+
+    <div class="ace-ai-suggestions">
+
+
+        <button
+            data-prompt="Find the best hackathons for me">
+
+            Find hackathons
+
+        </button>
+
+
+        <button
+            data-prompt="What should I do next?">
+
+            What should I do next?
+
+        </button>
+
+
+        <button
+            data-prompt="Help me improve my profile">
+
+            Improve my profile
+
+        </button>
+
+
+        <button
+            data-prompt="Show me opportunities matching my skills">
+
+            Match my skills
+
+        </button>
+
+
+    </div>
+
+
+
+    <!-- INPUT -->
+
+    <div class="ace-ai-input-area">
+
+
+        <input
+            type="text"
+            id="aceAiInput"
+            placeholder="Ask ACE anything...">
+
+
+        <button
+            id="aceAiSend">
+
+            ↑
+
+        </button>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+
+</body>
+
+</html>
