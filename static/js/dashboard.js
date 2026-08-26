@@ -1619,6 +1619,7 @@ renderProfile();
 
 displayCurrentOpportunities();
 
+console.log("ACE AI SECTION REACHED");
 /* =========================================================
    ACE AI — ASSISTANT INTERACTION
 ========================================================= */
@@ -2187,5 +2188,120 @@ if (
             );
 
         };
+
+}
+/* =========================================================
+   ACE AI — SIMPLE CHAT CONNECTION
+========================================================= */
+
+const aceInput =
+    document.getElementById("aceAiInput");
+
+const aceSend =
+    document.getElementById("aceAiSend");
+
+const aceMessages =
+    document.getElementById("aceAiMessages");
+
+
+function aceAddMessage(text, type) {
+
+    if (!aceMessages) return;
+
+    const message =
+        document.createElement("div");
+
+    message.className =
+        type === "user"
+            ? "ace-message ace-message-user"
+            : "ace-message ace-message-ai";
+
+
+    if (type === "ai") {
+
+        message.innerHTML = `
+            <div class="ace-message-avatar">
+                ✦
+            </div>
+
+            <div class="ace-message-bubble">
+                ${text}
+            </div>
+        `;
+
+    } else {
+
+        message.innerHTML = `
+            <div class="ace-message-bubble">
+                ${text}
+            </div>
+        `;
+
+    }
+
+
+    aceMessages.appendChild(message);
+
+    aceMessages.scrollTop =
+        aceMessages.scrollHeight;
+
+}
+
+
+function aceSendMessage() {
+
+    if (!aceInput) return;
+
+    const text =
+        aceInput.value.trim();
+
+    if (!text) return;
+
+
+    aceAddMessage(
+        text,
+        "user"
+    );
+
+
+    aceInput.value = "";
+
+
+    setTimeout(() => {
+
+        aceAddMessage(
+            "I'm ACE. I received your message! 🚀 We can now connect me to the real AI backend.",
+            "ai"
+        );
+
+    }, 400);
+
+}
+
+
+if (aceSend) {
+
+    aceSend.addEventListener(
+        "click",
+        aceSendMessage
+    );
+
+}
+
+
+if (aceInput) {
+
+    aceInput.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Enter") {
+
+                aceSendMessage();
+
+            }
+
+        }
+    );
 
 }
