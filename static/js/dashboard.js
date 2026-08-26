@@ -1,10 +1,18 @@
 /* =========================================================
-   ACE NEXUS — PERSONALIZED DASHBOARD ENGINE
+   ACE NEXUS — CLEAN DASHBOARD ENGINE
+   Working foundation:
+   Search
+   Location Filters
+   Saved
+   Applications
+   Profile
+   Personalization
+   Opportunity Navigator
 ========================================================= */
 
 
 /* =========================================================
-   OPPORTUNITY DATABASE
+   OPPORTUNITY DATA
 ========================================================= */
 
 const opportunities = [
@@ -125,7 +133,7 @@ const opportunities = [
 
 
 /* =========================================================
-   STUDENT PROFILE
+   PROFILE
 ========================================================= */
 
 function getStudentProfile() {
@@ -134,31 +142,21 @@ function getStudentProfile() {
 
         skills:
             JSON.parse(
-                localStorage.getItem(
-                    "aceSkills"
-                ) || "[]"
+                localStorage.getItem("aceSkills") || "[]"
             ),
 
         goals:
             JSON.parse(
-                localStorage.getItem(
-                    "aceGoals"
-                ) || "[]"
+                localStorage.getItem("aceGoals") || "[]"
             ),
 
         city:
-            localStorage.getItem(
-                "aceStudentCity"
-            ) || "India"
+            localStorage.getItem("aceStudentCity") || "India"
 
     };
 
 }
 
-
-/* =========================================================
-   NORMALIZE PROFILE DATA
-========================================================= */
 
 function normalize(value) {
 
@@ -170,104 +168,68 @@ function normalize(value) {
 
 
 /* =========================================================
-   PERSONALIZED MATCH SCORE
+   PERSONALIZED MATCHING
 ========================================================= */
 
-function calculatePersonalizedScore(
-    opportunity
-) {
+function calculatePersonalizedScore(opportunity) {
 
     const profile =
         getStudentProfile();
-
 
     let score =
         opportunity.match;
 
 
     const skills =
-        profile.skills.map(
-            normalize
-        );
-
+        profile.skills.map(normalize);
 
     const goals =
-        profile.goals.map(
-            normalize
-        );
+        profile.goals.map(normalize);
 
 
     const opportunityText =
         [
-
             opportunity.title,
-
             opportunity.description,
-
             opportunity.type,
-
             ...opportunity.tags
-
         ]
             .map(normalize)
             .join(" ");
 
 
-    /* -----------------------------------------
-       SKILL MATCH
-    ----------------------------------------- */
+    skills.forEach(skill => {
 
-    skills.forEach(
-        skill => {
+        if (
+            skill &&
+            opportunityText.includes(skill)
+        ) {
 
-            if (
-                skill &&
-                opportunityText.includes(
-                    skill
-                )
-            ) {
-
-                score += 4;
-
-            }
+            score += 4;
 
         }
-    );
+
+    });
 
 
-    /* -----------------------------------------
-       GOAL MATCH
-    ----------------------------------------- */
+    goals.forEach(goal => {
 
-    goals.forEach(
-        goal => {
+        if (
+            goal &&
+            opportunityText.includes(goal)
+        ) {
 
-            if (
-                goal &&
-                opportunityText.includes(
-                    goal
-                )
-            ) {
-
-                score += 5;
-
-            }
+            score += 5;
 
         }
-    );
 
+    });
 
-    /* -----------------------------------------
-       CITY MATCH
-    ----------------------------------------- */
 
     if (
         profile.city !== "India" &&
-        normalize(
-            opportunity.location
-        ) === normalize(
-            profile.city
-        )
+        normalize(opportunity.location) ===
+        normalize(profile.city)
     ) {
 
         score += 3;
@@ -283,30 +245,21 @@ function calculatePersonalizedScore(
 }
 
 
-/* =========================================================
-   PERSONALIZED OPPORTUNITIES
-========================================================= */
-
 function getPersonalizedOpportunities() {
 
     return opportunities
-        .map(
-            opportunity => ({
+        .map(opportunity => ({
 
-                ...opportunity,
+            ...opportunity,
 
-                personalizedMatch:
-                    calculatePersonalizedScore(
-                        opportunity
-                    )
+            personalizedMatch:
+                calculatePersonalizedScore(
+                    opportunity
+                )
 
-            })
-        )
+        }))
         .sort(
-            (
-                a,
-                b
-            ) =>
+            (a, b) =>
                 b.personalizedMatch -
                 a.personalizedMatch
         );
@@ -319,84 +272,52 @@ function getPersonalizedOpportunities() {
 ========================================================= */
 
 const opportunitySection =
-    document.querySelector(
-        ".opportunity-section"
-    );
+    document.querySelector(".opportunity-section");
 
 const locationFilters =
-    document.querySelectorAll(
-        ".location-filter"
-    );
+    document.querySelectorAll(".location-filter");
 
 const searchInput =
-    document.getElementById(
-        "opportunitySearch"
-    );
+    document.getElementById("opportunitySearch");
 
 const searchButton =
-    document.getElementById(
-        "searchButton"
-    );
+    document.getElementById("searchButton");
 
 const savedPanel =
-    document.getElementById(
-        "savedPanel"
-    );
+    document.getElementById("savedPanel");
 
 const savedContainer =
-    document.getElementById(
-        "savedOpportunities"
-    );
+    document.getElementById("savedOpportunities");
 
 const savedNav =
-    document.getElementById(
-        "savedNav"
-    );
+    document.getElementById("savedNav");
 
 const closeSaved =
-    document.getElementById(
-        "closeSaved"
-    );
+    document.getElementById("closeSaved");
 
 const applicationsPanel =
-    document.getElementById(
-        "applicationsPanel"
-    );
+    document.getElementById("applicationsPanel");
 
 const applicationsNav =
-    document.getElementById(
-        "applicationsNav"
-    );
+    document.getElementById("applicationsNav");
 
 const closeApplications =
-    document.getElementById(
-        "closeApplications"
-    );
+    document.getElementById("closeApplications");
 
 const applicationsList =
-    document.getElementById(
-        "applicationsList"
-    );
+    document.getElementById("applicationsList");
 
 const profilePanel =
-    document.getElementById(
-        "profilePanel"
-    );
+    document.getElementById("profilePanel");
 
 const profileNav =
-    document.getElementById(
-        "profileNav"
-    );
+    document.getElementById("profileNav");
 
 const profileButton =
-    document.getElementById(
-        "profileButton"
-    );
+    document.getElementById("profileButton");
 
 const closeProfile =
-    document.getElementById(
-        "closeProfile"
-    );
+    document.getElementById("closeProfile");
 
 
 /* =========================================================
@@ -414,35 +335,26 @@ function getSaved() {
 }
 
 
-function setSaved(
-    saved
-) {
+function setSaved(saved) {
 
     localStorage.setItem(
         "aceSavedOpportunities",
-        JSON.stringify(
-            saved
-        )
+        JSON.stringify(saved)
     );
 
 }
 
 
-function isSaved(
-    id
-) {
+function isSaved(id) {
 
     return getSaved().some(
-        item =>
-            item.id === id
+        item => item.id === id
     );
 
 }
 
 
-function toggleSaved(
-    id
-) {
+function toggleSaved(id) {
 
     let saved =
         getSaved();
@@ -450,40 +362,32 @@ function toggleSaved(
 
     if (
         saved.some(
-            item =>
-                item.id === id
+            item => item.id === id
         )
     ) {
 
         saved =
             saved.filter(
-                item =>
-                    item.id !== id
+                item => item.id !== id
             );
 
     } else {
 
         const opportunity =
             opportunities.find(
-                item =>
-                    item.id === id
+                item => item.id === id
             );
-
 
         if (opportunity) {
 
-            saved.push(
-                opportunity
-            );
+            saved.push(opportunity);
 
         }
 
     }
 
 
-    setSaved(
-        saved
-    );
+    setSaved(saved);
 
 }
 
@@ -503,46 +407,34 @@ function getApplications() {
 }
 
 
-function setApplications(
-    applications
-) {
+function setApplications(applications) {
 
     localStorage.setItem(
         "aceApplications",
-        JSON.stringify(
-            applications
-        )
+        JSON.stringify(applications)
     );
 
 }
 
 
-function hasApplied(
-    id
-) {
+function hasApplied(id) {
 
-    return getApplications()
-        .some(
-            item =>
-                item.id === id
-        );
+    return getApplications().some(
+        item => item.id === id
+    );
 
 }
 
 
-function applyToOpportunity(
-    id
-) {
+function applyToOpportunity(id) {
 
     const opportunity =
         opportunities.find(
-            item =>
-                item.id === id
+            item => item.id === id
         );
 
 
-    if (!opportunity)
-        return;
+    if (!opportunity) return;
 
 
     const applications =
@@ -551,25 +443,24 @@ function applyToOpportunity(
 
     if (
         applications.some(
-            item =>
-                item.id === id
+            item => item.id === id
         )
-    )
+    ) {
+
         return;
+
+    }
 
 
     applications.push({
 
         ...opportunity,
 
-        status:
-            "Applied",
+        status: "Applied",
 
         appliedOn:
             new Date()
-                .toLocaleDateString(
-                    "en-IN"
-                )
+                .toLocaleDateString("en-IN")
 
     });
 
@@ -578,11 +469,6 @@ function applyToOpportunity(
         applications
     );
 
-
-    displayCurrentOpportunities();
-
-    renderApplications();
-
 }
 
 
@@ -590,22 +476,13 @@ function applyToOpportunity(
    OPPORTUNITY CARD
 ========================================================= */
 
-function createCard(
-    opportunity,
-    index
-) {
+function createCard(opportunity) {
 
     const saved =
-        isSaved(
-            opportunity.id
-        );
-
+        isSaved(opportunity.id);
 
     const applied =
-        hasApplied(
-            opportunity.id
-        );
-
+        hasApplied(opportunity.id);
 
     const score =
         opportunity.personalizedMatch ||
@@ -614,12 +491,9 @@ function createCard(
 
     return `
 
-        <article
-            class="opportunity-card">
+        <article class="opportunity-card">
 
-
-            <div
-                class="match-score">
+            <div class="match-score">
 
                 <strong>
                     ${score}%
@@ -632,15 +506,10 @@ function createCard(
             </div>
 
 
-            <div
-                class="opportunity-content">
+            <div class="opportunity-content">
 
-
-                <div
-                    class="opportunity-type">
-
+                <div class="opportunity-type">
                     ${opportunity.type}
-
                 </div>
 
 
@@ -654,17 +523,14 @@ function createCard(
                 </p>
 
 
-                <div
-                    class="opportunity-meta">
+                <div class="opportunity-meta">
 
                     <span>
-                        📍
-                        ${opportunity.location}
+                        📍 ${opportunity.location}
                     </span>
 
                     <span>
-                        ◷
-                        ${opportunity.deadline}
+                        ◷ ${opportunity.deadline}
                     </span>
 
                     <span>
@@ -674,8 +540,7 @@ function createCard(
                 </div>
 
 
-                <div
-                    class="opportunity-tags">
+                <div class="opportunity-tags">
 
                     ${opportunity.tags
                         .map(
@@ -700,7 +565,6 @@ function createCard(
 
                 </button>
 
-
             </div>
 
 
@@ -713,7 +577,6 @@ function createCard(
 
             </button>
 
-
         </article>
 
     `;
@@ -722,15 +585,12 @@ function createCard(
 
 
 /* =========================================================
-   DISPLAY
+   DISPLAY OPPORTUNITIES
 ========================================================= */
 
-function displayOpportunities(
-    list
-) {
+function displayOpportunities(list) {
 
-    if (!opportunitySection)
-        return;
+    if (!opportunitySection) return;
 
 
     const header =
@@ -744,8 +604,7 @@ function displayOpportunities(
             ".opportunity-card, .no-results"
         )
         .forEach(
-            element =>
-                element.remove()
+            element => element.remove()
         );
 
 
@@ -767,8 +626,7 @@ function displayOpportunities(
                 </h3>
 
                 <p>
-                    Try another location
-                    or search.
+                    Try another location or search.
                 </p>
 
             </div>
@@ -782,24 +640,14 @@ function displayOpportunities(
     }
 
 
-    list.forEach(
-        (
-            opportunity,
-            index
-        ) => {
+    list.forEach(opportunity => {
 
-            header.insertAdjacentHTML(
-                "afterend",
+        header.insertAdjacentHTML(
+            "afterend",
+            createCard(opportunity)
+        );
 
-                createCard(
-                    opportunity,
-                    index
-                )
-
-            );
-
-        }
-    );
+    });
 
 
     attachSaveButtons();
@@ -810,123 +658,117 @@ function displayOpportunities(
 
 
 /* =========================================================
-   SAVE EVENTS
+   SAVE BUTTONS
 ========================================================= */
 
 function attachSaveButtons() {
 
     document
-        .querySelectorAll(
-            ".save-opportunity"
-        )
-        .forEach(
-            button => {
+        .querySelectorAll(".save-opportunity")
+        .forEach(button => {
 
-                button.addEventListener(
-                    "click",
-                    () => {
+            button.addEventListener(
+                "click",
+                event => {
 
-                        const id =
-                            Number(
-                                button.dataset.id
-                            );
+                    event.stopPropagation();
 
 
-                        toggleSaved(
-                            id
+                    const id =
+                        Number(
+                            button.dataset.id
                         );
 
 
-                        const saved =
-                            isSaved(
-                                id
-                            );
+                    toggleSaved(id);
 
 
-                        button.classList.toggle(
-                            "saved",
-                            saved
-                        );
+                    const saved =
+                        isSaved(id);
 
 
-                        button.textContent =
-                            saved
-                                ? "♥"
-                                : "♡";
+                    button.classList.toggle(
+                        "saved",
+                        saved
+                    );
 
 
-                        renderSaved();
+                    button.textContent =
+                        saved
+                            ? "♥"
+                            : "♡";
 
-                    }
-                );
 
-            }
-        );
+                    renderSaved();
+
+                }
+            );
+
+        });
 
 }
 
 
 /* =========================================================
-   APPLY EVENTS
+   APPLY BUTTONS
 ========================================================= */
 
 function attachApplyButtons() {
 
     document
-        .querySelectorAll(
-            ".apply-button"
-        )
-        .forEach(
-            button => {
+        .querySelectorAll(".apply-button")
+        .forEach(button => {
 
-                button.addEventListener(
-                    "click",
-                    () => {
+            button.addEventListener(
+                "click",
+                event => {
 
-                        applyToOpportunity(
-                            Number(
-                                button.dataset.id
-                            )
+                    event.stopPropagation();
+
+
+                    const id =
+                        Number(
+                            button.dataset.id
                         );
 
-                    }
-                );
 
-            }
-        );
+                    applyToOpportunity(id);
+
+
+                    displayCurrentOpportunities();
+
+                    renderApplications();
+
+                }
+            );
+
+        });
 
 }
 
 
 /* =========================================================
-   LOCATION FILTERING
+   LOCATION FILTER
 ========================================================= */
 
-function filterByLocation(
-    location
-) {
+function filterByLocation(location) {
 
     let filtered;
 
 
-    if (
-        location === "Online"
-    ) {
+    if (location === "Online") {
 
         filtered =
             getPersonalizedOpportunities()
                 .filter(
                     item =>
-                        item.mode ===
-                        "online"
+                        item.mode === "online"
                 );
 
     }
 
-
     else if (
-        location ===
-        "Anywhere in India"
+        location === "Anywhere in India"
     ) {
 
         filtered =
@@ -934,15 +776,12 @@ function filterByLocation(
 
     }
 
-
     else if (
-        location ===
-        "My City"
+        location === "My City"
     ) {
 
         const city =
-            getStudentProfile()
-                .city;
+            getStudentProfile().city;
 
 
         filtered =
@@ -951,10 +790,7 @@ function filterByLocation(
                     item =>
                         normalize(
                             item.location
-                        ) ===
-                        normalize(
-                            city
-                        )
+                        ) === normalize(city)
                         ||
                         item.location ===
                             "Pan India"
@@ -962,22 +798,16 @@ function filterByLocation(
 
     }
 
-
     else {
 
         filtered =
             getPersonalizedOpportunities()
-                .slice(
-                    0,
-                    3
-                );
+                .slice(0, 3);
 
     }
 
 
-    displayOpportunities(
-        filtered
-    );
+    displayOpportunities(filtered);
 
 }
 
@@ -986,38 +816,34 @@ function filterByLocation(
    LOCATION EVENTS
 ========================================================= */
 
-locationFilters.forEach(
-    filter => {
+locationFilters.forEach(filter => {
 
-        filter.addEventListener(
-            "click",
-            () => {
+    filter.addEventListener(
+        "click",
+        () => {
 
-                locationFilters
-                    .forEach(
-                        item =>
-                            item.classList
-                                .remove(
-                                    "active"
-                                )
-                    );
+            locationFilters.forEach(item => {
 
-
-                filter.classList.add(
+                item.classList.remove(
                     "active"
                 );
 
+            });
 
-                filterByLocation(
-                    filter.dataset
-                        .location
-                );
 
-            }
-        );
+            filter.classList.add(
+                "active"
+            );
 
-    }
-);
+
+            filterByLocation(
+                filter.dataset.location
+            );
+
+        }
+    );
+
+});
 
 
 /* =========================================================
@@ -1028,9 +854,7 @@ function performSearch() {
 
     const query =
         searchInput
-            ? normalize(
-                searchInput.value
-            )
+            ? normalize(searchInput.value)
             : "";
 
 
@@ -1045,10 +869,10 @@ function performSearch() {
 
     const results =
         getPersonalizedOpportunities()
-            .filter(
-                opportunity => {
+            .filter(opportunity => {
 
-                    const searchable = [
+                const searchable =
+                    [
 
                         opportunity.title,
 
@@ -1061,24 +885,18 @@ function performSearch() {
                         ...opportunity.tags
 
                     ]
-                        .map(
-                            normalize
-                        )
+                        .map(normalize)
                         .join(" ");
 
 
-                    return searchable
-                        .includes(
-                            query
-                        );
+                return searchable.includes(
+                    query
+                );
 
-                }
-            );
+            });
 
 
-    displayOpportunities(
-        results
-    );
+    displayOpportunities(results);
 
 }
 
@@ -1099,10 +917,7 @@ if (searchInput) {
         "keydown",
         event => {
 
-            if (
-                event.key ===
-                "Enter"
-            ) {
+            if (event.key === "Enter") {
 
                 performSearch();
 
@@ -1120,8 +935,7 @@ if (searchInput) {
 
 function renderSaved() {
 
-    if (!savedContainer)
-        return;
+    if (!savedContainer) return;
 
 
     const saved =
@@ -1132,14 +946,10 @@ function renderSaved() {
 
         savedContainer.innerHTML = `
 
-            <div
-                class="saved-empty">
+            <div class="saved-empty">
 
-                <div
-                    class="saved-empty-icon">
-
+                <div class="saved-empty-icon">
                     ♡
-
                 </div>
 
                 <h3>
@@ -1165,25 +975,17 @@ function renderSaved() {
         saved.map(
             opportunity => `
 
-            <article
-                class="saved-card">
+            <article class="saved-card">
 
-                <div
-                    class="saved-match">
-
+                <div class="saved-match">
                     ${opportunity.match}%
-
                 </div>
 
 
-                <div
-                    class="saved-card-content">
+                <div class="saved-card-content">
 
-                    <div
-                        class="opportunity-type">
-
+                    <div class="opportunity-type">
                         ${opportunity.type}
-
                     </div>
 
 
@@ -1192,17 +994,14 @@ function renderSaved() {
                     </h3>
 
 
-                    <div
-                        class="saved-meta">
+                    <div class="saved-meta">
 
                         <span>
-                            📍
-                            ${opportunity.location}
+                            📍 ${opportunity.location}
                         </span>
 
                         <span>
-                            ◷
-                            ${opportunity.deadline}
+                            ◷ ${opportunity.deadline}
                         </span>
 
                     </div>
@@ -1225,32 +1024,31 @@ function renderSaved() {
 
 
     document
-        .querySelectorAll(
-            ".remove-saved"
-        )
-        .forEach(
-            button => {
+        .querySelectorAll(".remove-saved")
+        .forEach(button => {
 
-                button.addEventListener(
-                    "click",
-                    () => {
+            button.addEventListener(
+                "click",
+                event => {
 
-                        toggleSaved(
-                            Number(
-                                button.dataset.id
-                            )
-                        );
+                    event.stopPropagation();
 
 
-                        renderSaved();
+                    toggleSaved(
+                        Number(
+                            button.dataset.id
+                        )
+                    );
 
-                        displayCurrentOpportunities();
 
-                    }
-                );
+                    renderSaved();
 
-            }
-        );
+                    displayCurrentOpportunities();
+
+                }
+            );
+
+        });
 
 }
 
@@ -1261,46 +1059,57 @@ function renderSaved() {
 
 function renderApplications() {
 
-    if (!applicationsList)
-        return;
+    if (!applicationsList) return;
 
 
     const applications =
         getApplications();
 
 
-    document.getElementById(
-        "totalApplications"
-    ).textContent =
-        applications.length;
+    const total =
+        document.getElementById(
+            "totalApplications"
+        );
+
+    const review =
+        document.getElementById(
+            "reviewApplications"
+        );
+
+    const shortlisted =
+        document.getElementById(
+            "shortlistedApplications"
+        );
 
 
-    document.getElementById(
-        "reviewApplications"
-    ).textContent =
-        applications.filter(
-            item =>
-                item.status ===
-                "Under Review"
-        ).length;
+    if (total)
+        total.textContent =
+            applications.length;
 
 
-    document.getElementById(
-        "shortlistedApplications"
-    ).textContent =
-        applications.filter(
-            item =>
-                item.status ===
-                "Shortlisted"
-        ).length;
+    if (review)
+        review.textContent =
+            applications.filter(
+                item =>
+                    item.status ===
+                    "Under Review"
+            ).length;
+
+
+    if (shortlisted)
+        shortlisted.textContent =
+            applications.filter(
+                item =>
+                    item.status ===
+                    "Shortlisted"
+            ).length;
 
 
     if (!applications.length) {
 
         applicationsList.innerHTML = `
 
-            <div
-                class="applications-empty">
+            <div class="applications-empty">
 
                 <div>
                     ▣
@@ -1311,8 +1120,8 @@ function renderApplications() {
                 </h3>
 
                 <p>
-                    Explore opportunities
-                    and start your journey.
+                    Explore opportunities and
+                    start your journey.
                 </p>
 
             </div>
@@ -1328,25 +1137,17 @@ function renderApplications() {
         applications.map(
             application => `
 
-            <article
-                class="application-card">
+            <article class="application-card">
 
-                <div
-                    class="application-icon">
-
+                <div class="application-icon">
                     ✦
-
                 </div>
 
 
-                <div
-                    class="application-info">
+                <div class="application-info">
 
-                    <div
-                        class="opportunity-type">
-
+                    <div class="opportunity-type">
                         ${application.type}
-
                     </div>
 
 
@@ -1355,17 +1156,14 @@ function renderApplications() {
                     </h3>
 
 
-                    <div
-                        class="application-meta">
+                    <div class="application-meta">
 
                         <span>
-                            📍
-                            ${application.location}
+                            📍 ${application.location}
                         </span>
 
                         <span>
-                            Applied
-                            ${application.appliedOn}
+                            Applied ${application.appliedOn}
                         </span>
 
                     </div>
@@ -1373,8 +1171,7 @@ function renderApplications() {
                 </div>
 
 
-                <div
-                    class="application-status">
+                <div class="application-status">
 
                     ${application.status}
 
@@ -1459,7 +1256,7 @@ function renderProfile() {
 
 
 /* =========================================================
-   CLOSE PANELS
+   CLOSE ALL PANELS
 ========================================================= */
 
 function closeAllPanels() {
@@ -1469,20 +1266,17 @@ function closeAllPanels() {
         applicationsPanel,
         profilePanel
     ]
-        .forEach(
-            panel => {
+        .forEach(panel => {
 
-                if (panel) {
+            if (panel) {
 
-                    panel.classList
-                        .remove(
-                            "visible"
-                        );
-
-                }
+                panel.classList.remove(
+                    "visible"
+                );
 
             }
-        );
+
+        });
 
 }
 
@@ -1501,8 +1295,9 @@ if (savedNav) {
 
             closeAllPanels();
 
-            savedPanel.classList
-                .add("visible");
+            savedPanel.classList.add(
+                "visible"
+            );
 
             renderSaved();
 
@@ -1536,9 +1331,9 @@ if (applicationsNav) {
 
             closeAllPanels();
 
-            applicationsPanel
-                .classList
-                .add("visible");
+            applicationsPanel.classList.add(
+                "visible"
+            );
 
             renderApplications();
 
@@ -1566,9 +1361,14 @@ function openProfile() {
 
     closeAllPanels();
 
-    profilePanel
-        .classList
-        .add("visible");
+    if (profilePanel) {
+
+        profilePanel.classList.add(
+            "visible"
+        );
+
+    }
+
 
     renderProfile();
 
@@ -1612,696 +1412,30 @@ if (closeProfile) {
 
 
 /* =========================================================
-   INITIAL LOAD
+   DISPLAY CURRENT OPPORTUNITIES
+========================================================= */
+
+function displayCurrentOpportunities() {
+
+    const active =
+        document.querySelector(
+            ".location-filter.active"
+        );
+
+
+    filterByLocation(
+        active
+            ? active.dataset.location
+            : "Near Me"
+    );
+
+}
+
+
+/* =========================================================
+   INITIALIZE
 ========================================================= */
 
 renderProfile();
 
 displayCurrentOpportunities();
-
-console.log("ACE AI SECTION REACHED");
-/* =========================================================
-   ACE AI — ASSISTANT INTERACTION
-========================================================= */
-
-const aceAiPanel =
-    document.getElementById("aceAiPanel");
-
-const closeAceAI =
-    document.getElementById("closeAceAI");
-
-const aceAiInput =
-    document.getElementById("aceAiInput");
-
-const aceAiSend =
-    document.getElementById("aceAiSend");
-
-const aceAiMessages =
-    document.getElementById("aceAiMessages");
-
-const aceAiSuggestions =
-    document.querySelectorAll(
-        ".ace-ai-suggestions button"
-    );
-
-
-/* =========================================================
-   OPEN ACE AI
-========================================================= */
-
-function openAceAI() {
-
-    closeAllPanels();
-
-    if (!aceAiPanel) return;
-
-    aceAiPanel.classList.add("visible");
-
-}
-
-
-/* =========================================================
-   CLOSE ACE AI
-========================================================= */
-
-if (closeAceAI) {
-
-    closeAceAI.addEventListener(
-        "click",
-        () => {
-
-            aceAiPanel.classList.remove(
-                "visible"
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   CONNECT ACE AI SIDEBAR BUTTON
-========================================================= */
-
-const aceAiNav =
-    [...document.querySelectorAll(
-        ".sidebar-item"
-    )]
-        .find(
-            item =>
-                item.textContent
-                    .includes("ACE AI")
-        );
-
-
-if (aceAiNav) {
-
-    aceAiNav.addEventListener(
-        "click",
-        event => {
-
-            event.preventDefault();
-
-            openAceAI();
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   ADD MESSAGE
-========================================================= */
-
-function addAceMessage(
-    text,
-    sender = "user"
-) {
-
-    if (!aceAiMessages) return;
-
-
-    const message =
-        document.createElement(
-            "div"
-        );
-
-
-    message.className =
-        sender === "ai"
-            ? "ace-message ace-message-ai"
-            : "ace-message ace-message-user";
-
-
-    if (sender === "ai") {
-
-        message.innerHTML = `
-
-            <div class="ace-message-avatar">
-                ✦
-            </div>
-
-            <div class="ace-message-bubble">
-                ${text}
-            </div>
-
-        `;
-
-    } else {
-
-        message.innerHTML = `
-
-            <div class="ace-message-bubble">
-                ${text}
-            </div>
-
-        `;
-
-    }
-
-
-    aceAiMessages.appendChild(
-        message
-    );
-
-
-    aceAiMessages.scrollTop =
-        aceAiMessages.scrollHeight;
-
-}
-
-
-/* =========================================================
-   GENERATE PROTOTYPE RESPONSE
-========================================================= */
-
-function getAceResponse(
-    question
-) {
-
-    const q =
-        question.toLowerCase();
-
-
-    const profile =
-        getStudentProfile();
-
-
-    /* HACKATHONS */
-
-    if (
-        q.includes("hackathon") ||
-        q.includes("competition")
-    ) {
-
-        const matches =
-            getPersonalizedOpportunities()
-                .filter(
-                    item =>
-                        item.type
-                            .toLowerCase()
-                            .includes(
-                                "hackathon"
-                            )
-                        ||
-                        item.type
-                            .toLowerCase()
-                            .includes(
-                                "competition"
-                            )
-                )
-                .slice(0, 3);
-
-
-        if (matches.length) {
-
-            return `
-                I found ${matches.length}
-                strong matches for you:
-
-                <br><br>
-
-                ${matches
-                    .map(
-                        item =>
-                            `🔥 <strong>
-                                ${item.title}
-                            </strong>
-                            — ${item.personalizedMatch}%
-                            match`
-                    )
-                    .join("<br>")}
-            `;
-
-        }
-
-    }
-
-
-    /* PROFILE */
-
-    if (
-        q.includes("profile") ||
-        q.includes("skills")
-    ) {
-
-        if (profile.skills.length) {
-
-            return `
-                Your current skills are:
-
-                <br><br>
-
-                <strong>
-                    ${profile.skills.join(
-                        " · "
-                    )}
-                </strong>
-
-                <br><br>
-
-                I'd recommend choosing opportunities
-                that strengthen these skills through
-                real projects and competitions.
-            `;
-
-        }
-
-
-        return `
-            Your profile doesn't have skills
-            connected yet.
-
-            <br><br>
-
-            Add your skills first and I'll use them
-            to improve your opportunity matches.
-        `;
-
-    }
-
-
-    /* NEXT STEP */
-
-    if (
-        q.includes("next") ||
-        q.includes("what should") ||
-        q.includes("recommend")
-    ) {
-
-        const best =
-            getPersonalizedOpportunities()[0];
-
-
-        if (best) {
-
-            return `
-                Based on your current profile,
-                I'd explore:
-
-                <br><br>
-
-                🚀 <strong>
-                    ${best.title}
-                </strong>
-
-                <br>
-
-                ${best.personalizedMatch}%
-                profile match.
-
-                <br><br>
-
-                Your next move should be to
-                review the opportunity and apply
-                if the requirements fit you.
-            `;
-
-        }
-
-    }
-
-
-    /* APPLICATIONS */
-
-    if (
-        q.includes("application") ||
-        q.includes("applied")
-    ) {
-
-        const applications =
-            getApplications();
-
-
-        if (!applications.length) {
-
-            return `
-                You haven't applied to anything
-                yet.
-
-                <br><br>
-
-                I'd start with one high-match
-                opportunity from your dashboard.
-            `;
-
-        }
-
-
-        return `
-            You currently have
-
-            <strong>
-                ${applications.length}
-                application(s)
-            </strong>.
-
-            <br><br>
-
-            Open <strong>My Applications</strong>
-            to track your journey.
-        `;
-
-    }
-
-
-    /* DEFAULT */
-
-    return `
-        I'm currently focused on helping you
-        discover and navigate opportunities.
-
-        <br><br>
-
-        Try asking me:
-
-        <br><br>
-
-        • Find hackathons for me
-        <br>
-        • What should I do next?
-        <br>
-        • Help me improve my profile
-        <br>
-        • Show opportunities matching my skills
-    `;
-
-}
-
-
-/* =========================================================
-   SEND MESSAGE
-========================================================= */
-
-function sendAceMessage() {
-
-    if (!aceAiInput) return;
-
-
-    const question =
-        aceAiInput.value.trim();
-
-
-    if (!question) return;
-
-
-    addAceMessage(
-        question,
-        "user"
-    );
-
-
-    aceAiInput.value = "";
-
-
-    /* Small thinking delay */
-
-    setTimeout(
-        () => {
-
-            const response =
-                getAceResponse(
-                    question
-                );
-
-
-            addAceMessage(
-                response,
-                "ai"
-            );
-
-        },
-        450
-    );
-
-}
-
-
-/* =========================================================
-   SEND BUTTON
-========================================================= */
-
-if (aceAiSend) {
-
-    aceAiSend.addEventListener(
-        "click",
-        sendAceMessage
-    );
-
-}
-
-
-/* =========================================================
-   ENTER KEY
-========================================================= */
-
-if (aceAiInput) {
-
-    aceAiInput.addEventListener(
-        "keydown",
-        event => {
-
-            if (
-                event.key === "Enter"
-            ) {
-
-                sendAceMessage();
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   QUICK SUGGESTIONS
-========================================================= */
-
-aceAiSuggestions.forEach(
-    button => {
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                const prompt =
-                    button.dataset.prompt;
-
-
-                if (!prompt) return;
-
-
-                if (aceAiInput) {
-
-                    aceAiInput.value =
-                        prompt;
-
-                }
-
-
-                sendAceMessage();
-
-            }
-        );
-
-    }
-);
-
-/* =========================================================
-   ACE AI BUTTON — DIRECT CONNECTION
-========================================================= */
-
-const aceAIButton = document.querySelector(
-    '.sidebar-item:nth-of-type(6)'
-);
-
-const aceAIPanel = document.getElementById(
-    'aceAiPanel'
-);
-
-const closeAceAIButton = document.getElementById(
-    'closeAceAI'
-);
-
-
-if (aceAIButton && aceAIPanel) {
-
-    aceAIButton.addEventListener(
-        'click',
-        function(event) {
-
-            event.preventDefault();
-
-            aceAIPanel.classList.add(
-                'visible'
-            );
-
-        }
-    );
-
-}
-
-
-if (closeAceAIButton && aceAIPanel) {
-
-    closeAceAIButton.addEventListener(
-        'click',
-        function() {
-
-            aceAIPanel.classList.remove(
-                'visible'
-            );
-
-        }
-    );
-
-}
-console.log("ACE AI JS LOADED");
-
-/* =========================================================
-   ACE AI DIRECT BUTTON
-========================================================= */
-
-const aceAiNavButton =
-    document.getElementById("aceAiNav");
-
-const aceAiPanelElement =
-    document.getElementById("aceAiPanel");
-
-
-if (
-    aceAiNavButton &&
-    aceAiPanelElement
-) {
-
-    aceAiNavButton.onclick =
-        function(event) {
-
-            event.preventDefault();
-
-            aceAiPanelElement.classList.add(
-                "visible"
-            );
-
-        };
-
-}
-/* =========================================================
-   ACE AI — SIMPLE CHAT CONNECTION
-========================================================= */
-
-const aceInput =
-    document.getElementById("aceAiInput");
-
-const aceSend =
-    document.getElementById("aceAiSend");
-
-const aceMessages =
-    document.getElementById("aceAiMessages");
-
-
-function aceAddMessage(text, type) {
-
-    if (!aceMessages) return;
-
-    const message =
-        document.createElement("div");
-
-    message.className =
-        type === "user"
-            ? "ace-message ace-message-user"
-            : "ace-message ace-message-ai";
-
-
-    if (type === "ai") {
-
-        message.innerHTML = `
-            <div class="ace-message-avatar">
-                ✦
-            </div>
-
-            <div class="ace-message-bubble">
-                ${text}
-            </div>
-        `;
-
-    } else {
-
-        message.innerHTML = `
-            <div class="ace-message-bubble">
-                ${text}
-            </div>
-        `;
-
-    }
-
-
-    aceMessages.appendChild(message);
-
-    aceMessages.scrollTop =
-        aceMessages.scrollHeight;
-
-}
-
-
-function aceSendMessage() {
-
-    if (!aceInput) return;
-
-    const text =
-        aceInput.value.trim();
-
-    if (!text) return;
-
-
-    aceAddMessage(
-        text,
-        "user"
-    );
-
-
-    aceInput.value = "";
-
-
-    setTimeout(() => {
-
-        aceAddMessage(
-            "I'm ACE. I received your message! 🚀 We can now connect me to the real AI backend.",
-            "ai"
-        );
-
-    }, 400);
-
-}
-
-
-if (aceSend) {
-
-    aceSend.addEventListener(
-        "click",
-        aceSendMessage
-    );
-
-}
-
-
-if (aceInput) {
-
-    aceInput.addEventListener(
-        "keydown",
-        function(event) {
-
-            if (event.key === "Enter") {
-
-                aceSendMessage();
-
-            }
-
-        }
-    );
-
-}
