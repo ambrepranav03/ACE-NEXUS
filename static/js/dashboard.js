@@ -1439,3 +1439,339 @@ function displayCurrentOpportunities() {
 renderProfile();
 
 displayCurrentOpportunities();
+
+/* =========================================================
+   OPPORTUNITY DETAILS
+========================================================= */
+
+const detailsPanel =
+    document.getElementById("opportunityDetailsPanel");
+
+const detailsClose =
+    document.getElementById("closeOpportunityDetails");
+
+const detailsTitle =
+    document.getElementById("detailsTitle");
+
+const detailsType =
+    document.getElementById("detailsType");
+
+const detailsMatch =
+    document.getElementById("detailsMatch");
+
+const detailsDescription =
+    document.getElementById("detailsDescription");
+
+const detailsLocation =
+    document.getElementById("detailsLocation");
+
+const detailsDeadline =
+    document.getElementById("detailsDeadline");
+
+const detailsPrize =
+    document.getElementById("detailsPrize");
+
+const detailsMode =
+    document.getElementById("detailsMode");
+
+const detailsTags =
+    document.getElementById("detailsTags");
+
+const detailsSave =
+    document.getElementById("detailsSaveButton");
+
+const detailsApply =
+    document.getElementById("detailsApplyButton");
+
+
+let selectedOpportunity = null;
+
+
+/* =========================================================
+   OPEN DETAILS
+========================================================= */
+
+function openOpportunityDetails(id) {
+
+    const opportunity =
+        opportunities.find(
+            item => item.id === id
+        );
+
+    if (!opportunity || !detailsPanel) {
+        return;
+    }
+
+
+    selectedOpportunity =
+        opportunity;
+
+
+    const score =
+        opportunity.personalizedMatch ||
+        opportunity.match;
+
+
+    detailsTitle.textContent =
+        opportunity.title;
+
+
+    detailsType.textContent =
+        opportunity.type;
+
+
+    detailsMatch.textContent =
+        score + "%";
+
+
+    detailsDescription.textContent =
+        opportunity.description;
+
+
+    detailsLocation.textContent =
+        opportunity.location;
+
+
+    detailsDeadline.textContent =
+        opportunity.deadline;
+
+
+    detailsPrize.textContent =
+        opportunity.prize;
+
+
+    detailsMode.textContent =
+        opportunity.mode === "online"
+            ? "Online"
+            : "Offline";
+
+
+    detailsTags.innerHTML =
+        opportunity.tags
+            .map(
+                tag =>
+                    `<span>${tag}</span>`
+            )
+            .join("");
+
+
+    updateDetailsButtons();
+
+
+    detailsPanel.classList.add(
+        "visible"
+    );
+
+}
+
+
+/* =========================================================
+   CLOSE DETAILS
+========================================================= */
+
+if (detailsClose) {
+
+    detailsClose.addEventListener(
+        "click",
+        function() {
+
+            detailsPanel.classList.remove(
+                "visible"
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   DETAILS BUTTON STATE
+========================================================= */
+
+function updateDetailsButtons() {
+
+    if (!selectedOpportunity) {
+        return;
+    }
+
+
+    const saved =
+        isSaved(
+            selectedOpportunity.id
+        );
+
+
+    const applied =
+        hasApplied(
+            selectedOpportunity.id
+        );
+
+
+    if (detailsSave) {
+
+        detailsSave.textContent =
+            saved
+                ? "♥ Saved"
+                : "♡ Save";
+
+    }
+
+
+    if (detailsApply) {
+
+        detailsApply.textContent =
+            applied
+                ? "✓ Applied"
+                : "Apply Now →";
+
+        detailsApply.disabled =
+            applied;
+
+    }
+
+}
+
+
+/* =========================================================
+   DETAILS SAVE
+========================================================= */
+
+if (detailsSave) {
+
+    detailsSave.addEventListener(
+        "click",
+        function() {
+
+            if (!selectedOpportunity) {
+                return;
+            }
+
+
+            toggleSaved(
+                selectedOpportunity.id
+            );
+
+
+            updateDetailsButtons();
+
+            renderSaved();
+
+            displayCurrentOpportunities();
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   DETAILS APPLY
+========================================================= */
+
+if (detailsApply) {
+
+    detailsApply.addEventListener(
+        "click",
+        function() {
+
+            if (!selectedOpportunity) {
+                return;
+            }
+
+
+            applyToOpportunity(
+                selectedOpportunity.id
+            );
+
+
+            updateDetailsButtons();
+
+            renderApplications();
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CARD CLICK CONNECTION
+========================================================= */
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        const card =
+            event.target.closest(
+                ".opportunity-card"
+            );
+
+
+        if (!card) {
+            return;
+        }
+
+
+        if (
+            event.target.closest(
+                ".save-opportunity"
+            ) ||
+            event.target.closest(
+                ".apply-button"
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        const saveButton =
+            card.querySelector(
+                ".save-opportunity"
+            );
+
+
+        if (!saveButton) {
+            return;
+        }
+
+
+        const id =
+            Number(
+                saveButton.dataset.id
+            );
+
+
+        openOpportunityDetails(id);
+
+    }
+);
+
+/* =========================================================
+   VIEW ALL OPPORTUNITIES
+========================================================= */
+
+const viewAllOpportunities =
+    document.getElementById(
+        "viewAllOpportunities"
+    );
+
+if (viewAllOpportunities) {
+
+    viewAllOpportunities.addEventListener(
+        "click",
+        function(event) {
+
+            event.preventDefault();
+
+            displayOpportunities(
+                getPersonalizedOpportunities()
+            );
+
+        }
+    );
+
+}
