@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | ACE NEXUS</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            font-family: "Inter", sans-serif;
+            background: #03030a;
+            color: #ffffff;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        /* =====================================================
+           PAGE
+        ===================================================== */
+
+        .login-page {
+            position: relative;
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 100px 20px 70px;
+
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 50% 45%,
+                    rgba(150, 10, 130, 0.13),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 10% 15%,
+                    rgba(0, 120, 255, 0.08),
+                    transparent 25%
+                ),
+                radial-gradient(
+                    circle at 90% 85%,
+                    rgba(255, 0, 130, 0.07),
+                    transparent 28%
+                ),
+                #03030a;
+        }
+
+        /* =====================================================
+           STARS
+        ===================================================== */
+
+        .stars,
+        .stars::before,
+        .stars::after {
+            position: absolute;
+            inset: 0;
+
+            content: "";
+
+            pointer-events: none;
+        }
+
+        .stars {
+            opacity: 0.7;
+
+            background-image:
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,0.9) 1px,
+                    transparent 1.5px
+                ),
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,0.5) 1px,
+                    transparent 1.5px
+                ),
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,0.35) 1px,
+                    transparent 1.5px
+                );
+
+            background-size:
+                130px 130px,
+                210px 210px,
+                280px 280px;
+
+            background-position:
+                10px 20px,
+                80px 120px,
+                170px 40px;
+
+            animation: starsMove 30s linear infinite;
+        }
+
+        .stars::before {
+            opacity: 0.45;
+
+            background-image:
+                radial-gradient(
+                    circle,
+                    #ffffff 1px,
+                    transparent 1.5px
+                );
+
+            background-size: 190px 190px;
+            background-position: 40px 80px;
+        }
+
+        .stars::after {
+            opacity: 0.25;
+
+            background-image:
+                radial-gradient(
+                    circle,
+                    #ffffff 1px,
+                    transparent 1.5px
+                );
+
+            background-size: 330px 330px;
+            background-position: 200px 160px;
+        }
+
+        @keyframes starsMove {
+
+            from {
+                transform: translate3d(0, 0, 0);
+            }
+
+            to {
+                transform: translate3d(-40px, 25px, 0);
+            }
+
+        }
+
+        /* =====================================================
+           NEBULA
+        ===================================================== */
+
+        .nebula {
+            position: absolute;
+
+            width: 650px;
+            height: 650px;
+
+            border-radius: 50%;
+
+            filter: blur(80px);
+
+            pointer-events: none;
+
+            opacity: 0.22;
+        }
+
+        .nebula.one {
+            top: -260px;
+            left: -180px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(0,145,255,0.55),
+                    rgba(0,145,255,0.05) 55%,
+                    transparent 70%
+                );
+
+            animation:
+                nebulaFloat 14s ease-in-out infinite alternate;
+        }
+
+        .nebula.two {
+            right: -280px;
+            bottom: -300px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,0,150,0.45),
+                    rgba(150,0,130,0.05) 55%,
+                    transparent 70%
+                );
+
+            animation:
+                nebulaFloat 18s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes nebulaFloat {
+
+            from {
+                transform: translate(0, 0) scale(1);
+            }
+
+            to {
+                transform: translate(35px, -25px) scale(1.08);
+            }
+
+        }
+
+        /* =====================================================
+           NAVIGATION
+        ===================================================== */
+
+        .login-nav {
+            position: absolute;
+
+            top: 0;
+            left: 0;
+            right: 0;
+
+            z-index: 20;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 25px 42px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .brand-symbol {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 17px;
+            font-weight: 800;
+
+            background:
+                radial-gradient(
+                    circle at 35% 30%,
+                    #ffffff,
+                    #ff42bd 22%,
+                    #a900ff 55%,
+                    #18002c 100%
+                );
+
+            box-shadow:
+                0 0 15px rgba(255,0,170,0.35),
+                0 0 35px rgba(130,0,255,0.2);
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .brand-name {
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+        }
+
+        .brand-tagline {
+            font-size: 8px;
+            letter-spacing: 0.17em;
+
+            color: rgba(255,255,255,0.48);
+        }
+
+        .back-home {
+            color: rgba(255,255,255,0.68);
+
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 500;
+
+            padding: 10px 16px;
+
+            border-radius: 999px;
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            background: rgba(255,255,255,0.025);
+
+            backdrop-filter: blur(12px);
+
+            transition: 0.25s ease;
+        }
+
+        .back-home:hover {
+            color: #ffffff;
+
+            border-color:
+                rgba(255,70,190,0.35);
+
+            background:
+                rgba(255,50,180,0.07);
+
+            transform: translateY(-1px);
+        }
+
+        /* =====================================================
+           LOGIN WRAPPER
+        ===================================================== */
+
+        .login-wrapper {
+            position: relative;
+
+            z-index: 10;
+
+            width: 100%;
+            max-width: 460px;
+        }
+
+        /* =====================================================
+           CARD
+        ===================================================== */
+
+        .login-card {
+            position: relative;
+
+            padding: 42px 40px 38px;
+
+            border:
+                1px solid rgba(255,255,255,0.10);
+
+            border-radius: 28px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,0.075),
+                    rgba(255,255,255,0.025)
+                );
+
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+
+            box-shadow:
+                0 30px 100px rgba(0,0,0,0.55),
+                inset 0 1px 0 rgba(255,255,255,0.06);
+
+            overflow: hidden;
+        }
+
+        .login-card::before {
+            content: "";
+
+            position: absolute;
+
+            top: -160px;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            width: 330px;
+            height: 260px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255,0,180,0.17),
+                    transparent 68%
+                );
+
+            filter: blur(25px);
+
+            pointer-events: none;
+        }
+
+        .login-card::after {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 15%;
+            right: 15%;
+
+            height: 1px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255,75,190,0.65),
+                    transparent
+                );
+        }
+
+        /* =====================================================
+           HEADING
+        ===================================================== */
+
+        .login-heading {
+            position: relative;
+
+            z-index: 2;
+
+            text-align: center;
+
+            margin-bottom: 30px;
+        }
+
+        .login-icon {
+            width: 64px;
+            height: 64px;
+
+            margin: 0 auto 20px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 25px;
+
+            background:
+                radial-gradient(
+                    circle at 35% 30%,
+                    rgba(255,255,255,0.95),
+                    rgba(255,80,200,0.65) 20%,
+                    rgba(120,0,255,0.35) 55%,
+                    rgba(0,0,0,0.4) 100%
+                );
+
+            border:
+                1px solid rgba(255,255,255,0.15);
+
+            box-shadow:
+                0 0 25px rgba(255,0,170,0.25),
+                0 0 60px rgba(130,0,255,0.12);
+        }
+
+        .login-heading h1 {
+            margin: 0 0 10px;
+
+            font-size: 30px;
+            line-height: 1.15;
+
+            font-weight: 800;
+
+            letter-spacing: -0.03em;
+        }
+
+        .login-heading p {
+            margin: 0;
+
+            color: rgba(255,255,255,0.55);
+
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* =====================================================
+           FORM
+        ===================================================== */
+
+        .login-form {
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-group {
+            margin-bottom: 19px;
+        }
+
+        .form-label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            color: rgba(255,255,255,0.78);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+
+            left: 15px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: rgba(255,255,255,0.38);
+
+            font-size: 15px;
+
+            pointer-events: none;
+
+            z-index: 2;
+        }
+
+        .form-input {
+            width: 100%;
+            height: 52px;
+
+            padding:
+                0 15px 0 44px;
+
+            border-radius: 14px;
+
+            border:
+                1px solid rgba(255,255,255,0.09);
+
+            outline: none;
+
+            color: #ffffff;
+
+            background:
+                rgba(0,0,0,0.28);
+
+            font-family: inherit;
+            font-size: 13px;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .form-input::placeholder {
+            color:
+                rgba(255,255,255,0.28);
+        }
+
+        .form-input:hover {
+            border-color:
+                rgba(255,255,255,0.15);
+        }
+
+        .form-input:focus {
+            border-color:
+                rgba(255,65,190,0.55);
+
+            background:
+                rgba(255,255,255,0.035);
+
+            box-shadow:
+                0 0 0 3px rgba(255,0,170,0.07),
+                0 0 24px rgba(255,0,170,0.06);
+        }
+
+        /* =====================================================
+           PASSWORD
+        ===================================================== */
+
+        .password-toggle {
+            position: absolute;
+
+            right: 13px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            border: 0;
+
+            background: transparent;
+
+            color:
+                rgba(255,255,255,0.38);
+
+            cursor: pointer;
+
+            font-family: inherit;
+
+            font-size: 11px;
+            font-weight: 600;
+
+            padding: 6px;
+
+            z-index: 3;
+        }
+
+        .password-toggle:hover {
+            color:
+                rgba(255,255,255,0.78);
+        }
+
+        /* =====================================================
+           OPTIONS
+        ===================================================== */
+
+        .login-options {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            margin:
+                3px 0 24px;
+
+            font-size: 11px;
+        }
+
+        .remember {
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            color:
+                rgba(255,255,255,0.48);
+
+            cursor: pointer;
+        }
+
+        .remember input {
+            accent-color: #ff3ab6;
+        }
+
+        .forgot-link {
+            color:
+                rgba(255,255,255,0.55);
+
+            text-decoration: none;
+        }
+
+        .forgot-link:hover {
+            color: #ff6ac8;
+        }
+
+        /* =====================================================
+           LOGIN BUTTON
+        ===================================================== */
+
+        .login-button {
+            position: relative;
+
+            width: 100%;
+            height: 53px;
+
+            border: 0;
+
+            border-radius: 15px;
+
+            cursor: pointer;
+
+            color: #ffffff;
+
+            font-family: inherit;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            letter-spacing: 0.02em;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    #9b22ff,
+                    #f52ca9
+                );
+
+            box-shadow:
+                0 12px 35px rgba(190,20,180,0.22),
+                inset 0 1px 0 rgba(255,255,255,0.18);
+
+            overflow: hidden;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                filter 0.2s ease;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 16px 42px rgba(190,20,180,0.30),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+
+            filter: brightness(1.06);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        .login-button:disabled {
+            cursor: wait;
+            opacity: 0.7;
+        }
+
+        /* =====================================================
+           MESSAGE
+        ===================================================== */
+
+        .message {
+            display: none;
+
+            margin-bottom: 17px;
+
+            padding: 11px 13px;
+
+            border-radius: 12px;
+
+            font-size: 11px;
+
+            line-height: 1.5;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.error {
+            color: #ffb9da;
+
+            background:
+                rgba(255,35,130,0.08);
+
+            border:
+                1px solid rgba(255,50,150,0.18);
+        }
+
+        .message.success {
+            color: #bfffe0;
+
+            background:
+                rgba(30,220,140,0.07);
+
+            border:
+                1px solid rgba(30,220,140,0.15);
+        }
+
+        /* =====================================================
+           DIVIDER
+        ===================================================== */
+
+        .divider {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin:
+                25px 0 21px;
+
+            color:
+                rgba(255,255,255,0.28);
+
+            font-size: 10px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+
+            flex: 1;
+
+            height: 1px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255,255,255,0.09)
+                );
+        }
+
+        .divider::after {
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(255,255,255,0.09),
+                    transparent
+                );
+        }
+
+        /* =====================================================
+           REGISTER
+        ===================================================== */
+
+        .register-area {
+            position: relative;
+
+            z-index: 2;
+
+            text-align: center;
+        }
+
+        .register-area p {
+            margin:
+                0 0 14px;
+
+            color:
+                rgba(255,255,255,0.42);
+
+            font-size: 11px;
+        }
+
+        .register-links {
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 10px;
+        }
+
+        .register-link {
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            min-height: 42px;
+
+            border-radius: 12px;
+
+            color:
+                rgba(255,255,255,0.72);
+
+            text-decoration: none;
+
+            border:
+                1px solid rgba(255,255,255,0.08);
+
+            background:
+                rgba(255,255,255,0.025);
+
+            font-size: 11px;
+            font-weight: 600;
+
+            transition: 0.2s ease;
+        }
+
+        .register-link:hover {
+            color: #ffffff;
+
+            border-color:
+                rgba(255,60,185,0.30);
+
+            background:
+                rgba(255,50,180,0.055);
+
+            transform: translateY(-1px);
+        }
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .login-footer {
+            position: absolute;
+
+            bottom: 20px;
+
+            left: 0;
+            right: 0;
+
+            text-align: center;
+
+            color:
+                rgba(255,255,255,0.22);
+
+            font-size: 9px;
+
+            letter-spacing: 0.06em;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 600px) {
+
+            .login-nav {
+                padding: 20px;
+            }
+
+            .brand-tagline {
+                display: none;
+            }
+
+            .back-home {
+                font-size: 11px;
+                padding: 8px 12px;
+            }
+
+            .login-page {
+                padding:
+                    90px 15px 60px;
+
+                align-items: flex-start;
+            }
+
+            .login-wrapper {
+                margin-top: 25px;
+            }
+
+            .login-card {
+                padding:
+                    32px 22px 28px;
+
+                border-radius: 22px;
+            }
+
+            .login-heading h1 {
+                font-size: 26px;
+            }
+
+            .register-links {
+                grid-template-columns: 1fr;
+            }
+
+            .login-footer {
+                position: relative;
+
+                margin-top: 25px;
+
+                bottom: auto;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+<div class="login-page">
+
+    <!-- =====================================================
+         COSMIC BACKGROUND
+    ====================================================== -->
+
+    <div class="stars"></div>
+
+    <div class="nebula one"></div>
+    <div class="nebula two"></div>
+
+
+    <!-- =====================================================
+         NAVIGATION
+    ====================================================== -->
+
+    <nav class="login-nav">
+
+        <!-- IMPORTANT:
+             Using direct paths instead of url_for()
+             prevents endpoint-name errors.
+        -->
+
+        <a href="/" class="brand">
+
+            <div class="brand-symbol">
+                A
+            </div>
+
+            <div class="brand-text">
+
+                <div class="brand-name">
+                    ACE NEXUS
+                </div>
+
+                <div class="brand-tagline">
+                    YOUR PATH. OUR UNIVERSE.
+                </div>
+
+            </div>
+
+        </a>
+
+
+        <a href="/" class="back-home">
+            ← Back to home
+        </a>
+
+    </nav>
+
+
+    <!-- =====================================================
+         LOGIN
+    ====================================================== -->
+
+    <main class="login-wrapper">
+
+        <section class="login-card">
+
+
+            <!-- Heading -->
+
+            <div class="login-heading">
+
+                <div class="login-icon">
+                    ✦
+                </div>
+
+                <h1>
+                    Welcome back
+                </h1>
+
+                <p>
+                    Continue exploring opportunities
+                    across your universe.
+                </p>
+
+            </div>
+
+
+            <!-- Form -->
+
+            <form
+                id="loginForm"
+                class="login-form"
+            >
+
+                <div
+                    id="message"
+                    class="message"
+                ></div>
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label
+                        class="form-label"
+                        for="email"
+                    >
+                        Email address
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            @
+                        </span>
+
+                        <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            class="form-input"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+
+                <div class="form-group">
+
+                    <label
+                        class="form-label"
+                        for="password"
+                    >
+                        Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">
+                            ◈
+                        </span>
+
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            class="form-input"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                            style="padding-right: 65px;"
+                        >
+
+                        <button
+                            type="button"
+                            id="passwordToggle"
+                            class="password-toggle"
+                        >
+                            Show
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- OPTIONS -->
+
+                <div class="login-options">
+
+                    <label class="remember">
+
+                        <input
+                            type="checkbox"
+                            id="remember"
+                        >
+
+                        <span>
+                            Remember me
+                        </span>
+
+                    </label>
+
+
+                    <a
+                        href="#"
+                        class="forgot-link"
+                        id="forgotPassword"
+                    >
+                        Forgot password?
+                    </a>
+
+                </div>
+
+
+                <!-- LOGIN -->
+
+                <button
+                    type="submit"
+                    id="loginButton"
+                    class="login-button"
+                >
+                    <span id="loginButtonText">
+                        Enter ACE NEXUS →
+                    </span>
+                </button>
+
+            </form>
+
+
+            <!-- Divider -->
+
+            <div class="divider">
+                OR
+            </div>
+
+
+            <!-- Registration -->
+
+            <div class="register-area">
+
+                <p>
+                    New to ACE NEXUS?
+                </p>
+
+                <div class="register-links">
+
+                    <!-- Direct routes -->
+                    <a
+                        href="/student-register"
+                        class="register-link"
+                    >
+                        Student account
+                    </a>
+
+                    <a
+                        href="/organizer-register"
+                        class="register-link"
+                    >
+                        Organizer account
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+
+    <footer class="login-footer">
+        © 2026 ACE NEXUS · Discover beyond the obvious.
+    </footer>
+
+</div>
+
+
+<script>
+
+    /* =====================================================
+       ELEMENTS
+    ====================================================== */
+
+    const loginForm =
+        document.getElementById("loginForm");
+
+    const emailInput =
+        document.getElementById("email");
+
+    const passwordInput =
+        document.getElementById("password");
+
+    const passwordToggle =
+        document.getElementById("passwordToggle");
+
+    const message =
+        document.getElementById("message");
+
+    const loginButton =
+        document.getElementById("loginButton");
+
+    const loginButtonText =
+        document.getElementById("loginButtonText");
+
+
+    /* =====================================================
+       SHOW / HIDE PASSWORD
+    ====================================================== */
+
+    passwordToggle.addEventListener(
+        "click",
+        function () {
+
+            if (
+                passwordInput.type === "password"
+            ) {
+
+                passwordInput.type = "text";
+
+                passwordToggle.textContent =
+                    "Hide";
+
+            } else {
+
+                passwordInput.type =
+                    "password";
+
+                passwordToggle.textContent =
+                    "Show";
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       MESSAGE
+    ====================================================== */
+
+    function showMessage(
+        text,
+        type = "error"
+    ) {
+
+        message.textContent = text;
+
+        message.className =
+            "message show " + type;
+    }
+
+
+    function clearMessage() {
+
+        message.textContent = "";
+
+        message.className =
+            "message";
+    }
+
+
+    /* =====================================================
+       LOGIN API
+    ====================================================== */
+
+    loginForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
+
+            clearMessage();
+
+
+            const email =
+                emailInput.value.trim();
+
+            const password =
+                passwordInput.value;
+
+
+            if (!email || !password) {
+
+                showMessage(
+                    "Please enter your email and password."
+                );
+
+                return;
+            }
+
+
+            loginButton.disabled = true;
+
+            loginButtonText.textContent =
+                "Entering your universe…";
+
+
+            try {
+
+                const response =
+                    await fetch(
+                        "/api/login",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify({
+                                email: email,
+                                password: password
+                            })
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (
+                    !response.ok ||
+                    !data.success
+                ) {
+
+                    throw new Error(
+                        data.message ||
+                        "Invalid email or password."
+                    );
+
+                }
+
+
+                showMessage(
+                    "Login successful. Launching ACE NEXUS…",
+                    "success"
+                );
+
+
+                setTimeout(
+                    function () {
+
+                        window.location.href =
+                            data.redirect ||
+                            "/dashboard";
+
+                    },
+                    450
+                );
+
+
+            } catch (error) {
+
+                showMessage(
+                    error.message ||
+                    "Something went wrong. Please try again."
+                );
+
+
+                loginButton.disabled =
+                    false;
+
+                loginButtonText.textContent =
+                    "Enter ACE NEXUS →";
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       FORGOT PASSWORD
+    ====================================================== */
+
+    document
+        .getElementById("forgotPassword")
+        .addEventListener(
+            "click",
+            function (event) {
+
+                event.preventDefault();
+
+                showMessage(
+                    "Password recovery will be added in the authentication update."
+                );
+
+            }
+        );
+
+
+    /* =====================================================
+       CLEAR ERROR WHEN USER TYPES
+    ====================================================== */
+
+    emailInput.addEventListener(
+        "input",
+        clearMessage
+    );
+
+    passwordInput.addEventListener(
+        "input",
+        clearMessage
+    );
+
+</script>
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+
+</body>
+</html>

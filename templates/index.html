@@ -1,127 +1,2608 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ACE NEXUS | AI Opportunity Ecosystem</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta
+        name="description"
+        content="ACE NEXUS — Discover opportunities built for your journey."
+    >
+
+    <title>ACE NEXUS | Your Path. Our Universe.</title>
+
+    <!-- =====================================================
+         GOOGLE FONT
+    ====================================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- =====================================================
+         GLOBAL CSS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+    <!-- =====================================================
+         LANDING PAGE ONLY STYLES
+    ====================================================== -->
+
+    <style>
+
+        /* =================================================
+           RESET
+        ================================================= */
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+
+        body {
+            min-height: 100vh;
+            background: #030204;
+            color: #f7f4f7;
+            font-family: "Inter", sans-serif;
+            overflow-x: hidden;
+        }
+
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+
+        button {
+            font-family: inherit;
+        }
+
+
+        /* =================================================
+           COSMIC UNIVERSE
+        ================================================= */
+
+        .landing-page {
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+            background:
+                radial-gradient(
+                    circle at 70% 20%,
+                    rgba(143, 6, 79, 0.20),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 20% 75%,
+                    rgba(242, 27, 143, 0.10),
+                    transparent 25%
+                ),
+                #030204;
+        }
+
+
+        .cosmic-background {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+
+        /* =================================================
+           STARS
+        ================================================= */
+
+        .stars {
+            position: absolute;
+            inset: 0;
+
+            background-image:
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,0.75) 1px,
+                    transparent 1.5px
+                ),
+                radial-gradient(
+                    circle,
+                    rgba(255,255,255,0.45) 1px,
+                    transparent 1.5px
+                ),
+                radial-gradient(
+                    circle,
+                    rgba(242,27,143,0.55) 1px,
+                    transparent 1.5px
+                );
+
+            background-size:
+                120px 120px,
+                190px 190px,
+                260px 260px;
+
+            background-position:
+                0 0,
+                45px 80px,
+                100px 30px;
+
+            opacity: 0.55;
+
+            animation:
+                starsMove 35s linear infinite;
+        }
+
+
+        @keyframes starsMove {
+
+            from {
+                transform: translate3d(0, 0, 0);
+            }
+
+            to {
+                transform: translate3d(-120px, 90px, 0);
+            }
+
+        }
+
+
+        /* =================================================
+           MAGENTA NEBULA
+        ================================================= */
+
+        .nebula {
+            position: absolute;
+
+            width: 800px;
+            height: 500px;
+
+            border-radius: 50%;
+
+            filter: blur(90px);
+
+            opacity: 0.22;
+
+            animation:
+                nebulaFloat 12s ease-in-out infinite;
+        }
+
+
+        .nebula-one {
+
+            top: -170px;
+            right: -120px;
+
+            background:
+                radial-gradient(
+                    ellipse,
+                    rgba(242,27,143,0.65),
+                    rgba(143,6,79,0.20),
+                    transparent 70%
+                );
+
+        }
+
+
+        .nebula-two {
+
+            bottom: -230px;
+            left: -220px;
+
+            background:
+                radial-gradient(
+                    ellipse,
+                    rgba(143,6,79,0.65),
+                    rgba(242,27,143,0.12),
+                    transparent 70%
+                );
+
+            animation-delay: -5s;
+
+        }
+
+
+        @keyframes nebulaFloat {
+
+            0%,
+            100% {
+                transform:
+                    translate3d(0,0,0)
+                    scale(1);
+            }
+
+            50% {
+                transform:
+                    translate3d(35px,-20px,0)
+                    scale(1.08);
+            }
+
+        }
+
+
+        /* =================================================
+           BLACK HOLE
+        ================================================= */
+
+        .black-hole {
+
+            position: absolute;
+
+            top: 20%;
+            right: 7%;
+
+            width: 250px;
+            height: 250px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            opacity: 0.7;
+
+            animation:
+                blackHoleFloat 8s ease-in-out infinite;
+
+        }
+
+
+        .black-hole-ring {
+
+            position: absolute;
+
+            width: 230px;
+            height: 72px;
+
+            border-radius: 50%;
+
+            border:
+                2px solid rgba(242,27,143,0.55);
+
+            box-shadow:
+                0 0 30px rgba(242,27,143,0.35),
+                0 0 80px rgba(143,6,79,0.25);
+
+            transform: rotate(-18deg);
+
+            animation:
+                blackHoleSpin 8s linear infinite;
+
+        }
+
+
+        .black-hole-ring-two {
+
+            width: 205px;
+            height: 58px;
+
+            border-color:
+                rgba(255,121,189,0.30);
+
+            transform:
+                rotate(18deg);
+
+            animation-direction: reverse;
+
+        }
+
+
+        .black-hole-core {
+
+            width: 92px;
+            height: 92px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    #000 45%,
+                    #080208 70%,
+                    transparent 72%
+                );
+
+            box-shadow:
+                0 0 25px rgba(0,0,0,0.9),
+                0 0 50px rgba(242,27,143,0.25);
+
+        }
+
+
+        @keyframes blackHoleSpin {
+
+            from {
+                transform:
+                    rotate(0deg);
+            }
+
+            to {
+                transform:
+                    rotate(360deg);
+            }
+
+        }
+
+
+        @keyframes blackHoleFloat {
+
+            0%,
+            100% {
+                transform:
+                    translateY(0);
+            }
+
+            50% {
+                transform:
+                    translateY(-18px);
+            }
+
+        }
+
+
+        /* =================================================
+           WORMHOLE
+        ================================================= */
+
+        .wormhole {
+
+            position: absolute;
+
+            bottom: 12%;
+            left: 8%;
+
+            width: 180px;
+            height: 180px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            opacity: 0.45;
+
+            animation:
+                wormholeFloat 9s ease-in-out infinite;
+
+        }
+
+
+        .worm-ring {
+
+            position: absolute;
+
+            border-radius: 50%;
+
+            border:
+                1px solid rgba(242,27,143,0.50);
+
+            box-shadow:
+                0 0 20px rgba(242,27,143,0.18);
+
+        }
+
+
+        .worm-ring-one {
+
+            width: 150px;
+            height: 55px;
+
+            transform:
+                rotate(25deg);
+
+            animation:
+                wormRotate 7s linear infinite;
+
+        }
+
+
+        .worm-ring-two {
+
+            width: 125px;
+            height: 45px;
+
+            transform:
+                rotate(-30deg);
+
+            animation:
+                wormRotate 5s linear infinite reverse;
+
+        }
+
+
+        .worm-core {
+
+            width: 55px;
+            height: 55px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    #000 20%,
+                    rgba(77,6,52,0.9) 45%,
+                    rgba(242,27,143,0.25) 65%,
+                    transparent 72%
+                );
+
+            box-shadow:
+                0 0 35px rgba(242,27,143,0.30);
+
+        }
+
+
+        @keyframes wormRotate {
+
+            from {
+                transform:
+                    rotate(0deg);
+            }
+
+            to {
+                transform:
+                    rotate(360deg);
+            }
+
+        }
+
+
+        @keyframes wormholeFloat {
+
+            0%,
+            100% {
+                transform:
+                    translate(0,0);
+            }
+
+            50% {
+                transform:
+                    translate(20px,-15px);
+            }
+
+        }
+
+
+        /* =================================================
+           FLOATING PARTICLES
+        ================================================= */
+
+        .particle {
+
+            position: absolute;
+
+            width: 4px;
+            height: 4px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,121,189,0.75);
+
+            box-shadow:
+                0 0 10px rgba(242,27,143,0.70);
+
+            animation:
+                particleFloat 8s ease-in-out infinite;
+
+        }
+
+
+        .particle:nth-child(1) {
+            top: 20%;
+            left: 38%;
+            animation-delay: -2s;
+        }
+
+
+        .particle:nth-child(2) {
+            top: 68%;
+            left: 60%;
+            animation-delay: -5s;
+        }
+
+
+        .particle:nth-child(3) {
+            top: 35%;
+            left: 80%;
+            animation-delay: -1s;
+        }
+
+
+        .particle:nth-child(4) {
+            top: 75%;
+            left: 25%;
+            animation-delay: -4s;
+        }
+
+
+        @keyframes particleFloat {
+
+            0%,
+            100% {
+                transform:
+                    translateY(0)
+                    scale(1);
+
+                opacity: 0.35;
+            }
+
+            50% {
+                transform:
+                    translateY(-25px)
+                    scale(1.5);
+
+                opacity: 1;
+            }
+
+        }
+
+
+        /* =================================================
+           NAVBAR
+        ================================================= */
+
+        .landing-nav {
+
+            position: relative;
+
+            z-index: 20;
+
+            width: 100%;
+
+            padding:
+                28px 6vw;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+        }
+
+
+        .landing-brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.14em;
+
+        }
+
+
+        .brand-symbol {
+
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(242,27,143,0.50);
+
+            border-radius: 10px;
+
+            color: #ff79bd;
+
+            background:
+                rgba(242,27,143,0.06);
+
+            box-shadow:
+                0 0 25px rgba(242,27,143,0.12);
+
+        }
+
+
+        .landing-brand span {
+
+            color: #f21b8f;
+
+        }
+
+
+        .nav-links {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 28px;
+
+        }
+
+
+        .nav-link {
+
+            color: #a49ba4;
+
+            font-size: 13px;
+
+            transition:
+                color 0.25s ease;
+
+        }
+
+
+        .nav-link:hover {
+
+            color: #fff;
+
+        }
+
+
+        .nav-login {
+
+            padding:
+                10px 18px;
+
+            border:
+                1px solid rgba(255,255,255,0.14);
+
+            border-radius: 999px;
+
+            color: #fff;
+
+            background:
+                rgba(255,255,255,0.03);
+
+            transition:
+                all 0.25s ease;
+
+        }
+
+
+        .nav-login:hover {
+
+            border-color:
+                rgba(242,27,143,0.55);
+
+            background:
+                rgba(242,27,143,0.08);
+
+            transform:
+                translateY(-1px);
+
+        }
+
+
+        /* =================================================
+           HERO
+        ================================================= */
+
+        .hero {
+
+            position: relative;
+
+            z-index: 10;
+
+            min-height:
+                calc(100vh - 90px);
+
+            padding:
+                70px 7vw 100px;
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.05fr)
+                minmax(360px, 0.75fr);
+
+            gap: 70px;
+
+            align-items: center;
+
+        }
+
+
+        .hero-content {
+
+            max-width: 780px;
+
+        }
+
+
+        .eyebrow {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 28px;
+
+            padding:
+                8px 13px;
+
+            border:
+                1px solid rgba(242,27,143,0.22);
+
+            border-radius: 999px;
+
+            color: #ff79bd;
+
+            background:
+                rgba(242,27,143,0.055);
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.16em;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .eyebrow-dot {
+
+            width: 6px;
+            height: 6px;
+
+            border-radius: 50%;
+
+            background:
+                #f21b8f;
+
+            box-shadow:
+                0 0 12px #f21b8f;
+
+            animation:
+                pulse 2s ease-in-out infinite;
+
+        }
+
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.45;
+                transform: scale(0.8);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+
+        }
+
+
+        .hero h1 {
+
+            max-width: 800px;
+
+            font-size:
+                clamp(52px, 7vw, 102px);
+
+            line-height:
+                0.95;
+
+            letter-spacing:
+                -0.065em;
+
+            font-weight:
+                700;
+
+        }
+
+
+        .hero h1 .accent {
+
+            display: block;
+
+            color: #f21b8f;
+
+            text-shadow:
+                0 0 50px rgba(242,27,143,0.15);
+
+        }
+
+
+        .hero-description {
+
+            max-width: 580px;
+
+            margin-top: 30px;
+
+            color: #a49ba4;
+
+            font-size: 16px;
+
+            line-height: 1.75;
+
+        }
+
+
+        .hero-actions {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 14px;
+
+            margin-top: 36px;
+
+        }
+
+
+        .primary-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 10px;
+
+            min-height: 50px;
+
+            padding:
+                0 23px;
+
+            border:
+                1px solid #f21b8f;
+
+            border-radius: 12px;
+
+            color: #fff;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f21b8f,
+                    #9d0758
+                );
+
+            box-shadow:
+                0 12px 35px rgba(242,27,143,0.20);
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            transition:
+                all 0.25s ease;
+
+        }
+
+
+        .primary-button:hover {
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 18px 45px rgba(242,27,143,0.30);
+
+        }
+
+
+        .secondary-button {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-height: 50px;
+
+            padding:
+                0 23px;
+
+            border:
+                1px solid rgba(255,255,255,0.12);
+
+            border-radius: 12px;
+
+            color: #d8d2d8;
+
+            background:
+                rgba(255,255,255,0.025);
+
+            backdrop-filter:
+                blur(10px);
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            transition:
+                all 0.25s ease;
+
+        }
+
+
+        .secondary-button:hover {
+
+            color: #fff;
+
+            border-color:
+                rgba(242,27,143,0.35);
+
+            background:
+                rgba(242,27,143,0.05);
+
+        }
+
+
+        /* =================================================
+           HERO VISUAL
+        ================================================= */
+
+        .hero-visual {
+
+            position: relative;
+
+            min-height: 510px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+
+        .orbit-system {
+
+            position: relative;
+
+            width: min(470px, 90vw);
+
+            aspect-ratio: 1;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+
+        .orbit {
+
+            position: absolute;
+
+            border:
+                1px solid rgba(242,27,143,0.15);
+
+            border-radius: 50%;
+
+        }
+
+
+        .orbit-one {
+
+            width: 100%;
+            height: 38%;
+
+            transform:
+                rotate(-25deg);
+
+            animation:
+                orbitRotate 16s linear infinite;
+
+        }
+
+
+        .orbit-two {
+
+            width: 75%;
+            height: 55%;
+
+            transform:
+                rotate(45deg);
+
+            animation:
+                orbitRotate 20s linear infinite reverse;
+
+        }
+
+
+        .orbit-three {
+
+            width: 55%;
+            height: 75%;
+
+            transform:
+                rotate(-55deg);
+
+            animation:
+                orbitRotate 24s linear infinite;
+
+        }
+
+
+        @keyframes orbitRotate {
+
+            from {
+                transform:
+                    rotate(0deg);
+            }
+
+            to {
+                transform:
+                    rotate(360deg);
+            }
+
+        }
+
+
+        .hero-core {
+
+            position: relative;
+
+            width: 170px;
+            height: 170px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle at 35% 30%,
+                    rgba(255,255,255,0.08),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle,
+                    #0a0208 20%,
+                    #190611 52%,
+                    #030204 72%
+                );
+
+            box-shadow:
+                0 0 40px rgba(242,27,143,0.16),
+                0 0 100px rgba(143,6,79,0.15);
+
+        }
+
+
+        .hero-core::before {
+
+            content: "";
+
+            position: absolute;
+
+            inset: -18px;
+
+            border:
+                1px solid rgba(242,27,143,0.20);
+
+            border-radius: 50%;
+
+            animation:
+                corePulse 4s ease-in-out infinite;
+
+        }
+
+
+        .hero-core::after {
+
+            content: "✦";
+
+            color: #f21b8f;
+
+            font-size: 34px;
+
+            text-shadow:
+                0 0 30px rgba(242,27,143,0.80);
+
+            animation:
+                coreGlow 3s ease-in-out infinite;
+
+        }
+
+
+        @keyframes corePulse {
+
+            0%,
+            100% {
+                transform: scale(0.95);
+                opacity: 0.45;
+            }
+
+            50% {
+                transform: scale(1.08);
+                opacity: 1;
+            }
+
+        }
+
+
+        @keyframes coreGlow {
+
+            0%,
+            100% {
+                opacity: 0.65;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+        }
+
+
+        /* =================================================
+           OPPORTUNITY CARD
+        ================================================= */
+
+        .floating-card {
+
+            position: absolute;
+
+            right: 2%;
+            bottom: 5%;
+
+            width: 290px;
+
+            padding: 20px;
+
+            border:
+                1px solid rgba(255,255,255,0.11);
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(25,15,23,0.82),
+                    rgba(7,5,8,0.76)
+                );
+
+            backdrop-filter:
+                blur(22px);
+
+            box-shadow:
+                0 25px 70px rgba(0,0,0,0.45),
+                0 0 40px rgba(242,27,143,0.08);
+
+            animation:
+                cardFloat 6s ease-in-out infinite;
+
+        }
+
+
+        @keyframes cardFloat {
+
+            0%,
+            100% {
+                transform:
+                    translateY(0);
+            }
+
+            50% {
+                transform:
+                    translateY(-10px);
+            }
+
+        }
+
+
+        .floating-card-top {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .card-label {
+
+            color: #8f8790;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.13em;
+
+        }
+
+
+        .match-badge {
+
+            padding:
+                5px 8px;
+
+            border-radius: 999px;
+
+            color: #ff79bd;
+
+            background:
+                rgba(242,27,143,0.08);
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+        }
+
+
+        .floating-card h3 {
+
+            font-size: 17px;
+
+            line-height: 1.3;
+
+        }
+
+
+        .floating-card p {
+
+            margin-top: 8px;
+
+            color: #908790;
+
+            font-size: 11px;
+
+            line-height: 1.6;
+
+        }
+
+
+        .card-meta {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-top: 18px;
+
+            padding-top: 14px;
+
+            border-top:
+                1px solid rgba(255,255,255,0.07);
+
+            color: #88808a;
+
+            font-size: 10px;
+
+        }
+
+
+        /* =================================================
+           FEATURES
+        ================================================= */
+
+        .features-section {
+
+            position: relative;
+
+            z-index: 10;
+
+            padding:
+                100px 7vw 120px;
+
+        }
+
+
+        .section-heading {
+
+            max-width: 650px;
+
+            margin-bottom: 45px;
+
+        }
+
+
+        .section-label {
+
+            color: #f21b8f;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.18em;
+
+            text-transform: uppercase;
+
+            margin-bottom: 14px;
+
+        }
+
+
+        .section-heading h2 {
+
+            font-size:
+                clamp(32px, 4vw, 56px);
+
+            line-height: 1.05;
+
+            letter-spacing:
+                -0.04em;
+
+        }
+
+
+        .section-heading p {
+
+            margin-top: 18px;
+
+            color: #8e878f;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+
+        }
+
+
+        .feature-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 16px;
+
+        }
+
+
+        .feature-card {
+
+            position: relative;
+
+            min-height: 230px;
+
+            padding: 26px;
+
+            overflow: hidden;
+
+            border:
+                1px solid rgba(255,255,255,0.08);
+
+            border-radius: 20px;
+
+            background:
+                rgba(255,255,255,0.025);
+
+            backdrop-filter:
+                blur(14px);
+
+            transition:
+                transform 0.3s ease,
+                border-color 0.3s ease,
+                background 0.3s ease;
+
+        }
+
+
+        .feature-card:hover {
+
+            transform:
+                translateY(-6px);
+
+            border-color:
+                rgba(242,27,143,0.25);
+
+            background:
+                rgba(242,27,143,0.035);
+
+        }
+
+
+        .feature-number {
+
+            color: rgba(242,27,143,0.45);
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.12em;
+
+        }
+
+
+        .feature-icon {
+
+            width: 45px;
+            height: 45px;
+
+            margin-top: 25px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(242,27,143,0.18);
+
+            border-radius: 12px;
+
+            color: #ff79bd;
+
+            background:
+                rgba(242,27,143,0.05);
+
+            font-size: 18px;
+
+        }
+
+
+        .feature-card h3 {
+
+            margin-top: 18px;
+
+            font-size: 17px;
+
+        }
+
+
+        .feature-card p {
+
+            margin-top: 9px;
+
+            color: #89828a;
+
+            font-size: 12px;
+
+            line-height: 1.65;
+
+        }
+
+
+        /* =================================================
+           JOURNEY
+        ================================================= */
+
+        .journey-section {
+
+            position: relative;
+
+            z-index: 10;
+
+            padding:
+                80px 7vw 130px;
+
+        }
+
+
+        .journey-line {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(5, 1fr);
+
+            gap: 12px;
+
+            margin-top: 45px;
+
+        }
+
+
+        .journey-step {
+
+            position: relative;
+
+            padding: 20px 0;
+
+        }
+
+
+        .journey-step::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 33px;
+
+            left: 50px;
+
+            right: -12px;
+
+            height: 1px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(242,27,143,0.40),
+                    rgba(242,27,143,0.02)
+                );
+
+        }
+
+
+        .journey-step:last-child::after {
+
+            display: none;
+
+        }
+
+
+        .journey-dot {
+
+            position: relative;
+
+            z-index: 2;
+
+            width: 28px;
+            height: 28px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border:
+                1px solid rgba(242,27,143,0.40);
+
+            border-radius: 50%;
+
+            color: #ff79bd;
+
+            background:
+                #080408;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+        }
+
+
+        .journey-step h3 {
+
+            margin-top: 18px;
+
+            font-size: 13px;
+
+        }
+
+
+        .journey-step p {
+
+            margin-top: 7px;
+
+            max-width: 180px;
+
+            color: #817981;
+
+            font-size: 10px;
+
+            line-height: 1.6;
+
+        }
+
+
+        /* =================================================
+           CTA
+        ================================================= */
+
+        .cta-section {
+
+            position: relative;
+
+            z-index: 10;
+
+            padding:
+                50px 7vw 120px;
+
+        }
+
+
+        .cta-box {
+
+            position: relative;
+
+            overflow: hidden;
+
+            padding:
+                70px 45px;
+
+            text-align: center;
+
+            border:
+                1px solid rgba(242,27,143,0.16);
+
+            border-radius: 28px;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(242,27,143,0.10),
+                    transparent 60%
+                ),
+                rgba(255,255,255,0.02);
+
+        }
+
+
+        .cta-box h2 {
+
+            max-width: 650px;
+
+            margin: auto;
+
+            font-size:
+                clamp(32px, 4vw, 58px);
+
+            line-height: 1.05;
+
+            letter-spacing:
+                -0.045em;
+
+        }
+
+
+        .cta-box p {
+
+            max-width: 540px;
+
+            margin:
+                18px auto 30px;
+
+            color: #8d858e;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+        }
+
+
+        /* =================================================
+           FOOTER
+        ================================================= */
+
+        .landing-footer {
+
+            position: relative;
+
+            z-index: 10;
+
+            padding:
+                25px 7vw 35px;
+
+            border-top:
+                1px solid rgba(255,255,255,0.06);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            color: #625c64;
+
+            font-size: 10px;
+
+        }
+
+
+        .footer-brand {
+
+            color: #9b929c;
+
+            font-weight: 700;
+
+            letter-spacing: 0.08em;
+
+        }
+
+
+        /* =================================================
+           RESPONSIVE
+        ================================================= */
+
+        @media (max-width: 1000px) {
+
+            .hero {
+
+                grid-template-columns:
+                    1fr;
+
+                padding-top: 50px;
+
+            }
+
+
+            .hero-content {
+
+                max-width: 760px;
+
+            }
+
+
+            .hero-visual {
+
+                min-height: 430px;
+
+            }
+
+
+            .feature-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+
+            .journey-line {
+
+                grid-template-columns:
+                    repeat(3, 1fr);
+
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .landing-nav {
+
+                padding:
+                    20px;
+
+            }
+
+
+            .nav-links {
+
+                gap: 10px;
+
+            }
+
+
+            .nav-link {
+
+                display: none;
+
+            }
+
+
+            .hero {
+
+                padding:
+                    45px 22px 70px;
+
+            }
+
+
+            .hero h1 {
+
+                font-size:
+                    clamp(48px, 15vw, 75px);
+
+            }
+
+
+            .hero-description {
+
+                font-size: 14px;
+
+            }
+
+
+            .hero-visual {
+
+                min-height: 370px;
+
+            }
+
+
+            .orbit-system {
+
+                width: 330px;
+
+            }
+
+
+            .hero-core {
+
+                width: 125px;
+                height: 125px;
+
+            }
+
+
+            .floating-card {
+
+                width: 245px;
+
+                right: 0;
+
+            }
+
+
+            .black-hole {
+
+                right: -70px;
+
+                top: 12%;
+
+                opacity: 0.35;
+
+            }
+
+
+            .wormhole {
+
+                left: -50px;
+
+                opacity: 0.30;
+
+            }
+
+
+            .features-section,
+            .journey-section,
+            .cta-section {
+
+                padding-left: 22px;
+                padding-right: 22px;
+
+            }
+
+
+            .feature-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .journey-line {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+
+            .journey-step::after {
+
+                display: none;
+
+            }
+
+
+            .landing-footer {
+
+                padding:
+                    22px;
+
+                flex-direction: column;
+
+                gap: 8px;
+
+                text-align: center;
+
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
-    <!-- Navigation -->
-    <nav class="navbar">
+<div class="landing-page">
 
-        <div class="logo">
-            ACE<span>NEXUS</span>
+
+    <!-- =====================================================
+         COSMIC BACKGROUND
+    ====================================================== -->
+
+    <div class="cosmic-background">
+
+        <div class="stars"></div>
+
+        <div class="nebula nebula-one"></div>
+
+        <div class="nebula nebula-two"></div>
+
+
+        <!-- BLACK HOLE -->
+
+        <div class="black-hole">
+
+            <div class="black-hole-ring"></div>
+
+            <div class="black-hole-ring black-hole-ring-two"></div>
+
+            <div class="black-hole-core"></div>
+
         </div>
+
+
+        <!-- WORMHOLE -->
+
+        <div class="wormhole">
+
+            <div class="worm-ring worm-ring-one"></div>
+
+            <div class="worm-ring worm-ring-two"></div>
+
+            <div class="worm-core"></div>
+
+        </div>
+
+
+        <!-- PARTICLES -->
+
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         NAVIGATION
+    ====================================================== -->
+
+    <nav class="landing-nav">
+
+
+        <a
+            href="/"
+            class="landing-brand"
+        >
+
+            <div class="brand-symbol">
+                ✦
+            </div>
+
+            <div>
+                ACE <span>NEXUS</span>
+            </div>
+
+        </a>
+
 
         <div class="nav-links">
-            <a href="#">Discover</a>
-            <a href="#">Events</a>
-            <a href="#">How it works</a>
+
+            <a
+                href="#discover"
+                class="nav-link"
+            >
+                Discover
+            </a>
+
+            <a
+                href="#how-it-works"
+                class="nav-link"
+            >
+                How it works
+            </a>
+
+            <a
+                href="#about"
+                class="nav-link"
+            >
+                About
+            </a>
+
+            <a
+                href="/login"
+                class="nav-login"
+            >
+                Login
+            </a>
+
         </div>
 
-        <a href="/onboarding" class="nav-button">
-    Get Started
-</a>
     </nav>
 
 
-    <!-- Hero Section -->
-    <main class="hero">
 
-        <div class="hero-content">
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
 
-            <div class="eyebrow">
-                ✦ AI-POWERED OPPORTUNITY DISCOVERY
-            </div>
-
-            <h1>
-                Find opportunities
-                <span>made for you.</span>
-            </h1>
-
-            <p>
-                ACE NEXUS understands your skills, interests and career goals
-                to help you discover the right hackathons, competitions,
-                workshops and internships.
-            </p>
-
-            <!-- Smart Search -->
-            <div class="search-box">
-
-                <span class="search-icon">⌕</span>
-
-                <input
-                    type="text"
-                    placeholder="Try: AI hackathons for CSE students in Pune..."
-                >
-
-                <button>
-                    Search
-                </button>
-
-            </div>
-
-            <div class="search-hint">
-                ✦ Ask naturally. ACE NEXUS finds what fits.
-            </div>
-
-        </div>
+    <main>
 
 
-        <!-- Hero Visual -->
-        <div class="hero-visual">
+        <section class="hero">
 
-            <div class="ai-card">
 
-                <div class="card-top">
-                    <span>AI MATCH</span>
-                    <span class="match">94%</span>
+            <!-- HERO CONTENT -->
+
+            <div class="hero-content">
+
+
+                <div class="eyebrow">
+
+                    <span class="eyebrow-dot"></span>
+
+                    THE STUDENT OPPORTUNITY UNIVERSE
+
                 </div>
 
-                <h3>AI Innovation Hackathon</h3>
 
-                <p>
-                    Recommended because it matches your AI skills,
-                    interests and career goal.
+                <h1>
+
+                    Find what
+
+                    <span class="accent">
+                        moves you.
+                    </span>
+
+                </h1>
+
+
+                <p class="hero-description">
+
+                    ACE NEXUS brings hackathons, internships,
+                    workshops, competitions and student
+                    opportunities into one intelligent universe —
+                    personalized around who you are and where
+                    you want to go.
+
                 </p>
 
-                <div class="tags">
-                    <span>AI/ML</span>
-                    <span>Hackathon</span>
-                    <span>Pune</span>
+
+                <div class="hero-actions">
+
+                    <a
+                        href="/student-register"
+                        class="primary-button"
+                    >
+
+                        Enter the Nexus
+
+                        <span>→</span>
+
+                    </a>
+
+
+                    <a
+                        href="#discover"
+                        class="secondary-button"
+                    >
+
+                        Explore the universe
+
+                    </a>
+
                 </div>
 
             </div>
 
-        </div>
+
+
+            <!-- HERO COSMIC VISUAL -->
+
+            <div class="hero-visual">
+
+
+                <div class="orbit-system">
+
+
+                    <div class="orbit orbit-one"></div>
+
+                    <div class="orbit orbit-two"></div>
+
+                    <div class="orbit orbit-three"></div>
+
+
+                    <div class="hero-core"></div>
+
+
+                </div>
+
+
+
+                <!-- FLOATING OPPORTUNITY -->
+
+                <div class="floating-card">
+
+
+                    <div class="floating-card-top">
+
+                        <span class="card-label">
+                            AI MATCH
+                        </span>
+
+                        <span class="match-badge">
+                            94% MATCH
+                        </span>
+
+                    </div>
+
+
+                    <h3>
+                        AI Innovation Challenge
+                    </h3>
+
+
+                    <p>
+                        Build real-world AI solutions
+                        with students, mentors and
+                        industry experts.
+                    </p>
+
+
+                    <div class="card-meta">
+
+                        <span>
+                            Bengaluru
+                        </span>
+
+                        <span>
+                            12 days left
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             DISCOVER
+        ================================================== -->
+
+        <section
+            class="features-section"
+            id="discover"
+        >
+
+
+            <div class="section-heading">
+
+                <div class="section-label">
+                    ONE UNIVERSE
+                </div>
+
+                <h2>
+                    Opportunities,
+                    without the noise.
+                </h2>
+
+                <p>
+                    Instead of searching across dozens of
+                    platforms, ACE NEXUS creates one space
+                    where your opportunities can find you.
+                </p>
+
+            </div>
+
+
+
+            <div class="feature-grid">
+
+
+                <article class="feature-card">
+
+                    <div class="feature-number">
+                        01 / DISCOVER
+                    </div>
+
+                    <div class="feature-icon">
+                        ✦
+                    </div>
+
+                    <h3>
+                        Smart Discovery
+                    </h3>
+
+                    <p>
+                        Explore hackathons, internships,
+                        workshops, competitions and
+                        technology events from one place.
+                    </p>
+
+                </article>
+
+
+
+                <article class="feature-card">
+
+                    <div class="feature-number">
+                        02 / MATCH
+                    </div>
+
+                    <div class="feature-icon">
+                        ◈
+                    </div>
+
+                    <h3>
+                        Personalised Matches
+                    </h3>
+
+                    <p>
+                        Your skills, goals and location
+                        influence the opportunities
+                        surfaced by ACE.
+                    </p>
+
+                </article>
+
+
+
+                <article class="feature-card">
+
+                    <div class="feature-number">
+                        03 / GUIDE
+                    </div>
+
+                    <div class="feature-icon">
+                        ◎
+                    </div>
+
+                    <h3>
+                        Opportunity Navigator
+                    </h3>
+
+                    <p>
+                        Move beyond finding opportunities.
+                        Understand what you can do next
+                        on your journey.
+                    </p>
+
+                </article>
+
+
+
+                <article class="feature-card">
+
+                    <div class="feature-number">
+                        04 / AI
+                    </div>
+
+                    <div class="feature-icon">
+                        ✧
+                    </div>
+
+                    <h3>
+                        Ask ACE
+                    </h3>
+
+                    <p>
+                        Ask questions about opportunities,
+                        your profile, applications and
+                        possible next steps.
+                    </p>
+
+                </article>
+
+
+
+                <article class="feature-card">
+
+                    <div class="feature-number">
+                        05 / ORGANIZE
+                    </div>
+
+                    <div class="feature-icon">
+                        ⊙
+                    </div>
+
+                    <h3>
+                        Organizer Intelligence
+                    </h3>
+
+                    <p>
+                        Give organizers a structured space
+                        to create, manage and improve their
+                        student opportunities.
+                    </p>
+
+                </article>
+
+
+
+                <article class="feature-card">
+
+                    <div class="feature-number">
+                        06 / JOURNEY
+                    </div>
+
+                    <div class="feature-icon">
+                        ∞
+                    </div>
+
+                    <h3>
+                        Your Opportunity Universe
+                    </h3>
+
+                    <p>
+                        Discover one opportunity,
+                        build a skill, unlock the next,
+                        and keep moving forward.
+                    </p>
+
+                </article>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             HOW IT WORKS
+        ================================================== -->
+
+        <section
+            class="journey-section"
+            id="how-it-works"
+        >
+
+
+            <div class="section-heading">
+
+                <div class="section-label">
+                    THE ACE JOURNEY
+                </div>
+
+                <h2>
+                    Goal → Discover → Grow
+                </h2>
+
+                <p>
+                    ACE NEXUS turns opportunity discovery
+                    into a continuous student journey.
+                </p>
+
+            </div>
+
+
+
+            <div class="journey-line">
+
+
+                <div class="journey-step">
+
+                    <div class="journey-dot">
+                        01
+                    </div>
+
+                    <h3>
+                        Tell ACE
+                    </h3>
+
+                    <p>
+                        Share your interests,
+                        skills and goals.
+                    </p>
+
+                </div>
+
+
+
+                <div class="journey-step">
+
+                    <div class="journey-dot">
+                        02
+                    </div>
+
+                    <h3>
+                        Understand
+                    </h3>
+
+                    <p>
+                        Your profile becomes
+                        your opportunity identity.
+                    </p>
+
+                </div>
+
+
+
+                <div class="journey-step">
+
+                    <div class="journey-dot">
+                        03
+                    </div>
+
+                    <h3>
+                        Discover
+                    </h3>
+
+                    <p>
+                        Explore opportunities
+                        relevant to your journey.
+                    </p>
+
+                </div>
+
+
+
+                <div class="journey-step">
+
+                    <div class="journey-dot">
+                        04
+                    </div>
+
+                    <h3>
+                        Match
+                    </h3>
+
+                    <p>
+                        See why an opportunity
+                        may fit your profile.
+                    </p>
+
+                </div>
+
+
+
+                <div class="journey-step">
+
+                    <div class="journey-dot">
+                        05
+                    </div>
+
+                    <h3>
+                        Move
+                    </h3>
+
+                    <p>
+                        Save, apply and continue
+                        toward the next opportunity.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             ABOUT / CTA
+        ================================================== -->
+
+        <section
+            class="cta-section"
+            id="about"
+        >
+
+
+            <div class="cta-box">
+
+
+                <div class="section-label">
+                    YOUR NEXT POSSIBILITY
+                </div>
+
+
+                <h2>
+                    Your path is bigger
+                    than one opportunity.
+                </h2>
+
+
+                <p>
+                    Start building your opportunity universe
+                    with ACE NEXUS.
+                </p>
+
+
+                <a
+                    href="/student-register"
+                    class="primary-button"
+                >
+
+                    Start your journey
+
+                    <span>→</span>
+
+                </a>
+
+
+            </div>
+
+
+        </section>
+
 
     </main>
 
 
-    <!-- Trust / Feature Strip -->
-    <section class="feature-strip">
 
-        <div>
-            <strong>🎯 Personalized</strong>
-            <span>Recommendations based on you</span>
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="landing-footer">
+
+
+        <div class="footer-brand">
+            ACE NEXUS
         </div>
 
-        <div>
-            <strong>🔎 Intelligent Search</strong>
-            <span>Search using natural language</span>
-        </div>
 
         <div>
-            <strong>🤖 AI Assistant</strong>
-            <span>Get help at every step</span>
+            YOUR PATH. OUR UNIVERSE.
         </div>
 
-    </section>
+
+        <div>
+            © 2026 ACE NEXUS
+        </div>
+
+
+    </footer>
+
+
+</div>
+
 
 </body>
+
 </html>

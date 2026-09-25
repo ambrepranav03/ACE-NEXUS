@@ -1,135 +1,20 @@
 /* =========================================================
-   ACE NEXUS — CLEAN DASHBOARD ENGINE
-   Working foundation:
-   Search
-   Location Filters
-   Saved
-   Applications
-   Profile
-   Personalization
-   Opportunity Navigator
+   ACE NEXUS — STUDENT DASHBOARD ENGINE
+   Backend Connected Version
 ========================================================= */
+
+"use strict";
 
 
 /* =========================================================
-   OPPORTUNITY DATA
+   STATE
 ========================================================= */
 
-const opportunities = [
+let opportunities = [];
 
-    {
-        id: 1,
-        title: "AI Innovation Challenge",
-        type: "HACKATHON · OFFLINE",
-        description:
-            "Build real-world AI solutions with students, mentors and industry experts.",
-        location: "Bengaluru",
-        mode: "offline",
-        deadline: "12 days left",
-        prize: "₹75,000 Prize",
-        match: 94,
-        tags: ["AI", "Python", "Hackathon"]
-    },
+let currentFilter = "All";
 
-    {
-        id: 2,
-        title: "Applied Machine Learning Lab",
-        type: "WORKSHOP · ONLINE",
-        description:
-            "A practical workshop focused on real-world machine learning projects.",
-        location: "Online",
-        mode: "online",
-        deadline: "5 days left",
-        prize: "Certificate",
-        match: 89,
-        tags: ["Machine Learning", "AI", "Workshop"]
-    },
-
-    {
-        id: 3,
-        title: "Smart India Hackathon",
-        type: "COMPETITION · INDIA",
-        description:
-            "Solve real-world problems and build innovative solutions with your team.",
-        location: "Pan India",
-        mode: "offline",
-        deadline: "18 days left",
-        prize: "National Level",
-        match: 86,
-        tags: ["Innovation", "Problem Solving", "Hackathon"]
-    },
-
-    {
-        id: 4,
-        title: "Mumbai TechSprint",
-        type: "HACKATHON · OFFLINE",
-        description:
-            "Build practical technology solutions with developers and innovators.",
-        location: "Mumbai",
-        mode: "offline",
-        deadline: "9 days left",
-        prize: "₹50,000 Prize",
-        match: 91,
-        tags: ["Web", "AI", "Innovation"]
-    },
-
-    {
-        id: 5,
-        title: "Delhi AI Builders",
-        type: "HACKATHON · OFFLINE",
-        description:
-            "Create AI-powered solutions for real-world social and technical challenges.",
-        location: "Delhi",
-        mode: "offline",
-        deadline: "15 days left",
-        prize: "₹60,000 Prize",
-        match: 88,
-        tags: ["AI", "Python", "Innovation"]
-    },
-
-    {
-        id: 6,
-        title: "Hyderabad Developer Week",
-        type: "TECH EVENT · OFFLINE",
-        description:
-            "Connect with developers, mentors and companies through talks and challenges.",
-        location: "Hyderabad",
-        mode: "offline",
-        deadline: "7 days left",
-        prize: "Certificate",
-        match: 84,
-        tags: ["Development", "Networking", "Career"]
-    },
-
-    {
-        id: 7,
-        title: "Chennai Robotics Challenge",
-        type: "COMPETITION · OFFLINE",
-        description:
-            "Design and prototype innovative robotics solutions with your team.",
-        location: "Chennai",
-        mode: "offline",
-        deadline: "21 days left",
-        prize: "₹80,000 Prize",
-        match: 82,
-        tags: ["Robotics", "Hardware", "Engineering"]
-    },
-
-    {
-        id: 8,
-        title: "Kolkata Innovation Sprint",
-        type: "HACKATHON · OFFLINE",
-        description:
-            "Turn creative ideas into working technology prototypes.",
-        location: "Kolkata",
-        mode: "offline",
-        deadline: "11 days left",
-        prize: "₹40,000 Prize",
-        match: 80,
-        tags: ["Innovation", "Startup", "Technology"]
-    }
-
-];
+let currentSearch = "";
 
 
 /* =========================================================
@@ -140,129 +25,31 @@ function getStudentProfile() {
 
     return {
 
+        name:
+            localStorage.getItem(
+                "aceStudentName"
+            ) || "Explorer",
+
+        city:
+            localStorage.getItem(
+                "aceStudentCity"
+            ) || "India",
+
         skills:
             JSON.parse(
-                localStorage.getItem("aceSkills") || "[]"
+                localStorage.getItem(
+                    "aceSkills"
+                ) || "[]"
             ),
 
         goals:
             JSON.parse(
-                localStorage.getItem("aceGoals") || "[]"
-            ),
-
-        city:
-            localStorage.getItem("aceStudentCity") || "India"
+                localStorage.getItem(
+                    "aceGoals"
+                ) || "[]"
+            )
 
     };
-
-}
-
-
-function normalize(value) {
-
-    return String(value)
-        .toLowerCase()
-        .trim();
-
-}
-
-
-/* =========================================================
-   PERSONALIZED MATCHING
-========================================================= */
-
-function calculatePersonalizedScore(opportunity) {
-
-    const profile =
-        getStudentProfile();
-
-    let score =
-        opportunity.match;
-
-
-    const skills =
-        profile.skills.map(normalize);
-
-    const goals =
-        profile.goals.map(normalize);
-
-
-    const opportunityText =
-        [
-            opportunity.title,
-            opportunity.description,
-            opportunity.type,
-            ...opportunity.tags
-        ]
-            .map(normalize)
-            .join(" ");
-
-
-    skills.forEach(skill => {
-
-        if (
-            skill &&
-            opportunityText.includes(skill)
-        ) {
-
-            score += 4;
-
-        }
-
-    });
-
-
-    goals.forEach(goal => {
-
-        if (
-            goal &&
-            opportunityText.includes(goal)
-        ) {
-
-            score += 5;
-
-        }
-
-    });
-
-
-    if (
-        profile.city !== "India" &&
-        normalize(opportunity.location) ===
-        normalize(profile.city)
-    ) {
-
-        score += 3;
-
-    }
-
-
-    return Math.min(
-        Math.round(score),
-        99
-    );
-
-}
-
-
-function getPersonalizedOpportunities() {
-
-    return opportunities
-        .map(opportunity => ({
-
-            ...opportunity,
-
-            personalizedMatch:
-                calculatePersonalizedScore(
-                    opportunity
-                )
-
-        }))
-        .sort(
-            (a, b) =>
-                b.personalizedMatch -
-                a.personalizedMatch
-        );
 
 }
 
@@ -272,226 +59,556 @@ function getPersonalizedOpportunities() {
 ========================================================= */
 
 const opportunitySection =
-    document.querySelector(".opportunity-section");
+    document.querySelector(
+        ".opportunity-section"
+    );
 
-const locationFilters =
-    document.querySelectorAll(".location-filter");
-
-const searchInput =
-    document.getElementById("opportunitySearch");
-
-const searchButton =
-    document.getElementById("searchButton");
 
 const savedPanel =
-    document.getElementById("savedPanel");
+    document.getElementById(
+        "savedPanel"
+    );
+
 
 const savedContainer =
-    document.getElementById("savedOpportunities");
+    document.getElementById(
+        "savedOpportunities"
+    );
 
-const savedNav =
-    document.getElementById("savedNav");
-
-const closeSaved =
-    document.getElementById("closeSaved");
 
 const applicationsPanel =
-    document.getElementById("applicationsPanel");
+    document.getElementById(
+        "applicationsPanel"
+    );
 
-const applicationsNav =
-    document.getElementById("applicationsNav");
-
-const closeApplications =
-    document.getElementById("closeApplications");
 
 const applicationsList =
-    document.getElementById("applicationsList");
+    document.getElementById(
+        "applicationsList"
+    );
+
 
 const profilePanel =
-    document.getElementById("profilePanel");
+    document.getElementById(
+        "profilePanel"
+    );
+
 
 const profileNav =
-    document.getElementById("profileNav");
+    document.getElementById(
+        "profileNav"
+    );
 
-const profileButton =
-    document.getElementById("profileButton");
+
+const savedNav =
+    document.getElementById(
+        "savedNav"
+    );
+
+
+const applicationsNav =
+    document.getElementById(
+        "applicationsNav"
+    );
+
+
+const closeSaved =
+    document.getElementById(
+        "closeSaved"
+    );
+
+
+const closeApplications =
+    document.getElementById(
+        "closeApplications"
+    );
+
 
 const closeProfile =
-    document.getElementById("closeProfile");
+    document.getElementById(
+        "closeProfile"
+    );
+
+
+const profileButton =
+    document.getElementById(
+        "profileButton"
+    );
+
+
+const searchInput =
+    document.getElementById(
+        "opportunitySearch"
+    );
+
+
+const searchButton =
+    document.getElementById(
+        "searchButton"
+    );
 
 
 /* =========================================================
-   SAVED SYSTEM
+   TOAST
 ========================================================= */
 
-function getSaved() {
+function toast(message) {
 
-    return JSON.parse(
-        localStorage.getItem(
-            "aceSavedOpportunities"
-        ) || "[]"
-    );
-
-}
-
-
-function setSaved(saved) {
-
-    localStorage.setItem(
-        "aceSavedOpportunities",
-        JSON.stringify(saved)
-    );
-
-}
-
-
-function isSaved(id) {
-
-    return getSaved().some(
-        item => item.id === id
-    );
-
-}
-
-
-function toggleSaved(id) {
-
-    let saved =
-        getSaved();
-
-
-    if (
-        saved.some(
-            item => item.id === id
-        )
-    ) {
-
-        saved =
-            saved.filter(
-                item => item.id !== id
-            );
-
-    } else {
-
-        const opportunity =
-            opportunities.find(
-                item => item.id === id
-            );
-
-        if (opportunity) {
-
-            saved.push(opportunity);
-
-        }
-
-    }
-
-
-    setSaved(saved);
-
-}
-
-
-/* =========================================================
-   APPLICATION SYSTEM
-========================================================= */
-
-function getApplications() {
-
-    return JSON.parse(
-        localStorage.getItem(
-            "aceApplications"
-        ) || "[]"
-    );
-
-}
-
-
-function setApplications(applications) {
-
-    localStorage.setItem(
-        "aceApplications",
-        JSON.stringify(applications)
-    );
-
-}
-
-
-function hasApplied(id) {
-
-    return getApplications().some(
-        item => item.id === id
-    );
-
-}
-
-
-function applyToOpportunity(id) {
-
-    const opportunity =
-        opportunities.find(
-            item => item.id === id
+    let box =
+        document.getElementById(
+            "aceToast"
         );
 
 
-    if (!opportunity) return;
+    if (!box) {
 
+        box =
+            document.createElement(
+                "div"
+            );
 
-    const applications =
-        getApplications();
+        box.id =
+            "aceToast";
 
+        box.style.position =
+            "fixed";
 
-    if (
-        applications.some(
-            item => item.id === id
-        )
-    ) {
+        box.style.right =
+            "25px";
 
-        return;
+        box.style.bottom =
+            "25px";
+
+        box.style.zIndex =
+            "9999";
+
+        box.style.padding =
+            "13px 18px";
+
+        box.style.borderRadius =
+            "12px";
+
+        box.style.background =
+            "#15121c";
+
+        box.style.color =
+            "#fff";
+
+        box.style.border =
+            "1px solid rgba(242,27,143,.3)";
+
+        box.style.fontSize =
+            "12px";
+
+        box.style.boxShadow =
+            "0 15px 50px rgba(0,0,0,.5)";
+
+        document.body.appendChild(
+            box
+        );
 
     }
 
 
-    applications.push({
+    box.textContent =
+        message;
 
-        ...opportunity,
-
-        status: "Applied",
-
-        appliedOn:
-            new Date()
-                .toLocaleDateString("en-IN")
-
-    });
+    box.style.opacity =
+        "1";
 
 
-    setApplications(
-        applications
+    clearTimeout(
+        box._timer
+    );
+
+
+    box._timer =
+        setTimeout(
+            () => {
+
+                box.style.opacity =
+                    "0";
+
+            },
+            2500
+        );
+
+}
+
+
+/* =========================================================
+   LOAD OPPORTUNITIES
+========================================================= */
+
+async function loadOpportunities() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/opportunities",
+                {
+                    credentials:
+                        "same-origin"
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Unable to load opportunities"
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        opportunities =
+            data.opportunities ||
+            data ||
+            [];
+
+
+        renderOpportunities();
+
+
+    } catch (error) {
+
+        console.error(
+            "OPPORTUNITIES:",
+            error
+        );
+
+
+        /*
+           Fallback demo data.
+           Dashboard still works if API
+           is temporarily unavailable.
+        */
+
+        opportunities = [
+
+            {
+                id: 1,
+                title:
+                    "AI Innovation Challenge",
+                type:
+                    "Hackathon",
+                description:
+                    "Build real-world AI solutions with students, mentors and industry experts.",
+                location:
+                    "Bengaluru",
+                mode:
+                    "offline",
+                deadline:
+                    "12 days left",
+                prize:
+                    "₹75,000 Prize",
+                match:
+                    94,
+                tags:
+                    ["AI","Python","Hackathon"]
+            },
+
+            {
+                id: 2,
+                title:
+                    "Applied Machine Learning Lab",
+                type:
+                    "Workshop",
+                description:
+                    "A practical workshop focused on real-world machine learning projects.",
+                location:
+                    "Online",
+                mode:
+                    "online",
+                deadline:
+                    "5 days left",
+                prize:
+                    "Certificate",
+                match:
+                    89,
+                tags:
+                    ["Machine Learning","AI","Workshop"]
+            },
+
+            {
+                id: 3,
+                title:
+                    "Smart India Hackathon",
+                type:
+                    "Competition",
+                description:
+                    "Solve real-world problems and build innovative solutions.",
+                location:
+                    "Pan India",
+                mode:
+                    "offline",
+                deadline:
+                    "18 days left",
+                prize:
+                    "National Level",
+                match:
+                    86,
+                tags:
+                    ["Innovation","Problem Solving","Hackathon"]
+            }
+
+        ];
+
+
+        renderOpportunities();
+
+    }
+
+}
+
+
+/* =========================================================
+   PERSONALIZED MATCH
+========================================================= */
+
+function calculateMatch(opportunity) {
+
+    const profile =
+        getStudentProfile();
+
+
+    let score =
+        Number(
+            opportunity.match ||
+            70
+        );
+
+
+    const text = [
+
+        opportunity.title,
+
+        opportunity.description,
+
+        opportunity.type,
+
+        opportunity.location,
+
+        ...(opportunity.tags || [])
+
+    ]
+        .join(" ")
+        .toLowerCase();
+
+
+    profile.skills.forEach(
+        skill => {
+
+            if (
+                text.includes(
+                    String(
+                        skill
+                    ).toLowerCase()
+                )
+            ) {
+
+                score += 4;
+
+            }
+
+        }
+    );
+
+
+    profile.goals.forEach(
+        goal => {
+
+            if (
+                text.includes(
+                    String(
+                        goal
+                    ).toLowerCase()
+                )
+            ) {
+
+                score += 5;
+
+            }
+
+        }
+    );
+
+
+    if (
+        profile.city !== "India" &&
+        opportunity.location &&
+        opportunity.location
+            .toLowerCase()
+            .includes(
+                profile.city.toLowerCase()
+            )
+    ) {
+
+        score += 3;
+
+    }
+
+
+    return Math.min(
+        99,
+        score
     );
 
 }
 
 
 /* =========================================================
-   OPPORTUNITY CARD
+   FILTER
+========================================================= */
+
+function getFilteredOpportunities() {
+
+    const query =
+        currentSearch
+            .toLowerCase()
+            .trim();
+
+
+    return opportunities
+
+        .map(
+            opportunity => ({
+
+                ...opportunity,
+
+                personalizedMatch:
+                    calculateMatch(
+                        opportunity
+                    )
+
+            })
+        )
+
+        .filter(
+            opportunity => {
+
+                let locationOK =
+                    true;
+
+
+                if (
+                    currentFilter ===
+                    "Online"
+                ) {
+
+                    locationOK =
+                        opportunity.mode ===
+                        "online" ||
+                        String(
+                            opportunity.location
+                        )
+                            .toLowerCase()
+                            .includes(
+                                "online"
+                            );
+
+                }
+
+
+                else if (
+                    currentFilter ===
+                    "Anywhere India"
+                ) {
+
+                    locationOK =
+                        true;
+
+                }
+
+
+                else if (
+                    currentFilter ===
+                    "My City"
+                ) {
+
+                    const city =
+                        getStudentProfile()
+                            .city
+                            .toLowerCase();
+
+
+                    locationOK =
+                        city === "india" ||
+                        String(
+                            opportunity.location
+                        )
+                            .toLowerCase()
+                            .includes(
+                                city
+                            );
+
+                }
+
+
+                if (!locationOK)
+                    return false;
+
+
+                if (!query)
+                    return true;
+
+
+                const searchable = [
+
+                    opportunity.title,
+
+                    opportunity.type,
+
+                    opportunity.description,
+
+                    opportunity.location,
+
+                    ...(opportunity.tags || [])
+
+                ]
+                    .join(" ")
+                    .toLowerCase();
+
+
+                return searchable.includes(
+                    query
+                );
+
+            }
+        )
+
+        .sort(
+            (a,b) =>
+                b.personalizedMatch -
+                a.personalizedMatch
+        );
+
+}
+
+
+/* =========================================================
+   CREATE CARD
 ========================================================= */
 
 function createCard(opportunity) {
 
-    const saved =
-        isSaved(opportunity.id);
-
-    const applied =
-        hasApplied(opportunity.id);
-
     const score =
         opportunity.personalizedMatch ||
-        opportunity.match;
+        opportunity.match ||
+        0;
 
 
     return `
 
-        <article class="opportunity-card">
+        <article
+            class="opportunity-card"
+            data-id="${opportunity.id}">
 
             <div class="match-score">
 
@@ -509,32 +626,60 @@ function createCard(opportunity) {
             <div class="opportunity-content">
 
                 <div class="opportunity-type">
-                    ${opportunity.type}
+
+                    ${escapeHtml(
+                        opportunity.type ||
+                        "OPPORTUNITY"
+                    )}
+
                 </div>
 
 
                 <h3>
-                    ${opportunity.title}
+
+                    ${escapeHtml(
+                        opportunity.title
+                    )}
+
                 </h3>
 
 
                 <p>
-                    ${opportunity.description}
+
+                    ${escapeHtml(
+                        opportunity.description ||
+                        ""
+                    )}
+
                 </p>
 
 
                 <div class="opportunity-meta">
 
                     <span>
-                        📍 ${opportunity.location}
+                        📍
+                        ${escapeHtml(
+                            opportunity.location ||
+                            "India"
+                        )}
                     </span>
 
-                    <span>
-                        ◷ ${opportunity.deadline}
-                    </span>
 
                     <span>
-                        ${opportunity.prize}
+                        ◷
+                        ${escapeHtml(
+                            opportunity.deadline ||
+                            "Open"
+                        )}
+                    </span>
+
+
+                    <span>
+                        ${escapeHtml(
+                            opportunity.prize ||
+                            opportunity.reward ||
+                            "Opportunity"
+                        )}
                     </span>
 
                 </div>
@@ -542,10 +687,10 @@ function createCard(opportunity) {
 
                 <div class="opportunity-tags">
 
-                    ${opportunity.tags
+                    ${(opportunity.tags || [])
                         .map(
                             tag =>
-                                `<span>${tag}</span>`
+                                `<span>${escapeHtml(tag)}</span>`
                         )
                         .join("")}
 
@@ -554,14 +699,9 @@ function createCard(opportunity) {
 
                 <button
                     class="apply-button"
-                    data-id="${opportunity.id}"
-                    ${applied ? "disabled" : ""}>
+                    data-id="${opportunity.id}">
 
-                    ${
-                        applied
-                            ? "✓ Applied"
-                            : "Apply Now →"
-                    }
+                    Apply Now →
 
                 </button>
 
@@ -569,11 +709,10 @@ function createCard(opportunity) {
 
 
             <button
-                class="save-opportunity
-                ${saved ? "saved" : ""}"
+                class="save-opportunity"
                 data-id="${opportunity.id}">
 
-                ${saved ? "♥" : "♡"}
+                ♡
 
             </button>
 
@@ -585,12 +724,13 @@ function createCard(opportunity) {
 
 
 /* =========================================================
-   DISPLAY OPPORTUNITIES
+   RENDER
 ========================================================= */
 
-function displayOpportunities(list) {
+function renderOpportunities() {
 
-    if (!opportunitySection) return;
+    if (!opportunitySection)
+        return;
 
 
     const header =
@@ -599,13 +739,22 @@ function displayOpportunities(list) {
         );
 
 
+    if (!header)
+        return;
+
+
     opportunitySection
         .querySelectorAll(
             ".opportunity-card, .no-results"
         )
         .forEach(
-            element => element.remove()
+            element =>
+                element.remove()
         );
+
+
+    const list =
+        getFilteredOpportunities();
 
 
     if (!list.length) {
@@ -617,16 +766,12 @@ function displayOpportunities(list) {
 
             <div class="no-results">
 
-                <div>
-                    ◌
-                </div>
-
                 <h3>
                     No opportunities found
                 </h3>
 
                 <p>
-                    Try another location or search.
+                    Try another search or location.
                 </p>
 
             </div>
@@ -640,291 +785,248 @@ function displayOpportunities(list) {
     }
 
 
-    list.forEach(opportunity => {
+    list
+        .forEach(
+            opportunity => {
 
-        header.insertAdjacentHTML(
-            "afterend",
-            createCard(opportunity)
-        );
-
-    });
-
-
-    attachSaveButtons();
-
-    attachApplyButtons();
-
-}
-
-
-/* =========================================================
-   SAVE BUTTONS
-========================================================= */
-
-function attachSaveButtons() {
-
-    document
-        .querySelectorAll(".save-opportunity")
-        .forEach(button => {
-
-            button.addEventListener(
-                "click",
-                event => {
-
-                    event.stopPropagation();
-
-
-                    const id =
-                        Number(
-                            button.dataset.id
-                        );
-
-
-                    toggleSaved(id);
-
-
-                    const saved =
-                        isSaved(id);
-
-
-                    button.classList.toggle(
-                        "saved",
-                        saved
-                    );
-
-
-                    button.textContent =
-                        saved
-                            ? "♥"
-                            : "♡";
-
-
-                    renderSaved();
-
-                }
-            );
-
-        });
-
-}
-
-
-/* =========================================================
-   APPLY BUTTONS
-========================================================= */
-
-function attachApplyButtons() {
-
-    document
-        .querySelectorAll(".apply-button")
-        .forEach(button => {
-
-            button.addEventListener(
-                "click",
-                event => {
-
-                    event.stopPropagation();
-
-
-                    const id =
-                        Number(
-                            button.dataset.id
-                        );
-
-
-                    applyToOpportunity(id);
-
-
-                    displayCurrentOpportunities();
-
-                    renderApplications();
-
-                }
-            );
-
-        });
-
-}
-
-
-/* =========================================================
-   LOCATION FILTER
-========================================================= */
-
-function filterByLocation(location) {
-
-    let filtered;
-
-
-    if (location === "Online") {
-
-        filtered =
-            getPersonalizedOpportunities()
-                .filter(
-                    item =>
-                        item.mode === "online"
+                header.insertAdjacentHTML(
+                    "afterend",
+                    createCard(
+                        opportunity
+                    )
                 );
-
-    }
-
-    else if (
-        location === "Anywhere in India"
-    ) {
-
-        filtered =
-            getPersonalizedOpportunities();
-
-    }
-
-    else if (
-        location === "My City"
-    ) {
-
-        const city =
-            getStudentProfile().city;
-
-
-        filtered =
-            getPersonalizedOpportunities()
-                .filter(
-                    item =>
-                        normalize(
-                            item.location
-                        ) === normalize(city)
-                        ||
-                        item.location ===
-                            "Pan India"
-                );
-
-    }
-
-    else {
-
-        filtered =
-            getPersonalizedOpportunities()
-                .slice(0, 3);
-
-    }
-
-
-    displayOpportunities(filtered);
-
-}
-
-
-/* =========================================================
-   LOCATION EVENTS
-========================================================= */
-
-locationFilters.forEach(filter => {
-
-    filter.addEventListener(
-        "click",
-        () => {
-
-            locationFilters.forEach(item => {
-
-                item.classList.remove(
-                    "active"
-                );
-
-            });
-
-
-            filter.classList.add(
-                "active"
-            );
-
-
-            filterByLocation(
-                filter.dataset.location
-            );
-
-        }
-    );
-
-});
-
-
-/* =========================================================
-   SEARCH
-========================================================= */
-
-function performSearch() {
-
-    const query =
-        searchInput
-            ? normalize(searchInput.value)
-            : "";
-
-
-    if (!query) {
-
-        displayCurrentOpportunities();
-
-        return;
-
-    }
-
-
-    const results =
-        getPersonalizedOpportunities()
-            .filter(opportunity => {
-
-                const searchable =
-                    [
-
-                        opportunity.title,
-
-                        opportunity.type,
-
-                        opportunity.description,
-
-                        opportunity.location,
-
-                        ...opportunity.tags
-
-                    ]
-                        .map(normalize)
-                        .join(" ");
-
-
-                return searchable.includes(
-                    query
-                );
-
-            });
-
-
-    displayOpportunities(results);
-
-}
-
-
-if (searchButton) {
-
-    searchButton.addEventListener(
-        "click",
-        performSearch
-    );
-
-}
-
-
-if (searchInput) {
-
-    searchInput.addEventListener(
-        "keydown",
-        event => {
-
-            if (event.key === "Enter") {
-
-                performSearch();
 
             }
+        );
+
+
+    attachCardEvents();
+
+}
+
+
+/* =========================================================
+   CARD EVENTS
+========================================================= */
+
+function attachCardEvents() {
+
+    document
+        .querySelectorAll(
+            ".save-opportunity"
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    async event => {
+
+                        event.stopPropagation();
+
+
+                        const id =
+                            Number(
+                                button.dataset.id
+                            );
+
+
+                        await toggleSaved(
+                            id
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+    document
+        .querySelectorAll(
+            ".apply-button"
+        )
+        .forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    async event => {
+
+                        event.stopPropagation();
+
+
+                        const id =
+                            Number(
+                                button.dataset.id
+                            );
+
+
+                        await applyOpportunity(
+                            id
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+
+    document
+        .querySelectorAll(
+            ".opportunity-card"
+        )
+        .forEach(
+            card => {
+
+                card.addEventListener(
+                    "click",
+                    event => {
+
+                        if (
+                            event.target.closest(
+                                "button"
+                            )
+                        )
+                            return;
+
+
+                        window.location.href =
+                            "/opportunity/" +
+                            card.dataset.id;
+
+                    }
+                );
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   SAVE
+========================================================= */
+
+async function toggleSaved(id) {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/saved/" + id,
+                {
+                    method:
+                        "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    credentials:
+                        "same-origin"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "Unable to save."
+            );
 
         }
-    );
+
+
+        toast(
+            "Opportunity saved to your collection ♥"
+        );
+
+
+        await loadSaved();
+
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+        toast(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   APPLY
+========================================================= */
+
+async function applyOpportunity(id) {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/applications/" + id,
+                {
+                    method:
+                        "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    credentials:
+                        "same-origin"
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "Unable to apply."
+            );
+
+        }
+
+
+        toast(
+            "Application submitted successfully ✓"
+        );
+
+
+        await loadApplications();
+
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+        toast(
+            error.message
+        );
+
+    }
 
 }
 
@@ -933,322 +1035,290 @@ if (searchInput) {
    SAVED PANEL
 ========================================================= */
 
-function renderSaved() {
+async function loadSaved() {
 
-    if (!savedContainer) return;
-
-
-    const saved =
-        getSaved();
-
-
-    if (!saved.length) {
-
-        savedContainer.innerHTML = `
-
-            <div class="saved-empty">
-
-                <div class="saved-empty-icon">
-                    ♡
-                </div>
-
-                <h3>
-                    Your collection is empty
-                </h3>
-
-                <p>
-                    Save opportunities you're
-                    interested in and they'll
-                    appear here.
-                </p>
-
-            </div>
-
-        `;
-
+    if (!savedContainer)
         return;
 
-    }
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/saved",
+                {
+                    credentials:
+                        "same-origin"
+                }
+            );
 
 
-    savedContainer.innerHTML =
-        saved.map(
-            opportunity => `
-
-            <article class="saved-card">
-
-                <div class="saved-match">
-                    ${opportunity.match}%
-                </div>
+        const data =
+            await response.json();
 
 
-                <div class="saved-card-content">
+        const saved =
+            data.saved ||
+            data.opportunities ||
+            [];
 
-                    <div class="opportunity-type">
-                        ${opportunity.type}
+
+        if (!saved.length) {
+
+            savedContainer.innerHTML = `
+
+                <div class="saved-empty">
+
+                    <div class="saved-empty-icon">
+                        ♡
                     </div>
-
 
                     <h3>
-                        ${opportunity.title}
+                        Your collection is empty
                     </h3>
 
-
-                    <div class="saved-meta">
-
-                        <span>
-                            📍 ${opportunity.location}
-                        </span>
-
-                        <span>
-                            ◷ ${opportunity.deadline}
-                        </span>
-
-                    </div>
+                    <p>
+                        Save opportunities you're
+                        interested in.
+                    </p>
 
                 </div>
 
+            `;
 
-                <button
-                    class="remove-saved"
-                    data-id="${opportunity.id}">
+            return;
 
-                    ♥
-
-                </button>
-
-            </article>
-
-        `
-        ).join("");
+        }
 
 
-    document
-        .querySelectorAll(".remove-saved")
-        .forEach(button => {
+        savedContainer.innerHTML =
+            saved
+                .map(
+                    item => `
 
-            button.addEventListener(
-                "click",
-                event => {
+                    <article class="saved-card">
 
-                    event.stopPropagation();
+                        <div class="saved-match">
+                            ${item.match || 0}%
+                        </div>
+
+                        <div class="saved-card-content">
+
+                            <div class="opportunity-type">
+                                ${escapeHtml(item.type || "")}
+                            </div>
+
+                            <h3>
+                                ${escapeHtml(item.title || "")}
+                            </h3>
+
+                            <div class="saved-meta">
+
+                                <span>
+                                    📍
+                                    ${escapeHtml(item.location || "")}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <button
+                            class="remove-saved"
+                            data-id="${item.id}">
+
+                            ♥
+
+                        </button>
+
+                    </article>
+
+                `
+                )
+                .join("");
 
 
-                    toggleSaved(
-                        Number(
-                            button.dataset.id
-                        )
+        document
+            .querySelectorAll(
+                ".remove-saved"
+            )
+            .forEach(
+                button => {
+
+                    button.addEventListener(
+                        "click",
+                        () => {
+
+                            toggleSaved(
+                                Number(
+                                    button.dataset.id
+                                )
+                            );
+
+                            setTimeout(
+                                loadSaved,
+                                300
+                            );
+
+                        }
                     );
-
-
-                    renderSaved();
-
-                    displayCurrentOpportunities();
 
                 }
             );
 
-        });
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+    }
 
 }
 
 
 /* =========================================================
-   APPLICATION PANEL
+   APPLICATIONS
 ========================================================= */
 
-function renderApplications() {
+async function loadApplications() {
 
-    if (!applicationsList) return;
-
-
-    const applications =
-        getApplications();
-
-
-    const total =
-        document.getElementById(
-            "totalApplications"
-        );
-
-    const review =
-        document.getElementById(
-            "reviewApplications"
-        );
-
-    const shortlisted =
-        document.getElementById(
-            "shortlistedApplications"
-        );
-
-
-    if (total)
-        total.textContent =
-            applications.length;
-
-
-    if (review)
-        review.textContent =
-            applications.filter(
-                item =>
-                    item.status ===
-                    "Under Review"
-            ).length;
-
-
-    if (shortlisted)
-        shortlisted.textContent =
-            applications.filter(
-                item =>
-                    item.status ===
-                    "Shortlisted"
-            ).length;
-
-
-    if (!applications.length) {
-
-        applicationsList.innerHTML = `
-
-            <div class="applications-empty">
-
-                <div>
-                    ▣
-                </div>
-
-                <h3>
-                    No applications yet
-                </h3>
-
-                <p>
-                    Explore opportunities and
-                    start your journey.
-                </p>
-
-            </div>
-
-        `;
-
+    if (!applicationsList)
         return;
 
-    }
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/applications",
+                {
+                    credentials:
+                        "same-origin"
+                }
+            );
 
 
-    applicationsList.innerHTML =
-        applications.map(
-            application => `
-
-            <article class="application-card">
-
-                <div class="application-icon">
-                    ✦
-                </div>
+        const data =
+            await response.json();
 
 
-                <div class="application-info">
+        const applications =
+            data.applications ||
+            [];
 
-                    <div class="opportunity-type">
-                        ${application.type}
-                    </div>
 
+        const total =
+            document.getElementById(
+                "totalApplications"
+            );
+
+
+        if (total)
+            total.textContent =
+                applications.length;
+
+
+        if (!applications.length) {
+
+            applicationsList.innerHTML = `
+
+                <div class="applications-empty">
 
                     <h3>
-                        ${application.title}
+                        No applications yet
                     </h3>
 
-
-                    <div class="application-meta">
-
-                        <span>
-                            📍 ${application.location}
-                        </span>
-
-                        <span>
-                            Applied ${application.appliedOn}
-                        </span>
-
-                    </div>
+                    <p>
+                        Apply to an opportunity
+                        to start your journey.
+                    </p>
 
                 </div>
 
+            `;
 
-                <div class="application-status">
+            return;
 
-                    ${application.status}
-
-                </div>
-
-            </article>
-
-        `
-        ).join("");
-
-}
+        }
 
 
-/* =========================================================
-   PROFILE PANEL
-========================================================= */
+        applicationsList.innerHTML =
+            applications
+                .map(
+                    item => `
 
-function renderProfile() {
+                    <article
+                        class="application-card">
 
-    const profile =
-        getStudentProfile();
+                        <div
+                            class="application-icon">
+
+                            ✦
+
+                        </div>
 
 
-    const skillsContainer =
-        document.getElementById(
-            "profileSkills"
+                        <div
+                            class="application-info">
+
+                            <div
+                                class="opportunity-type">
+
+                                ${escapeHtml(
+                                    item.type || ""
+                                )}
+
+                            </div>
+
+
+                            <h3>
+
+                                ${escapeHtml(
+                                    item.title || ""
+                                )}
+
+                            </h3>
+
+
+                            <div
+                                class="application-meta">
+
+                                <span>
+                                    📍
+                                    ${escapeHtml(
+                                        item.location || ""
+                                    )}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            class="application-status">
+
+                            ${escapeHtml(
+                                item.status ||
+                                "Applied"
+                            )}
+
+                        </div>
+
+                    </article>
+
+                `
+                )
+                .join("");
+
+
+    } catch (error) {
+
+        console.error(
+            error
         );
-
-    const goalsContainer =
-        document.getElementById(
-            "profileGoals"
-        );
-
-    const location =
-        document.getElementById(
-            "profileLocation"
-        );
-
-
-    if (location) {
-
-        location.textContent =
-            profile.city;
-
-    }
-
-
-    if (skillsContainer) {
-
-        skillsContainer.innerHTML =
-            profile.skills.length
-
-                ? profile.skills
-                    .map(
-                        skill =>
-                            `<span>${skill}</span>`
-                    )
-                    .join("")
-
-                : `<span>Skills not added yet</span>`;
-
-    }
-
-
-    if (goalsContainer) {
-
-        goalsContainer.innerHTML =
-            profile.goals.length
-
-                ? profile.goals
-                    .map(
-                        goal =>
-                            `<span>${goal}</span>`
-                    )
-                    .join("")
-
-                : `<span>Goals not added yet</span>`;
 
     }
 
@@ -1256,7 +1326,7 @@ function renderProfile() {
 
 
 /* =========================================================
-   CLOSE ALL PANELS
+   PANELS
 ========================================================= */
 
 function closeAllPanels() {
@@ -1264,26 +1334,27 @@ function closeAllPanels() {
     [
         savedPanel,
         applicationsPanel,
-        profilePanel
+        profilePanel,
+        document.getElementById(
+            "aceAiPanel"
+        ),
+        document.getElementById(
+            "opportunityDetailsPanel"
+        )
     ]
-        .forEach(panel => {
+        .forEach(
+            panel => {
 
-            if (panel) {
-
-                panel.classList.remove(
-                    "visible"
-                );
+                if (panel)
+                    panel.classList.remove(
+                        "visible"
+                    );
 
             }
-
-        });
+        );
 
 }
 
-
-/* =========================================================
-   SAVED NAVIGATION
-========================================================= */
 
 if (savedNav) {
 
@@ -1299,7 +1370,7 @@ if (savedNav) {
                 "visible"
             );
 
-            renderSaved();
+            loadSaved();
 
         }
     );
@@ -1317,10 +1388,6 @@ if (closeSaved) {
 }
 
 
-/* =========================================================
-   APPLICATION NAVIGATION
-========================================================= */
-
 if (applicationsNav) {
 
     applicationsNav.addEventListener(
@@ -1335,7 +1402,7 @@ if (applicationsNav) {
                 "visible"
             );
 
-            renderApplications();
+            loadApplications();
 
         }
     );
@@ -1353,13 +1420,10 @@ if (closeApplications) {
 }
 
 
-/* =========================================================
-   PROFILE NAVIGATION
-========================================================= */
-
 function openProfile() {
 
     closeAllPanels();
+
 
     if (profilePanel) {
 
@@ -1370,7 +1434,51 @@ function openProfile() {
     }
 
 
-    renderProfile();
+    const profile =
+        getStudentProfile();
+
+
+    const location =
+        document.getElementById(
+            "profileLocation"
+        );
+
+
+    const skills =
+        document.getElementById(
+            "profileSkills"
+        );
+
+
+    const goals =
+        document.getElementById(
+            "profileGoals"
+        );
+
+
+    if (location)
+        location.textContent =
+            profile.city;
+
+
+    if (skills)
+        skills.innerHTML =
+            profile.skills
+                .map(
+                    skill =>
+                        `<span>${escapeHtml(skill)}</span>`
+                )
+                .join("");
+
+
+    if (goals)
+        goals.innerHTML =
+            profile.goals
+                .map(
+                    goal =>
+                        `<span>${escapeHtml(goal)}</span>`
+                )
+                .join("");
 
 }
 
@@ -1412,253 +1520,93 @@ if (closeProfile) {
 
 
 /* =========================================================
-   DISPLAY CURRENT OPPORTUNITIES
+   LOCATION FILTERS
 ========================================================= */
 
-function displayCurrentOpportunities() {
+document
+    .querySelectorAll(
+        ".location-filter"
+    )
+    .forEach(
+        button => {
 
-    const active =
-        document.querySelector(
-            ".location-filter.active"
-        );
+            button.addEventListener(
+                "click",
+                () => {
 
-
-    filterByLocation(
-        active
-            ? active.dataset.location
-            : "Near Me"
-    );
-
-}
-
-
-/* =========================================================
-   INITIALIZE
-========================================================= */
-
-renderProfile();
-
-displayCurrentOpportunities();
-
-/* =========================================================
-   OPPORTUNITY DETAILS
-========================================================= */
-
-const detailsPanel =
-    document.getElementById("opportunityDetailsPanel");
-
-const detailsClose =
-    document.getElementById("closeOpportunityDetails");
-
-const detailsTitle =
-    document.getElementById("detailsTitle");
-
-const detailsType =
-    document.getElementById("detailsType");
-
-const detailsMatch =
-    document.getElementById("detailsMatch");
-
-const detailsDescription =
-    document.getElementById("detailsDescription");
-
-const detailsLocation =
-    document.getElementById("detailsLocation");
-
-const detailsDeadline =
-    document.getElementById("detailsDeadline");
-
-const detailsPrize =
-    document.getElementById("detailsPrize");
-
-const detailsMode =
-    document.getElementById("detailsMode");
-
-const detailsTags =
-    document.getElementById("detailsTags");
-
-const detailsSave =
-    document.getElementById("detailsSaveButton");
-
-const detailsApply =
-    document.getElementById("detailsApplyButton");
+                    document
+                        .querySelectorAll(
+                            ".location-filter"
+                        )
+                        .forEach(
+                            item =>
+                                item.classList.remove(
+                                    "active"
+                                )
+                        );
 
 
-let selectedOpportunity = null;
+                    button.classList.add(
+                        "active"
+                    );
 
 
-/* =========================================================
-   OPEN DETAILS
-========================================================= */
-
-function openOpportunityDetails(id) {
-
-    const opportunity =
-        opportunities.find(
-            item => item.id === id
-        );
-
-    if (!opportunity || !detailsPanel) {
-        return;
-    }
+                    currentFilter =
+                        button.dataset.location ||
+                        "All";
 
 
-    selectedOpportunity =
-        opportunity;
+                    renderOpportunities();
 
-
-    const score =
-        opportunity.personalizedMatch ||
-        opportunity.match;
-
-
-    detailsTitle.textContent =
-        opportunity.title;
-
-
-    detailsType.textContent =
-        opportunity.type;
-
-
-    detailsMatch.textContent =
-        score + "%";
-
-
-    detailsDescription.textContent =
-        opportunity.description;
-
-
-    detailsLocation.textContent =
-        opportunity.location;
-
-
-    detailsDeadline.textContent =
-        opportunity.deadline;
-
-
-    detailsPrize.textContent =
-        opportunity.prize;
-
-
-    detailsMode.textContent =
-        opportunity.mode === "online"
-            ? "Online"
-            : "Offline";
-
-
-    detailsTags.innerHTML =
-        opportunity.tags
-            .map(
-                tag =>
-                    `<span>${tag}</span>`
-            )
-            .join("");
-
-
-    updateDetailsButtons();
-
-
-    detailsPanel.classList.add(
-        "visible"
-    );
-
-}
-
-
-/* =========================================================
-   CLOSE DETAILS
-========================================================= */
-
-if (detailsClose) {
-
-    detailsClose.addEventListener(
-        "click",
-        function() {
-
-            detailsPanel.classList.remove(
-                "visible"
+                }
             );
 
         }
     );
 
-}
-
 
 /* =========================================================
-   DETAILS BUTTON STATE
+   SEARCH
 ========================================================= */
 
-function updateDetailsButtons() {
+function performSearch() {
 
-    if (!selectedOpportunity) {
-        return;
-    }
-
-
-    const saved =
-        isSaved(
-            selectedOpportunity.id
-        );
+    currentSearch =
+        searchInput
+            ? searchInput.value
+            : "";
 
 
-    const applied =
-        hasApplied(
-            selectedOpportunity.id
-        );
-
-
-    if (detailsSave) {
-
-        detailsSave.textContent =
-            saved
-                ? "♥ Saved"
-                : "♡ Save";
-
-    }
-
-
-    if (detailsApply) {
-
-        detailsApply.textContent =
-            applied
-                ? "✓ Applied"
-                : "Apply Now →";
-
-        detailsApply.disabled =
-            applied;
-
-    }
+    renderOpportunities();
 
 }
 
 
-/* =========================================================
-   DETAILS SAVE
-========================================================= */
+if (searchButton) {
 
-if (detailsSave) {
-
-    detailsSave.addEventListener(
+    searchButton.addEventListener(
         "click",
-        function() {
+        performSearch
+    );
 
-            if (!selectedOpportunity) {
-                return;
+}
+
+
+if (searchInput) {
+
+    searchInput.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key ===
+                "Enter"
+            ) {
+
+                performSearch();
+
             }
 
-
-            toggleSaved(
-                selectedOpportunity.id
-            );
-
-
-            updateDetailsButtons();
-
-            renderSaved();
-
-            displayCurrentOpportunities();
-
         }
     );
 
@@ -1666,112 +1614,91 @@ if (detailsSave) {
 
 
 /* =========================================================
-   DETAILS APPLY
+   ESCAPE HTML
 ========================================================= */
 
-if (detailsApply) {
+function escapeHtml(value) {
 
-    detailsApply.addEventListener(
-        "click",
-        function() {
-
-            if (!selectedOpportunity) {
-                return;
-            }
-
-
-            applyToOpportunity(
-                selectedOpportunity.id
-            );
-
-
-            updateDetailsButtons();
-
-            renderApplications();
-
-        }
-    );
+    return String(
+        value ?? ""
+    )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 
 }
 
 
 /* =========================================================
-   CARD CLICK CONNECTION
+   USER DISPLAY
 ========================================================= */
 
-document.addEventListener(
-    "click",
-    function(event) {
+function updateUserDisplay() {
 
-        const card =
-            event.target.closest(
-                ".opportunity-card"
-            );
+    const profile =
+        getStudentProfile();
 
 
-        if (!card) {
-            return;
-        }
+    document
+        .querySelectorAll(
+            ".student-info strong"
+        )
+        .forEach(
+            element =>
+                element.textContent =
+                    profile.name
+        );
 
 
-        if (
-            event.target.closest(
-                ".save-opportunity"
-            ) ||
-            event.target.closest(
-                ".apply-button"
-            )
-        ) {
-
-            return;
-
-        }
+    document
+        .querySelectorAll(
+            ".profile-name"
+        )
+        .forEach(
+            element =>
+                element.textContent =
+                    profile.name
+        );
 
 
-        const saveButton =
-            card.querySelector(
-                ".save-opportunity"
-            );
-
-
-        if (!saveButton) {
-            return;
-        }
-
-
-        const id =
-            Number(
-                saveButton.dataset.id
-            );
-
-
-        openOpportunityDetails(id);
-
-    }
-);
-
-/* =========================================================
-   VIEW ALL OPPORTUNITIES
-========================================================= */
-
-const viewAllOpportunities =
-    document.getElementById(
-        "viewAllOpportunities"
-    );
-
-if (viewAllOpportunities) {
-
-    viewAllOpportunities.addEventListener(
-        "click",
-        function(event) {
-
-            event.preventDefault();
-
-            displayOpportunities(
-                getPersonalizedOpportunities()
-            );
-
-        }
-    );
+    document
+        .querySelectorAll(
+            ".profile-button"
+        )
+        .forEach(
+            element =>
+                element.textContent =
+                    profile.name
+                        .charAt(0)
+                        .toUpperCase()
+        );
 
 }
+
+
+/* =========================================================
+   START
+========================================================= */
+
+updateUserDisplay();
+
+loadOpportunities();
+
+loadApplications();

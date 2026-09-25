@@ -2,22 +2,16 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>ACE NEXUS | Student Dashboard</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/style.css') }}">
-
 </head>
 
-
 <body>
-
 
 <!-- =====================================================
      COSMIC BACKGROUND
@@ -36,15 +30,12 @@
     <div class="dashboard-wormhole">
 
         <div class="wormhole-ring ring-one"></div>
-
         <div class="wormhole-ring ring-two"></div>
-
         <div class="wormhole-core"></div>
 
     </div>
 
 </div>
-
 
 
 <!-- =====================================================
@@ -59,7 +50,6 @@
     ================================================== -->
 
     <aside class="dashboard-sidebar">
-
 
         <!-- BRAND -->
 
@@ -84,7 +74,6 @@
         </div>
 
 
-
         <!-- NEXUS -->
 
         <div class="sidebar-group">
@@ -92,7 +81,6 @@
             <div class="sidebar-title">
                 NEXUS
             </div>
-
 
             <a href="/dashboard"
                class="sidebar-item active">
@@ -102,15 +90,14 @@
 
             </a>
 
-
             <a href="#"
-               class="sidebar-item">
+               class="sidebar-item"
+               id="discoverNav">
 
                 <span>✦</span>
                 Discover
 
             </a>
-
 
             <a href="#applications"
                class="sidebar-item"
@@ -120,7 +107,6 @@
                 My Applications
 
             </a>
-
 
             <a href="#saved"
                class="sidebar-item"
@@ -134,7 +120,6 @@
         </div>
 
 
-
         <!-- AI TOOLS -->
 
         <div class="sidebar-group">
@@ -143,8 +128,7 @@
                 AI TOOLS
             </div>
 
-
-            <a href="#"
+            <a href="#navigator"
                class="sidebar-item"
                id="navigatorNav">
 
@@ -156,17 +140,16 @@
 
             <!-- ACE AI -->
 
-          <a href="#ace-ai"
-   class="sidebar-item"
-   id="aceAiNav"
-   onclick="document.getElementById('aceAiPanel').classList.add('visible'); return false;">
+            <a href="#ace-ai"
+               class="sidebar-item"
+               id="aceAiNav">
 
-    <span>✧</span>
-    ACE AI
+                <span>✧</span>
+                ACE AI
 
-</a> 
+            </a>
+
         </div>
-
 
 
         <!-- SETTINGS -->
@@ -185,7 +168,6 @@
         </div>
 
 
-
         <!-- MINI PROFILE -->
 
         <div class="student-mini-profile">
@@ -196,7 +178,7 @@
 
             <div class="student-info">
 
-                <strong>
+                <strong id="sidebarStudentName">
                     Student
                 </strong>
 
@@ -209,7 +191,6 @@
         </div>
 
     </aside>
-
 
 
     <!-- =================================================
@@ -231,7 +212,9 @@
 
                 <h1>
                     Good afternoon,
-                    <span>Explorer.</span>
+                    <span id="dashboardStudentName">
+                        Explorer.
+                    </span>
                 </h1>
 
                 <p>
@@ -243,8 +226,12 @@
 
             <div class="header-actions">
 
-                <button class="icon-button">
+                <button
+                    class="icon-button"
+                    id="notificationButton">
+
                     ♧
+
                 </button>
 
 
@@ -261,7 +248,6 @@
         </header>
 
 
-
         <!-- SEARCH -->
 
         <section class="ai-search">
@@ -270,20 +256,17 @@
                 ⌕
             </div>
 
-
             <input
                 type="text"
                 id="opportunitySearch"
                 placeholder="Ask ACE — find hackathons, internships, workshops..."
             >
 
-
             <button id="searchButton">
                 ✦ Search
             </button>
 
         </section>
-
 
 
         <!-- LOCATION -->
@@ -294,9 +277,7 @@
                 EXPLORE OPPORTUNITIES
             </div>
 
-
             <div class="location-filters">
-
 
                 <button
                     class="location-filter active"
@@ -306,7 +287,6 @@
 
                 </button>
 
-
                 <button
                     class="location-filter"
                     data-location="My City">
@@ -314,7 +294,6 @@
                     My City
 
                 </button>
-
 
                 <button
                     class="location-filter"
@@ -324,7 +303,6 @@
 
                 </button>
 
-
                 <button
                     class="location-filter"
                     data-location="Online">
@@ -333,11 +311,9 @@
 
                 </button>
 
-
             </div>
 
         </section>
-
 
 
         <!-- =================================================
@@ -367,14 +343,24 @@
 
 
                     <a href="#"
-   id="viewAllOpportunities">
-    View all →
-</a>
+                       id="viewAllOpportunities">
+
+                        View all →
+
+                    </a>
+
+                </div>
+
+
+                <!-- JS inserts opportunity cards here -->
+
+                <div
+                    class="opportunity-grid"
+                    id="opportunityGrid">
 
                 </div>
 
             </section>
-
 
 
             <!-- RIGHT SIDE -->
@@ -384,18 +370,18 @@
 
                 <!-- NAVIGATOR -->
 
-                <section class="navigator-card">
+                <section
+                    class="navigator-card"
+                    id="navigator">
 
                     <div class="section-label">
                         YOUR AI PATH
                     </div>
 
-
                     <h2>
                         Opportunity
                         <span>Navigator</span>
                     </h2>
-
 
                     <p>
                         ACE understands your goals and helps
@@ -502,12 +488,15 @@
                     </div>
 
 
-                    <button class="navigator-button">
+                    <button
+                        class="navigator-button"
+                        id="navigatorButton">
+
                         Explore my path →
+
                     </button>
 
                 </section>
-
 
 
                 <!-- ASK ACE -->
@@ -518,25 +507,25 @@
                         ✦
                     </div>
 
-
                     <div class="section-label">
                         ASK ACE
                     </div>
 
-
                     <h3>
                         Your AI opportunity assistant
                     </h3>
-
 
                     <p>
                         Ask about events, skills, applications,
                         careers or anything you're exploring.
                     </p>
 
+                    <button
+                        class="ask-ace-button"
+                        id="askAceButton">
 
-                    <button class="ask-ace-button">
                         Start a conversation →
+
                     </button>
 
                 </section>
@@ -552,7 +541,6 @@
 </div>
 
 
-
 <!-- =====================================================
      SAVED PANEL
 ===================================================== -->
@@ -560,7 +548,6 @@
 <section
     class="saved-panel"
     id="savedPanel">
-
 
     <div class="saved-panel-header">
 
@@ -570,18 +557,15 @@
                 YOUR COLLECTION
             </div>
 
-
             <h2>
                 Saved Opportunities
             </h2>
-
 
             <p>
                 Opportunities you've saved for later.
             </p>
 
         </div>
-
 
         <button
             class="close-saved"
@@ -603,7 +587,6 @@
 </section>
 
 
-
 <!-- =====================================================
      APPLICATIONS PANEL
 ===================================================== -->
@@ -611,7 +594,6 @@
 <section
     class="applications-panel"
     id="applicationsPanel">
-
 
     <div class="applications-header">
 
@@ -621,18 +603,15 @@
                 YOUR JOURNEY
             </div>
 
-
             <h2>
                 My Applications
             </h2>
-
 
             <p>
                 Track every opportunity you've applied to.
             </p>
 
         </div>
-
 
         <button
             class="close-applications"
@@ -646,7 +625,6 @@
 
 
     <div class="application-stats">
-
 
         <div>
 
@@ -686,7 +664,6 @@
 
         </div>
 
-
     </div>
 
 
@@ -699,7 +676,6 @@
 </section>
 
 
-
 <!-- =====================================================
      PROFILE PANEL
 ===================================================== -->
@@ -707,7 +683,6 @@
 <section
     class="profile-panel"
     id="profilePanel">
-
 
     <div class="profile-panel-header">
 
@@ -717,18 +692,15 @@
                 YOUR NEXUS IDENTITY
             </div>
 
-
             <h2>
                 Student Profile
             </h2>
-
 
             <p>
                 Your skills, goals and discovery preferences.
             </p>
 
         </div>
-
 
         <button
             class="close-profile"
@@ -741,20 +713,21 @@
     </div>
 
 
-
     <div class="profile-hero">
 
         <div class="profile-large-avatar">
             P
         </div>
 
-
         <div>
 
-            <div class="profile-name">
-                Student
-            </div>
+            <div
+                class="profile-name"
+                id="profileName">
 
+                Student
+
+            </div>
 
             <div
                 class="profile-location"
@@ -769,13 +742,11 @@
     </div>
 
 
-
     <div class="profile-section">
 
         <div class="profile-section-title">
             SKILLS
         </div>
-
 
         <div
             class="profile-tags"
@@ -786,13 +757,11 @@
     </div>
 
 
-
     <div class="profile-section">
 
         <div class="profile-section-title">
             CAREER GOALS
         </div>
-
 
         <div
             class="profile-tags goals"
@@ -803,16 +772,13 @@
     </div>
 
 
-
     <div class="profile-section">
 
         <div class="profile-section-title">
             OPPORTUNITY PREFERENCE
         </div>
 
-
         <div class="profile-preferences">
-
 
             <div>
 
@@ -852,11 +818,9 @@
 
             </div>
 
-
         </div>
 
     </div>
-
 
 
     <button
@@ -868,7 +832,6 @@
     </button>
 
 </section>
-
 
 
 <!-- =====================================================
@@ -890,18 +853,15 @@
                 ACE INTELLIGENCE
             </div>
 
-
             <h2>
                 ACE AI
             </h2>
-
 
             <p>
                 Your personal opportunity assistant.
             </p>
 
         </div>
-
 
         <button
             class="close-ace-ai"
@@ -912,7 +872,6 @@
         </button>
 
     </div>
-
 
 
     <!-- STATUS -->
@@ -926,22 +885,18 @@
     </div>
 
 
-
     <!-- MESSAGES -->
 
     <div
         class="ace-ai-messages"
         id="aceAiMessages">
 
-
         <div
             class="ace-message ace-message-ai">
-
 
             <div class="ace-message-avatar">
                 ✦
             </div>
-
 
             <div class="ace-message-bubble">
 
@@ -955,17 +910,14 @@
 
             </div>
 
-
         </div>
 
     </div>
 
 
-
     <!-- SUGGESTIONS -->
 
     <div class="ace-ai-suggestions">
-
 
         <button
             data-prompt="Find the best hackathons for me">
@@ -974,14 +926,12 @@
 
         </button>
 
-
         <button
             data-prompt="What should I do next?">
 
             What should I do next?
 
         </button>
-
 
         <button
             data-prompt="Help me improve my profile">
@@ -990,7 +940,6 @@
 
         </button>
 
-
         <button
             data-prompt="Show me opportunities matching my skills">
 
@@ -998,21 +947,17 @@
 
         </button>
 
-
     </div>
-
 
 
     <!-- INPUT -->
 
     <div class="ace-ai-input-area">
 
-
         <input
             type="text"
             id="aceAiInput"
             placeholder="Ask ACE anything...">
-
 
         <button
             id="aceAiSend">
@@ -1021,17 +966,11 @@
 
         </button>
 
-
     </div>
-
 
 </section>
 
 
-
-<!-- =====================================================
-     JAVASCRIPT
-===================================================== -->
 <!-- =====================================================
      OPPORTUNITY DETAILS PANEL
 ===================================================== -->
@@ -1197,7 +1136,6 @@
 
         </button>
 
-
         <button
             class="details-apply-button"
             id="detailsApplyButton">
@@ -1208,9 +1146,95 @@
 
     </div>
 
-</section> 
+</section>
+
+
+<!-- =====================================================
+     NOTIFICATION PANEL
+===================================================== -->
+
+<section
+    class="notification-panel"
+    id="notificationPanel">
+
+    <div class="notification-header">
+
+        <div>
+
+            <div class="section-label">
+                NEXUS UPDATES
+            </div>
+
+            <h2>
+                Notifications
+            </h2>
+
+        </div>
+
+        <button
+            id="closeNotifications">
+
+            ✕
+
+        </button>
+
+    </div>
+
+
+    <div class="notification-content">
+
+        <div class="notification-item">
+
+            <div class="notification-icon">
+                ✦
+            </div>
+
+            <div>
+
+                <strong>
+                    Welcome to ACE NEXUS
+                </strong>
+
+                <p>
+                    Your opportunity universe is ready.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="notification-item">
+
+            <div class="notification-icon">
+                ◈
+            </div>
+
+            <div>
+
+                <strong>
+                    AI matching is active
+                </strong>
+
+                <p>
+                    ACE is finding opportunities based on your profile.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
 
 <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+<script src="{{ url_for('static', filename='js/ai.js') }}"></script>
 
 
 </body>

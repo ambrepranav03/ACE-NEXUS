@@ -4,164 +4,995 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ACE NEXUS | Skills & Interests</title>
+    <title>ACE NEXUS — Your Interests</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        /* =========================================
+           ONBOARDING 2
+        ========================================= */
+
+        .onboarding-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cosmic-scene {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .onboarding-card {
+            position: relative;
+            z-index: 5;
+            width: min(760px, 100%);
+            max-height: 92vh;
+            overflow-y: auto;
+            padding: 42px;
+            border-radius: 28px;
+            background: rgba(8, 8, 18, 0.78);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow:
+                0 30px 100px rgba(0, 0, 0, 0.55),
+                0 0 80px rgba(255, 0, 140, 0.08);
+        }
+
+        .onboarding-card::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .onboarding-card::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+        }
+
+        .ace-mini-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        .ace-mini-logo-mark {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            font-weight: 800;
+            color: white;
+            background:
+                radial-gradient(
+                    circle at 35% 30%,
+                    #ff62c0,
+                    #8b00ff 48%,
+                    #070712 75%
+                );
+            box-shadow:
+                0 0 22px rgba(255, 0, 160, 0.35);
+        }
+
+        .ace-mini-logo span {
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .skip-link {
+            position: absolute;
+            top: 28px;
+            right: 30px;
+            border: 0;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.48);
+            cursor: pointer;
+            font-size: 13px;
+            transition: 0.25s ease;
+        }
+
+        .skip-link:hover {
+            color: white;
+        }
+
+        .onboarding-header {
+            margin-bottom: 26px;
+        }
+
+        .step-label {
+            color: #ff55bd;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .onboarding-header h1 {
+            margin: 0;
+            color: white;
+            font-size: clamp(30px, 5vw, 44px);
+            line-height: 1.08;
+            letter-spacing: -1.5px;
+        }
+
+        .onboarding-header p {
+            margin: 13px 0 0;
+            max-width: 600px;
+            color: rgba(255, 255, 255, 0.58);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .progress-wrap {
+            margin-bottom: 30px;
+        }
+
+        .progress {
+            height: 5px;
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .progress-fill {
+            width: 66.66%;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(
+                90deg,
+                #ff2fa4,
+                #ff5dc4,
+                #9d5cff
+            );
+            box-shadow:
+                0 0 18px rgba(255, 0, 150, 0.35);
+        }
+
+        .step-text {
+            margin-top: 8px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.35);
+            text-align: right;
+        }
+
+        .selection-section {
+            margin-top: 27px;
+        }
+
+        .selection-section:first-of-type {
+            margin-top: 0;
+        }
+
+        .section-title {
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .section-subtitle {
+            color: rgba(255, 255, 255, 0.42);
+            font-size: 12px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .selection-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .selection-chip {
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            background: rgba(255, 255, 255, 0.035);
+            color: rgba(255, 255, 255, 0.64);
+            padding: 10px 15px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 12px;
+            transition:
+                transform 0.22s ease,
+                border-color 0.22s ease,
+                background 0.22s ease,
+                color 0.22s ease,
+                box-shadow 0.22s ease;
+            user-select: none;
+        }
+
+        .selection-chip:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255, 90, 190, 0.45);
+            color: white;
+        }
+
+        .selection-chip.selected {
+            background: rgba(255, 0, 150, 0.12);
+            border-color: rgba(255, 60, 180, 0.70);
+            color: #ff75c9;
+            box-shadow:
+                0 0 18px rgba(255, 0, 150, 0.08),
+                inset 0 0 15px rgba(255, 0, 150, 0.04);
+        }
+
+        .selection-chip.selected::before {
+            content: "✓ ";
+            font-weight: 800;
+        }
+
+        .counter {
+            margin-top: 11px;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.30);
+        }
+
+        .counter span {
+            color: rgba(255, 100, 195, 0.80);
+        }
+
+        .button-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 34px;
+        }
+
+        .back-button,
+        .continue-button {
+            height: 50px;
+            border-radius: 14px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .back-button {
+            width: 120px;
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            background: rgba(255, 255, 255, 0.035);
+            color: rgba(255, 255, 255, 0.65);
+        }
+
+        .back-button:hover {
+            color: white;
+            border-color: rgba(255, 255, 255, 0.20);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .continue-button {
+            flex: 1;
+            border: 0;
+            color: white;
+            background: linear-gradient(
+                100deg,
+                #ff168f,
+                #ff3db0 48%,
+                #9d4dff
+            );
+            box-shadow:
+                0 12px 35px rgba(255, 0, 150, 0.20),
+                inset 0 1px rgba(255, 255, 255, 0.22);
+        }
+
+        .continue-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow:
+                0 16px 40px rgba(255, 0, 150, 0.30),
+                inset 0 1px rgba(255, 255, 255, 0.25);
+        }
+
+        .continue-button:disabled {
+            opacity: 0.38;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .error-message {
+            display: none;
+            margin-top: 13px;
+            color: #ff72bd;
+            font-size: 11px;
+        }
+
+        .selection-hint {
+            margin-top: 20px;
+            padding: 12px 14px;
+            border-radius: 13px;
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.38);
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 650px) {
+
+            .onboarding-page {
+                padding: 20px 12px;
+                align-items: flex-start;
+            }
+
+            .onboarding-card {
+                margin-top: 15px;
+                padding: 28px 20px;
+                max-height: none;
+            }
+
+            .skip-link {
+                top: 22px;
+                right: 20px;
+            }
+
+            .button-row {
+                flex-direction: column-reverse;
+            }
+
+            .back-button {
+                width: 100%;
+            }
+
+            .selection-chip {
+                padding: 9px 12px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <div class="onboarding-page">
+<div class="cosmic-scene">
+    <div class="stars"></div>
+    <div class="galaxy"></div>
+</div>
 
-        <div class="onboarding-card">
+<main class="onboarding-page">
 
-            <div class="onboarding-label">
-                ✦ BUILD YOUR NEXUS
+    <section class="onboarding-card">
+
+        <button
+            type="button"
+            class="skip-link"
+            id="skipButton">
+            Skip for now
+        </button>
+
+        <div class="ace-mini-logo">
+            <div class="ace-mini-logo-mark">A</div>
+            <span>ACE NEXUS</span>
+        </div>
+
+        <div class="onboarding-header">
+
+            <div class="step-label">
+                Your interests
             </div>
 
             <h1>
-                What are you
-                <span>curious about?</span>
+                What pulls you forward?
             </h1>
 
-            <p class="onboarding-intro">
-                Choose your skills and interests. ACE NEXUS will use them
-                to find opportunities that match your profile.
+            <p>
+                Choose the skills and areas you're interested in.
+                ACE NEXUS will use these preferences to personalize
+                the opportunities you discover.
             </p>
-
-            <div class="progress">
-                <div class="progress-fill step-two"></div>
-            </div>
-
-            <div class="step-text">
-                STEP 2 OF 3
-            </div>
-
-
-            <!-- Skills -->
-
-            <div class="selection-section">
-
-                <label>Your skills</label>
-
-                <div class="selection-grid">
-
-                    <button type="button" class="selection-chip">
-                        Python
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Java
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        C / C++
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        AI / ML
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Data Science
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Web Development
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        UI / UX
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Cybersecurity
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Cloud
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        IoT
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- Interests -->
-
-            <div class="selection-section">
-
-                <label>Your interests</label>
-
-                <div class="selection-grid">
-
-                    <button type="button" class="selection-chip">
-                        Hackathons
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Competitions
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Workshops
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Internships
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Research
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Entrepreneurship
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Networking
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Open Source
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <a href="/onboarding3" class="continue-button">
-    Continue →
-</a>
 
         </div>
 
-    </div>
-    <script src="{{ url_for('static', filename='js/onboarding.js') }}"></script>
+
+        <div class="progress-wrap">
+
+            <div class="progress">
+                <div class="progress-fill"></div>
+            </div>
+
+            <div class="step-text">
+                Step 2 of 3
+            </div>
+
+        </div>
+
+
+        <!-- SKILLS -->
+
+        <div class="selection-section">
+
+            <div class="section-title">
+                What are your skills?
+            </div>
+
+            <div class="section-subtitle">
+                Select the technologies and abilities you already have.
+            </div>
+
+            <div
+                class="selection-grid"
+                id="skillsGrid">
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="AI">
+                    AI
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Python">
+                    Python
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Machine Learning">
+                    Machine Learning
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Data Science">
+                    Data Science
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Web">
+                    Web Development
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Development">
+                    Development
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Robotics">
+                    Robotics
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Engineering">
+                    Engineering
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Problem Solving">
+                    Problem Solving
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Innovation">
+                    Innovation
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Networking">
+                    Networking
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Communication">
+                    Communication
+                </button>
+
+            </div>
+
+            <div class="counter">
+                <span id="skillsCount">0</span>
+                skills selected
+            </div>
+
+        </div>
+
+
+        <!-- GOALS -->
+
+        <div class="selection-section">
+
+            <div class="section-title">
+                What do you want to achieve?
+            </div>
+
+            <div class="section-subtitle">
+                Select the opportunities you're looking for.
+            </div>
+
+            <div
+                class="selection-grid"
+                id="goalsGrid">
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Hackathon">
+                    Hackathons
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Internship">
+                    Internships
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Career">
+                    Career Opportunities
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Networking">
+                    Networking
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Innovation">
+                    Innovation
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Research">
+                    Research
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Projects">
+                    Build Projects
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Competition">
+                    Competitions
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Startup">
+                    Start a Startup
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Learning">
+                    Learn New Skills
+                </button>
+
+            </div>
+
+            <div class="counter">
+                <span id="goalsCount">0</span>
+                goals selected
+            </div>
+
+        </div>
+
+
+        <div class="selection-hint">
+            ✦ You can change these preferences later from your profile.
+        </div>
+
+
+        <div
+            class="error-message"
+            id="errorMessage">
+            Select at least one skill and one goal to continue.
+        </div>
+
+
+        <div class="button-row">
+
+            <button
+                type="button"
+                class="back-button"
+                id="backButton">
+                ← Back
+            </button>
+
+            <button
+                type="button"
+                class="continue-button"
+                id="continueButton"
+                disabled>
+                Continue →
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const skillsGrid =
+        document.getElementById("skillsGrid");
+
+    const goalsGrid =
+        document.getElementById("goalsGrid");
+
+    const skillsCount =
+        document.getElementById("skillsCount");
+
+    const goalsCount =
+        document.getElementById("goalsCount");
+
+    const continueButton =
+        document.getElementById("continueButton");
+
+    const backButton =
+        document.getElementById("backButton");
+
+    const skipButton =
+        document.getElementById("skipButton");
+
+    const errorMessage =
+        document.getElementById("errorMessage");
+
+
+    /* =========================================
+       CHIP SETUP
+    ========================================= */
+
+    function setupChips(container) {
+
+        if (!container) return;
+
+        const chips =
+            container.querySelectorAll(".selection-chip");
+
+        chips.forEach(function (chip) {
+
+            chip.addEventListener("click", function () {
+
+                chip.classList.toggle("selected");
+
+                updateState();
+
+            });
+
+        });
+
+    }
+
+
+    setupChips(skillsGrid);
+    setupChips(goalsGrid);
+
+
+    /* =========================================
+       GET SELECTED
+    ========================================= */
+
+    function getSelected(container) {
+
+        if (!container) {
+            return [];
+        }
+
+        return Array.from(
+            container.querySelectorAll(
+                ".selection-chip.selected"
+            )
+        ).map(function (chip) {
+
+            return chip.dataset.value;
+
+        });
+
+    }
+
+
+    /* =========================================
+       UPDATE UI
+    ========================================= */
+
+    function updateState() {
+
+        const skills =
+            getSelected(skillsGrid);
+
+        const goals =
+            getSelected(goalsGrid);
+
+
+        skillsCount.textContent =
+            skills.length;
+
+        goalsCount.textContent =
+            goals.length;
+
+
+        /*
+         * Require at least one skill
+         * and one goal.
+         */
+
+        const valid =
+            skills.length > 0 &&
+            goals.length > 0;
+
+
+        continueButton.disabled =
+            !valid;
+
+
+        if (valid) {
+            errorMessage.style.display = "none";
+        }
+
+    }
+
+
+    /* =========================================
+       RESTORE SAVED DATA
+    ========================================= */
+
+    function restoreSelection(
+        container,
+        storageKey
+    ) {
+
+        if (!container) return;
+
+        let saved = [];
+
+        try {
+
+            saved = JSON.parse(
+                localStorage.getItem(storageKey)
+                || "[]"
+            );
+
+        } catch (error) {
+
+            saved = [];
+
+        }
+
+
+        container
+            .querySelectorAll(".selection-chip")
+            .forEach(function (chip) {
+
+                if (
+                    saved.includes(
+                        chip.dataset.value
+                    )
+                ) {
+
+                    chip.classList.add("selected");
+
+                }
+
+            });
+
+    }
+
+
+    restoreSelection(
+        skillsGrid,
+        "aceSkills"
+    );
+
+    restoreSelection(
+        goalsGrid,
+        "aceGoals"
+    );
+
+
+    updateState();
+
+
+    /* =========================================
+       SAVE DATA
+    ========================================= */
+
+    function saveData() {
+
+        const skills =
+            getSelected(skillsGrid);
+
+        const goals =
+            getSelected(goalsGrid);
+
+
+        localStorage.setItem(
+            "aceSkills",
+            JSON.stringify(skills)
+        );
+
+
+        /*
+         * dashboard.js supports this
+         * additional detailed-skills key.
+         */
+
+        localStorage.setItem(
+            "aceDetailedSkills",
+            JSON.stringify(skills)
+        );
+
+
+        localStorage.setItem(
+            "aceGoals",
+            JSON.stringify(goals)
+        );
+
+
+        localStorage.setItem(
+            "aceOnboardingStep",
+            "2"
+        );
+
+    }
+
+
+    /* =========================================
+       CONTINUE
+    ========================================= */
+
+    continueButton.addEventListener(
+        "click",
+        function () {
+
+            const skills =
+                getSelected(skillsGrid);
+
+            const goals =
+                getSelected(goalsGrid);
+
+
+            if (
+                skills.length === 0 ||
+                goals.length === 0
+            ) {
+
+                errorMessage.style.display =
+                    "block";
+
+                return;
+
+            }
+
+
+            saveData();
+
+
+            continueButton.disabled =
+                true;
+
+            continueButton.textContent =
+                "Loading...";
+
+
+            setTimeout(function () {
+
+                window.location.href =
+                    "/onboarding3";
+
+            }, 300);
+
+        }
+    );
+
+
+    /* =========================================
+       BACK
+    ========================================= */
+
+    backButton.addEventListener(
+        "click",
+        function () {
+
+            window.location.href =
+                "/onboarding";
+
+        }
+    );
+
+
+    /* =========================================
+       SKIP
+    ========================================= */
+
+    skipButton.addEventListener(
+        "click",
+        function () {
+
+            /*
+             * Keep previously selected data.
+             * If nothing exists, use empty arrays.
+             */
+
+            if (
+                !localStorage.getItem("aceSkills")
+            ) {
+
+                localStorage.setItem(
+                    "aceSkills",
+                    "[]"
+                );
+
+            }
+
+
+            if (
+                !localStorage.getItem("aceGoals")
+            ) {
+
+                localStorage.setItem(
+                    "aceGoals",
+                    "[]"
+                );
+
+            }
+
+
+            localStorage.setItem(
+                "aceOnboardingStep",
+                "2"
+            );
+
+
+            window.location.href =
+                "/onboarding3";
+
+        }
+    );
+
+});
+</script>
 
 </body>
-
-<div class="cosmic-scene">
-
-    <div class="stars"></div>
-
-    <div class="galaxy">
-        <div class="galaxy-core"></div>
-    </div>
-
-    <div class="black-hole">
-        <div class="black-hole-core"></div>
-        <div class="black-hole-ring"></div>
-    </div>
-
-    <div class="cosmic-particles"></div>
-
-</div>
 </html>

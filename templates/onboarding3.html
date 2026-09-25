@@ -4,177 +4,1123 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ACE NEXUS | Career Goals</title>
+    <title>ACE NEXUS — Complete Profile</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        .onboarding-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cosmic-scene {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .onboarding-card {
+            position: relative;
+            z-index: 5;
+            width: min(720px, 100%);
+            max-height: 92vh;
+            overflow-y: auto;
+            padding: 42px;
+            border-radius: 28px;
+            background: rgba(8, 8, 18, 0.80);
+            border: 1px solid rgba(255,255,255,.10);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow:
+                0 30px 100px rgba(0,0,0,.55),
+                0 0 80px rgba(255,0,140,.08);
+        }
+
+        .onboarding-card::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .onboarding-card::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,.15);
+            border-radius: 10px;
+        }
+
+        .ace-mini-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        .ace-mini-logo-mark {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            font-weight: 800;
+            color: white;
+            background:
+                radial-gradient(
+                    circle at 35% 30%,
+                    #ff62c0,
+                    #8b00ff 48%,
+                    #070712 75%
+                );
+            box-shadow: 0 0 22px rgba(255,0,160,.35);
+        }
+
+        .ace-mini-logo span {
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: rgba(255,255,255,.9);
+        }
+
+        .skip-link {
+            position: absolute;
+            top: 28px;
+            right: 30px;
+            border: 0;
+            background: transparent;
+            color: rgba(255,255,255,.48);
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .skip-link:hover {
+            color: white;
+        }
+
+        .step-label {
+            color: #ff55bd;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .onboarding-header h1 {
+            margin: 0;
+            color: white;
+            font-size: clamp(30px,5vw,44px);
+            line-height: 1.08;
+            letter-spacing: -1.5px;
+        }
+
+        .onboarding-header p {
+            margin: 13px 0 0;
+            color: rgba(255,255,255,.58);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .progress-wrap {
+            margin: 26px 0 30px;
+        }
+
+        .progress {
+            height: 5px;
+            width: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+            background: rgba(255,255,255,.08);
+        }
+
+        .progress-fill {
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(
+                90deg,
+                #ff2fa4,
+                #ff5dc4,
+                #9d5cff
+            );
+            box-shadow: 0 0 18px rgba(255,0,150,.35);
+        }
+
+        .step-text {
+            margin-top: 8px;
+            font-size: 11px;
+            color: rgba(255,255,255,.35);
+            text-align: right;
+        }
+
+        .section {
+            margin-top: 25px;
+        }
+
+        .section-title {
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .section-subtitle {
+            color: rgba(255,255,255,.42);
+            font-size: 12px;
+            margin-bottom: 14px;
+        }
+
+        .experience-grid {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 10px;
+        }
+
+        .experience-option input {
+            display: none;
+        }
+
+        .experience-card {
+            display: block;
+            padding: 17px 12px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,.09);
+            background: rgba(255,255,255,.035);
+            transition: .25s ease;
+        }
+
+        .experience-card strong {
+            display: block;
+            color: white;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .experience-card small {
+            color: rgba(255,255,255,.38);
+            font-size: 10px;
+        }
+
+        .experience-option input:checked + .experience-card {
+            border-color: rgba(255,50,175,.7);
+            background: rgba(255,0,150,.10);
+            box-shadow: 0 0 25px rgba(255,0,150,.10);
+            transform: translateY(-2px);
+        }
+
+        .experience-option input:checked + .experience-card strong {
+            color: #ff66c5;
+        }
+
+        .selection-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+        }
+
+        .selection-chip {
+            border: 1px solid rgba(255,255,255,.09);
+            background: rgba(255,255,255,.035);
+            color: rgba(255,255,255,.63);
+            padding: 9px 13px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: .22s ease;
+        }
+
+        .selection-chip:hover {
+            border-color: rgba(255,90,190,.45);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .selection-chip.selected {
+            background: rgba(255,0,150,.12);
+            border-color: rgba(255,60,180,.65);
+            color: #ff75c9;
+            box-shadow: 0 0 18px rgba(255,0,150,.08);
+        }
+
+        .selection-chip.selected::before {
+            content: "✓ ";
+            font-weight: 800;
+        }
+
+        .bio-input {
+            width: 100%;
+            min-height: 110px;
+            resize: vertical;
+            box-sizing: border-box;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,.09);
+            background: rgba(255,255,255,.035);
+            color: white;
+            outline: none;
+            padding: 14px 15px;
+            font-family: inherit;
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+        .bio-input::placeholder {
+            color: rgba(255,255,255,.28);
+        }
+
+        .bio-input:focus {
+            border-color: rgba(255,55,180,.55);
+            box-shadow: 0 0 25px rgba(255,0,150,.08);
+        }
+
+        .char-count {
+            text-align: right;
+            margin-top: 5px;
+            font-size: 10px;
+            color: rgba(255,255,255,.30);
+        }
+
+        .button-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .back-button,
+        .launch-button {
+            height: 50px;
+            border-radius: 14px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .25s ease;
+        }
+
+        .back-button {
+            width: 120px;
+            border: 1px solid rgba(255,255,255,.10);
+            background: rgba(255,255,255,.035);
+            color: rgba(255,255,255,.65);
+        }
+
+        .back-button:hover {
+            color: white;
+            background: rgba(255,255,255,.06);
+        }
+
+        .launch-button {
+            flex: 1;
+            border: 0;
+            color: white;
+            background: linear-gradient(
+                100deg,
+                #ff168f,
+                #ff3db0 48%,
+                #9d4dff
+            );
+            box-shadow: 0 12px 35px rgba(255,0,150,.20);
+        }
+
+        .launch-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 40px rgba(255,0,150,.30);
+        }
+
+        .error-message {
+            display: none;
+            margin-top: 12px;
+            color: #ff72bd;
+            font-size: 11px;
+        }
+
+        @media (max-width:650px) {
+            .onboarding-page {
+                padding: 20px 12px;
+                align-items: flex-start;
+            }
+
+            .onboarding-card {
+                margin-top: 15px;
+                padding: 28px 20px;
+                max-height: none;
+            }
+
+            .skip-link {
+                top: 22px;
+                right: 20px;
+            }
+
+            .experience-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .button-row {
+                flex-direction: column-reverse;
+            }
+
+            .back-button {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <div class="cosmic-scene">
+<div class="cosmic-scene">
+    <div class="stars"></div>
+    <div class="galaxy"></div>
+</div>
 
-        <div class="stars"></div>
+<main class="onboarding-page">
 
-        <div class="galaxy">
-            <div class="galaxy-core"></div>
+    <section class="onboarding-card">
+
+        <button
+            type="button"
+            class="skip-link"
+            id="skipButton">
+            Skip for now
+        </button>
+
+        <div class="ace-mini-logo">
+            <div class="ace-mini-logo-mark">A</div>
+            <span>ACE NEXUS</span>
         </div>
 
-        <div class="black-hole">
-            <div class="black-hole-core"></div>
-            <div class="black-hole-ring"></div>
-        </div>
+        <div class="onboarding-header">
 
-        <div class="cosmic-particles"></div>
-
-    </div>
-
-
-    <div class="onboarding-page">
-
-        <div class="onboarding-card">
-
-            <div class="onboarding-label">
-                ✦ BUILD YOUR NEXUS
+            <div class="step-label">
+                Final step
             </div>
 
             <h1>
-                Where do you
-                <span>want to go?</span>
+                Shape your profile.
             </h1>
 
-            <p class="onboarding-intro">
-                Tell us what you're working towards. ACE NEXUS will use
-                your goals to discover opportunities that can move you forward.
+            <p>
+                A little more context helps ACE NEXUS
+                understand what kind of opportunities
+                are relevant to you.
             </p>
-
-            <div class="progress">
-                <div class="progress-fill step-three"></div>
-            </div>
-
-            <div class="step-text">
-                STEP 3 OF 3
-            </div>
-
-
-            <!-- Career Goal -->
-
-            <div class="selection-section">
-
-                <label>Your career goal</label>
-
-                <div class="selection-grid">
-
-                    <button type="button" class="selection-chip">
-                        Software Developer
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        AI / ML Engineer
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Data Scientist
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Cybersecurity
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Research
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Entrepreneur
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Product / Management
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Still Exploring
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- Opportunity Type -->
-
-            <div class="selection-section">
-
-                <label>What opportunities interest you?</label>
-
-                <div class="selection-grid">
-
-                    <button type="button" class="selection-chip">
-                        Hackathons
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Internships
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Competitions
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Workshops
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Conferences
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        Research Programs
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <!-- Discovery Preference -->
-
-            <div class="selection-section">
-
-                <label>Where do you want to discover opportunities?</label>
-
-                <div class="selection-grid">
-
-                    <button type="button" class="selection-chip">
-                        📍 Near Me
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        🇮🇳 Anywhere in India
-                    </button>
-
-                    <button type="button" class="selection-chip">
-                        🌐 Online
-                    </button>
-
-                </div>
-
-            </div>
-
-
-           <a href="/dashboard" class="continue-button">
-    Enter My Nexus →
-</a>
 
         </div>
 
-    </div>
-    <script src="{{ url_for('static', filename='js/onboarding.js') }}"></script>
+        <div class="progress-wrap">
 
-</body>
-</html>
+            <div class="progress">
+                <div class="progress-fill"></div>
+            </div>
+
+            <div class="step-text">
+                Step 3 of 3
+            </div>
+
+        </div>
+
+
+        <!-- EXPERIENCE -->
+
+        <div class="section">
+
+            <div class="section-title">
+                What's your experience level?
+            </div>
+
+            <div class="section-subtitle">
+                Choose the option that best describes you.
+            </div>
+
+            <div class="experience-grid">
+
+                <label class="experience-option">
+
+                    <input
+                        type="radio"
+                        name="experience"
+                        value="Beginner">
+
+                    <span class="experience-card">
+                        <strong>Beginner</strong>
+                        <small>Just getting started</small>
+                    </span>
+
+                </label>
+
+
+                <label class="experience-option">
+
+                    <input
+                        type="radio"
+                        name="experience"
+                        value="Intermediate">
+
+                    <span class="experience-card">
+                        <strong>Intermediate</strong>
+                        <small>Building & exploring</small>
+                    </span>
+
+                </label>
+
+
+                <label class="experience-option">
+
+                    <input
+                        type="radio"
+                        name="experience"
+                        value="Advanced">
+
+                    <span class="experience-card">
+                        <strong>Advanced</strong>
+                        <small>Experienced builder</small>
+                    </span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <!-- CURRENT FOCUS -->
+
+        <div class="section">
+
+            <div class="section-title">
+                What are you currently focused on?
+            </div>
+
+            <div class="section-subtitle">
+                Select everything that applies.
+            </div>
+
+            <div
+                class="selection-grid"
+                id="focusGrid">
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="AI">
+                    AI
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Machine Learning">
+                    Machine Learning
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Python">
+                    Python
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Web">
+                    Web Development
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Data Science">
+                    Data Science
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Robotics">
+                    Robotics
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Research">
+                    Research
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Projects">
+                    Projects
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Hackathon">
+                    Hackathons
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Startup">
+                    Startup
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- CAREER INTERESTS -->
+
+        <div class="section">
+
+            <div class="section-title">
+                What are you interested in next?
+            </div>
+
+            <div class="section-subtitle">
+                These preferences help personalize your opportunity feed.
+            </div>
+
+            <div
+                class="selection-grid"
+                id="careerGrid">
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Internship">
+                    Internships
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Hackathon">
+                    Hackathons
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Competition">
+                    Competitions
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Networking">
+                    Networking
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Career">
+                    Career Opportunities
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Research">
+                    Research
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Innovation">
+                    Innovation
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Startup">
+                    Startups
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Learning">
+                    Learning
+                </button>
+
+                <button
+                    type="button"
+                    class="selection-chip"
+                    data-value="Certificate">
+                    Certificates
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- BIO -->
+
+        <div class="section">
+
+            <div class="section-title">
+                Tell us about yourself
+            </div>
+
+            <div class="section-subtitle">
+                Optional — keep it short.
+            </div>
+
+            <textarea
+                id="studentBio"
+                class="bio-input"
+                maxlength="300"
+                placeholder="Example: AI & Data Science student who loves building projects and participating in hackathons..."
+            ></textarea>
+
+            <div class="char-count">
+                <span id="charCount">0</span>/300
+            </div>
+
+        </div>
+
+
+        <div
+            class="error-message"
+            id="errorMessage">
+            Select at least one area of interest to continue.
+        </div>
+
+
+        <div class="button-row">
+
+            <button
+                type="button"
+                class="back-button"
+                id="backButton">
+                ← Back
+            </button>
+
+            <button
+                type="button"
+                class="launch-button"
+                id="launchButton">
+                Launch ACE NEXUS ✦
+            </button>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const focusGrid =
+        document.getElementById("focusGrid");
+
+    const careerGrid =
+        document.getElementById("careerGrid");
+
+    const bioInput =
+        document.getElementById("studentBio");
+
+    const charCount =
+        document.getElementById("charCount");
+
+    const launchButton =
+        document.getElementById("launchButton");
+
+    const backButton =
+        document.getElementById("backButton");
+
+    const skipButton =
+        document.getElementById("skipButton");
+
+    const errorMessage =
+        document.getElementById("errorMessage");
+
+
+    function setupChips(container) {
+
+        if (!container) return;
+
+        container
+            .querySelectorAll(".selection-chip")
+            .forEach(function (chip) {
+
+                chip.addEventListener("click", function () {
+
+                    chip.classList.toggle("selected");
+
+                    errorMessage.style.display = "none";
+
+                });
+
+            });
+    }
+
+
+    setupChips(focusGrid);
+    setupChips(careerGrid);
+
+
+    function getSelected(container) {
+
+        if (!container) return [];
+
+        return Array.from(
+            container.querySelectorAll(
+                ".selection-chip.selected"
+            )
+        ).map(function (chip) {
+
+            return chip.dataset.value;
+
+        });
+    }
+
+
+    function restoreSelections() {
+
+        let focus = [];
+
+        let career = [];
+
+        try {
+
+            focus = JSON.parse(
+                localStorage.getItem(
+                    "aceCurrentFocus"
+                ) || "[]"
+            );
+
+        } catch (e) {
+
+            focus = [];
+
+        }
+
+        try {
+
+            career = JSON.parse(
+                localStorage.getItem(
+                    "aceCareerInterests"
+                ) || "[]"
+            );
+
+        } catch (e) {
+
+            career = [];
+
+        }
+
+
+        /*
+         * Restore focus.
+         */
+
+        focusGrid
+            .querySelectorAll(".selection-chip")
+            .forEach(function (chip) {
+
+                if (
+                    focus.includes(
+                        chip.dataset.value
+                    )
+                ) {
+                    chip.classList.add("selected");
+                }
+
+            });
+
+
+        /*
+         * Restore career interests.
+         */
+
+        careerGrid
+            .querySelectorAll(".selection-chip")
+            .forEach(function (chip) {
+
+                if (
+                    career.includes(
+                        chip.dataset.value
+                    )
+                ) {
+                    chip.classList.add("selected");
+                }
+
+            });
+
+
+        /*
+         * Restore experience.
+         */
+
+        const experience =
+            localStorage.getItem(
+                "aceExperienceLevel"
+            );
+
+        if (experience) {
+
+            const radio =
+                document.querySelector(
+                    'input[name="experience"][value="' +
+                    experience +
+                    '"]'
+                );
+
+            if (radio) {
+                radio.checked = true;
+            }
+
+        }
+
+
+        /*
+         * Restore bio.
+         */
+
+        const bio =
+            localStorage.getItem(
+                "aceStudentBio"
+            );
+
+        if (bio) {
+
+            bioInput.value = bio;
+
+            charCount.textContent =
+                bio.length;
+
+        }
+
+    }
+
+
+    restoreSelections();
+
+
+    bioInput.addEventListener(
+        "input",
+        function () {
+
+            charCount.textContent =
+                bioInput.value.length;
+
+        }
+    );
+
+
+    function saveProfile() {
+
+        const focus =
+            getSelected(focusGrid);
+
+        const career =
+            getSelected(careerGrid);
+
+        const selectedExperience =
+            document.querySelector(
+                'input[name="experience"]:checked'
+            );
+
+
+        const experience =
+            selectedExperience
+                ? selectedExperience.value
+                : "Beginner";
+
+
+        const bio =
+            bioInput.value.trim();
+
+
+        /*
+         * Save Step 3 data.
+         */
+
+        localStorage.setItem(
+            "aceCurrentFocus",
+            JSON.stringify(focus)
+        );
+
+        localStorage.setItem(
+            "aceCareerInterests",
+            JSON.stringify(career)
+        );
+
+        localStorage.setItem(
+            "aceExperienceLevel",
+            experience
+        );
+
+        localStorage.setItem(
+            "aceStudentBio",
+            bio
+        );
+
+
+        /*
+         * Keep dashboard compatibility.
+         */
+
+        const existingSkills =
+            JSON.parse(
+                localStorage.getItem(
+                    "aceSkills"
+                ) || "[]"
+            );
+
+        const combinedSkills = [
+            ...new Set([
+                ...existingSkills,
+                ...focus
+            ])
+        ];
+
+        localStorage.setItem(
+            "aceSkills",
+            JSON.stringify(combinedSkills)
+        );
+
+        localStorage.setItem(
+            "aceDetailedSkills",
+            JSON.stringify(combinedSkills)
+        );
+
+
+        const existingGoals =
+            JSON.parse(
+                localStorage.getItem(
+                    "aceGoals"
+                ) || "[]"
+            );
+
+        const combinedGoals = [
+            ...new Set([
+                ...existingGoals,
+                ...career
+            ])
+        ];
+
+        localStorage.setItem(
+            "aceGoals",
+            JSON.stringify(combinedGoals)
+        );
+
+
+        localStorage.setItem(
+            "aceOnboardingCompleted",
+            "true"
+        );
+
+        localStorage.setItem(
+            "aceOnboardingStep",
+            "3"
+        );
+
+    }
+
+
+    launchButton.addEventListener(
+        "click",
+        function () {
+
+            const focus =
+                getSelected(focusGrid);
+
+            const career =
+                getSelected(careerGrid);
+
+
+            if (
+                focus.length === 0 &&
+                career.length === 0
+            ) {
+
+                errorMessage.textContent =
+                    "Select at least one area of interest to continue.";
+
+                errorMessage.style.display =
+                    "block";
+
+                return;
+
+            }
+
+
+            saveProfile();
+
+
+            launchButton.disabled = true;
+
+            launchButton.textContent =
+                "Launching ACE NEXUS ✦";
+
+
+            setTimeout(function () {
+
+                window.location.href =
+                    "/dashboard";
+
+            }, 400);
+
+        }
+    );
+
+
+    backButton.addEventListener(
+        "click",
+        function () {
+
+            window.location.href =
+                "/onboarding2";
+
+        }
+    );
+
+
+    skipButton.addEventListener(
+        "click",
+        function () {
+
+            localStorage.setItem(
+                "aceOnboardingCompleted",
+                "true"
+            );
+
+            localStorage.setItem(
+                "aceOnboardingStep",
+                "3"
+            );
+
+            window.location.href =
+                "/dashboard";
+
+        }
+    );
+
+});
+
+</script>
 
 </body>
 </html>

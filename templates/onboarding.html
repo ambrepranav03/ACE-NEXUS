@@ -1,94 +1,1007 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>ACE NEXUS | Your Profile</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='css/style.css') }}">
+    <title>
+        ACE NEXUS — Build Your Profile
+    </title>
+
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+
+    <style>
+
+        /* =================================================
+           ONBOARDING STEP 1 ENHANCEMENTS
+        ================================================= */
+
+        .onboarding-page {
+            background:
+                radial-gradient(
+                    circle at 50% 30%,
+                    rgba(120, 0, 75, .16),
+                    transparent 45%
+                ),
+                #03040a;
+        }
+
+
+        .onboarding-card {
+            animation:
+                onboardingAppear .7s
+                cubic-bezier(.2,.8,.2,1);
+        }
+
+
+        @keyframes onboardingAppear {
+
+            from {
+                opacity: 0;
+                transform:
+                    translateY(25px)
+                    scale(.98);
+            }
+
+            to {
+                opacity: 1;
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+
+        }
+
+
+        .onboarding-topbar {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 28px;
+
+        }
+
+
+        .ace-mini-logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+
+            color: #f7f4f7;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+        }
+
+
+        .ace-mini-symbol {
+
+            width: 27px;
+
+            height: 27px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 50%;
+
+            color: white;
+
+            background:
+                radial-gradient(
+                    circle,
+                    #ff63b0 0%,
+                    #8f064f 45%,
+                    #23001b 100%
+                );
+
+            box-shadow:
+                0 0 20px
+                rgba(242,27,143,.30);
+
+            font-size: 11px;
+
+        }
+
+
+        .skip-text {
+
+            border: none;
+
+            background: transparent;
+
+            color: #69636c;
+
+            font-size: 10px;
+
+            cursor: pointer;
+
+            transition: .2s ease;
+
+        }
+
+
+        .skip-text:hover {
+
+            color: #d8d1d8;
+
+        }
+
+
+        .onboarding-question {
+
+            margin-bottom: 24px;
+
+        }
+
+
+        .onboarding-question small {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #77717a;
+
+            font-size: 9px;
+
+            letter-spacing: 1.5px;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .onboarding-question h2 {
+
+            margin: 0;
+
+            color: #f3eff3;
+
+            font-size: 22px;
+
+            font-weight: 600;
+
+            letter-spacing: -.6px;
+
+        }
+
+
+        .location-helper {
+
+            margin-top: 8px;
+
+            color: #68616a;
+
+            font-size: 10px;
+
+            line-height: 1.6;
+
+        }
+
+
+        .field-icon {
+
+            position: relative;
+
+        }
+
+
+        .field-icon input {
+
+            padding-right: 42px;
+
+        }
+
+
+        .field-icon span {
+
+            position: absolute;
+
+            right: 14px;
+
+            bottom: 13px;
+
+            color: #77717a;
+
+            font-size: 14px;
+
+            pointer-events: none;
+
+        }
+
+
+        .selection-preview {
+
+            display: none;
+
+            margin-top: 13px;
+
+            padding: 10px 12px;
+
+            border-radius: 9px;
+
+            border:
+                1px solid
+                rgba(242,27,143,.13);
+
+            background:
+                rgba(242,27,143,.035);
+
+            color: #9f97a0;
+
+            font-size: 9px;
+
+        }
+
+
+        .selection-preview.visible {
+
+            display: block;
+
+        }
+
+
+        .continue-button:disabled {
+
+            opacity: .4;
+
+            cursor: not-allowed;
+
+            transform: none;
+
+            box-shadow: none;
+
+        }
+
+
+        .onboarding-footer {
+
+            margin-top: 22px;
+
+            text-align: center;
+
+            color: #57515a;
+
+            font-size: 9px;
+
+            line-height: 1.6;
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .onboarding-topbar {
+
+                margin-bottom: 22px;
+
+            }
+
+            .onboarding-question h2 {
+
+                font-size: 19px;
+
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
-    <div class="onboarding-page">
 
-        <div class="onboarding-card">
+    <!-- =================================================
+         COSMIC BACKGROUND
+    ================================================== -->
 
-            <div class="onboarding-label">
-                ✦ BUILD YOUR NEXUS
-            </div>
+    <div
+        class="cosmic-scene"
+        aria-hidden="true"
+    >
 
-            <h1>
-                Tell us about
-                <span>your journey.</span>
-            </h1>
+        <div class="stars"></div>
 
-            <p class="onboarding-intro">
-                We'll use your interests, skills, goals and location
-                to discover opportunities that actually fit you.
-            </p>
-
-            <div class="progress">
-                <div class="progress-fill"></div>
-            </div>
-
-            <div class="step-text">
-                STEP 1 OF 3
-            </div>
-
-            <div class="form-group">
-
-                <label>Your name</label>
-
-                <input
-                    type="text"
-                    placeholder="Enter your name"
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label>College / University</label>
-
-                <input
-                    type="text"
-                    placeholder="Enter your college or university"
-                >
-
-            </div>
-
-            <div class="form-row">
-
-                <div class="form-group">
-                    <label>State</label>
-
-                    <input
-                        type="text"
-                        placeholder="e.g. Maharashtra"
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label>City</label>
-
-                    <input
-                        type="text"
-                        placeholder="e.g. Pune"
-                    >
-                </div>
-
-            </div>
-
-            <a href="/onboarding2" class="continue-button">
-    Continue →
-</a>
-
-        </div>
+        <div class="galaxy"></div>
 
     </div>
 
+
+
+    <!-- =================================================
+         ONBOARDING
+    ================================================== -->
+
+    <main class="onboarding-page">
+
+
+        <section class="onboarding-card">
+
+
+            <!-- TOP BAR -->
+
+            <div class="onboarding-topbar">
+
+
+                <div class="ace-mini-logo">
+
+                    <div class="ace-mini-symbol">
+                        ✦
+                    </div>
+
+                    ACE NEXUS
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="skip-text"
+                    id="skipOnboarding"
+                >
+
+                    Skip for now
+
+                </button>
+
+
+            </div>
+
+
+
+            <!-- LABEL -->
+
+            <div class="onboarding-label">
+
+                BUILD YOUR NEXUS IDENTITY
+
+            </div>
+
+
+
+            <!-- HEADING -->
+
+            <h1>
+
+                Start your
+                <span>journey.</span>
+
+            </h1>
+
+
+
+            <p class="onboarding-intro">
+
+                Tell ACE a little about yourself.
+                This helps us understand your starting
+                point and personalize the opportunities
+                you discover.
+
+            </p>
+
+
+
+            <!-- PROGRESS -->
+
+            <div class="progress">
+
+                <div class="progress-fill"></div>
+
+            </div>
+
+
+            <div class="step-text">
+
+                STEP 1 OF 3 · BASIC PROFILE
+
+            </div>
+
+
+
+            <!-- QUESTION -->
+
+            <div class="onboarding-question">
+
+                <small>
+                    Your identity
+                </small>
+
+                <h2>
+                    What should ACE call you?
+                </h2>
+
+            </div>
+
+
+
+            <!-- NAME -->
+
+            <div class="form-group">
+
+                <label for="studentName">
+
+                    Full name
+
+                </label>
+
+
+                <input
+                    type="text"
+                    id="studentName"
+                    name="studentName"
+                    placeholder="e.g. Pranav Ambre"
+                    autocomplete="name"
+                    maxlength="60"
+                >
+
+            </div>
+
+
+
+            <!-- LOCATION -->
+
+            <div class="form-group field-icon">
+
+                <label for="studentCity">
+
+                    Where are you based?
+
+                </label>
+
+
+                <input
+                    type="text"
+                    id="studentCity"
+                    name="studentCity"
+                    placeholder="e.g. Pune"
+                    autocomplete="address-level2"
+                    maxlength="50"
+                >
+
+
+                <span>
+                    ⌖
+                </span>
+
+
+                <div class="location-helper">
+
+                    Your location helps ACE surface
+                    nearby opportunities while still
+                    keeping India-wide and online
+                    opportunities available.
+
+                </div>
+
+            </div>
+
+
+
+            <!-- QUICK CITY OPTIONS -->
+
+            <div class="selection-section">
+
+                <label>
+
+                    QUICK SELECT
+
+                </label>
+
+
+                <div class="selection-grid">
+
+
+                    <button
+                        type="button"
+                        class="selection-chip city-chip"
+                        data-city="Pune"
+                    >
+                        Pune
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="selection-chip city-chip"
+                        data-city="Mumbai"
+                    >
+                        Mumbai
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="selection-chip city-chip"
+                        data-city="Bengaluru"
+                    >
+                        Bengaluru
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="selection-chip city-chip"
+                        data-city="Delhi"
+                    >
+                        Delhi
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="selection-chip city-chip"
+                        data-city="Hyderabad"
+                    >
+                        Hyderabad
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="selection-chip city-chip"
+                        data-city="Chennai"
+                    >
+                        Chennai
+                    </button>
+
+
+                </div>
+
+
+                <div
+                    class="selection-preview"
+                    id="locationPreview"
+                >
+
+                    ACE will use this location
+                    for personalized discovery.
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CONTINUE -->
+
+            <button
+                type="button"
+                class="continue-button"
+                id="continueButton"
+                disabled
+            >
+
+                Continue to skills →
+
+            </button>
+
+
+
+            <!-- FOOTER -->
+
+            <div class="onboarding-footer">
+
+                You can change these details later
+                from your ACE NEXUS profile.
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =================================================
+         JAVASCRIPT
+    ================================================== -->
+
+    <script>
+
+        /* =================================================
+           ELEMENTS
+        ================================================= */
+
+        const nameInput =
+            document.getElementById(
+                "studentName"
+            );
+
+
+        const cityInput =
+            document.getElementById(
+                "studentCity"
+            );
+
+
+        const continueButton =
+            document.getElementById(
+                "continueButton"
+            );
+
+
+        const skipButton =
+            document.getElementById(
+                "skipOnboarding"
+            );
+
+
+        const locationPreview =
+            document.getElementById(
+                "locationPreview"
+            );
+
+
+        const cityChips =
+            document.querySelectorAll(
+                ".city-chip"
+            );
+
+
+
+        /* =================================================
+           RESTORE EXISTING DATA
+        ================================================== */
+
+        const savedName =
+            localStorage.getItem(
+                "aceStudentName"
+            );
+
+
+        const savedCity =
+            localStorage.getItem(
+                "aceStudentCity"
+            );
+
+
+        if (savedName) {
+
+            nameInput.value =
+                savedName;
+
+        }
+
+
+        if (
+            savedCity &&
+            savedCity !== "India"
+        ) {
+
+            cityInput.value =
+                savedCity;
+
+        }
+
+
+
+        /* =================================================
+           VALIDATION
+        ================================================== */
+
+        function updateContinueState() {
+
+            const name =
+                nameInput.value.trim();
+
+
+            const city =
+                cityInput.value.trim();
+
+
+            const valid =
+                name.length >= 2 &&
+                city.length >= 2;
+
+
+            continueButton.disabled =
+                !valid;
+
+
+            if (
+                city.length >= 2
+            ) {
+
+                locationPreview.classList.add(
+                    "visible"
+                );
+
+            } else {
+
+                locationPreview.classList.remove(
+                    "visible"
+                );
+
+            }
+
+        }
+
+
+
+        /* =================================================
+           CITY CHIP
+        ================================================== */
+
+        cityChips.forEach(
+            chip => {
+
+                chip.addEventListener(
+                    "click",
+                    function() {
+
+                        cityChips.forEach(
+                            item =>
+                                item.classList.remove(
+                                    "selected"
+                                )
+                        );
+
+
+                        this.classList.add(
+                            "selected"
+                        );
+
+
+                        cityInput.value =
+                            this.dataset.city;
+
+
+                        updateContinueState();
+
+                    }
+                );
+
+            }
+        );
+
+
+
+        /* =================================================
+           INPUT EVENTS
+        ================================================== */
+
+        nameInput.addEventListener(
+            "input",
+            updateContinueState
+        );
+
+
+        cityInput.addEventListener(
+            "input",
+            function() {
+
+                cityChips.forEach(
+                    chip => {
+
+                        chip.classList.toggle(
+                            "selected",
+                            chip.dataset.city
+                                .toLowerCase() ===
+                            cityInput.value
+                                .trim()
+                                .toLowerCase()
+                        );
+
+                    }
+                );
+
+
+                updateContinueState();
+
+            }
+        );
+
+
+
+        /* =================================================
+           SAVE PROFILE
+        ================================================== */
+
+        function saveStepOne() {
+
+            const name =
+                nameInput.value.trim();
+
+
+            const city =
+                cityInput.value.trim();
+
+
+            if (
+                name.length < 2 ||
+                city.length < 2
+            ) {
+
+                return false;
+
+            }
+
+
+            localStorage.setItem(
+                "aceStudentName",
+                name
+            );
+
+
+            localStorage.setItem(
+                "aceStudentCity",
+                city
+            );
+
+
+            /*
+             * Mark that onboarding has started,
+             * but not completed yet.
+             */
+
+            localStorage.setItem(
+                "aceOnboardingStarted",
+                "true"
+            );
+
+
+            return true;
+
+        }
+
+
+
+        /* =================================================
+           CONTINUE
+        ================================================== */
+
+        continueButton.addEventListener(
+            "click",
+            function() {
+
+                if (
+                    !saveStepOne()
+                ) {
+
+                    return;
+
+                }
+
+
+                /*
+                 * Move to Step 2.
+                 */
+
+                window.location.href =
+                    "/onboarding2";
+
+            }
+        );
+
+
+
+        /* =================================================
+           ENTER KEY
+        ================================================== */
+
+        nameInput.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (
+                    event.key === "Enter" &&
+                    !continueButton.disabled
+                ) {
+
+                    continueButton.click();
+
+                }
+
+            }
+        );
+
+
+        cityInput.addEventListener(
+            "keydown",
+            function(event) {
+
+                if (
+                    event.key === "Enter" &&
+                    !continueButton.disabled
+                ) {
+
+                    continueButton.click();
+
+                }
+
+            }
+        );
+
+
+
+        /* =================================================
+           SKIP
+        ================================================== */
+
+        skipButton.addEventListener(
+            "click",
+            function() {
+
+                /*
+                 * We still preserve a usable
+                 * default profile.
+                 */
+
+                if (
+                    !localStorage.getItem(
+                        "aceStudentName"
+                    )
+                ) {
+
+                    localStorage.setItem(
+                        "aceStudentName",
+                        "Explorer"
+                    );
+
+                }
+
+
+                if (
+                    !localStorage.getItem(
+                        "aceStudentCity"
+                    )
+                ) {
+
+                    localStorage.setItem(
+                        "aceStudentCity",
+                        "India"
+                    );
+
+                }
+
+
+                window.location.href =
+                    "/dashboard";
+
+            }
+        );
+
+
+
+        /* =================================================
+           INITIAL STATE
+        ================================================== */
+
+        updateContinueState();
+
+    </script>
+
+
 </body>
+
 </html>

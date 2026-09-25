@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>ACE NEXUS | Organizer Hub</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        /* =====================================================
+           ORGANIZER DASHBOARD
+        ===================================================== */
+
+        body {
+            margin: 0;
+            background: #030308;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+
+        .organizer-app {
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+
+        .organizer-bg {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(
+                    circle at 75% 15%,
+                    rgba(242,27,143,.12),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 15% 80%,
+                    rgba(88,30,180,.10),
+                    transparent 30%
+                );
+        }
+
+
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
+
+        .org-sidebar {
+
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+
+            width: 245px;
+
+            padding: 28px 18px;
+
+            box-sizing: border-box;
+
+            background:
+                rgba(5,5,12,.94);
+
+            border-right:
+                1px solid
+                rgba(255,255,255,.07);
+
+            z-index: 20;
+        }
+
+
+        .org-brand {
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding:
+                0 10px
+                25px;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,.06);
+        }
+
+
+        .org-logo {
+
+            width: 42px;
+            height: 42px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: 800;
+            font-size: 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff4bb4,
+                    #7b00ff
+                );
+
+            box-shadow:
+                0 0 25px
+                rgba(242,27,143,.45);
+        }
+
+
+        .org-brand-name {
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+
+        .org-brand-sub {
+            font-size: 8px;
+            color: #77717b;
+            letter-spacing: 1.3px;
+            margin-top: 4px;
+        }
+
+
+        .org-nav {
+            margin-top: 28px;
+        }
+
+
+        .org-nav button {
+
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 13px 14px;
+
+            margin-bottom: 6px;
+
+            border: 0;
+            border-radius: 11px;
+
+            background: transparent;
+
+            color: #88818c;
+
+            text-align: left;
+
+            cursor: pointer;
+
+            font-size: 12px;
+
+            transition: .2s ease;
+        }
+
+
+        .org-nav button:hover,
+        .org-nav button.active {
+
+            background:
+                rgba(242,27,143,.09);
+
+            color: #fff;
+        }
+
+
+        .org-nav button.active {
+
+            border-left:
+                2px solid #f21b8f;
+        }
+
+
+        .org-profile-mini {
+
+            position: absolute;
+            bottom: 25px;
+            left: 18px;
+            right: 18px;
+
+            padding: 14px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.07);
+
+            border-radius: 14px;
+
+            background:
+                rgba(255,255,255,.025);
+        }
+
+
+        .org-profile-mini strong {
+            display: block;
+            font-size: 12px;
+        }
+
+
+        .org-profile-mini span {
+            display: block;
+            margin-top: 5px;
+            font-size: 9px;
+            color: #77717b;
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .org-main {
+
+            margin-left: 245px;
+
+            min-height: 100vh;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .org-topbar {
+
+            height: 75px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 35px;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,.06);
+
+            background:
+                rgba(3,3,8,.65);
+
+            backdrop-filter: blur(20px);
+        }
+
+
+        .org-page-title {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+
+        .org-page-subtitle {
+            margin-top: 4px;
+            color: #716b75;
+            font-size: 10px;
+        }
+
+
+        .org-top-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+
+        .org-top-actions button {
+
+            padding: 10px 15px;
+
+            border-radius: 10px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.08);
+
+            background:
+                rgba(255,255,255,.03);
+
+            color: #aaa3ad;
+
+            cursor: pointer;
+        }
+
+
+        .org-top-actions button:hover {
+            color: #fff;
+            border-color:
+                rgba(242,27,143,.3);
+        }
+
+
+        /* =====================================================
+           CONTENT
+        ===================================================== */
+
+        .org-content {
+
+            padding:
+                35px;
+
+            max-width: 1400px;
+
+            margin: auto;
+        }
+
+
+        .org-hero {
+
+            padding: 35px;
+
+            border-radius: 24px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.08);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(242,27,143,.10),
+                    rgba(255,255,255,.025)
+                );
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+
+        .org-hero::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 260px;
+            height: 260px;
+
+            right: -80px;
+            top: -100px;
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(242,27,143,.25),
+                    transparent 70%
+                );
+
+            filter: blur(15px);
+        }
+
+
+        .org-hero-label {
+
+            color: #ff72ba;
+
+            font-size: 9px;
+
+            letter-spacing: 1.8px;
+
+            font-weight: 700;
+        }
+
+
+        .org-hero h1 {
+
+            margin:
+                12px 0 8px;
+
+            font-size: 34px;
+
+            letter-spacing: -1px;
+        }
+
+
+        .org-hero p {
+
+            margin: 0;
+
+            max-width: 650px;
+
+            color: #8c858e;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =====================================================
+           STATS
+        ===================================================== */
+
+        .org-stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+
+            margin-top: 20px;
+        }
+
+
+        .org-stat {
+
+            padding: 20px;
+
+            border-radius: 16px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.07);
+
+            background:
+                rgba(255,255,255,.025);
+        }
+
+
+        .org-stat strong {
+
+            display: block;
+
+            font-size: 26px;
+        }
+
+
+        .org-stat span {
+
+            display: block;
+
+            margin-top: 5px;
+
+            color: #77717b;
+
+            font-size: 10px;
+        }
+
+
+        /* =====================================================
+           SECTIONS
+        ===================================================== */
+
+        .org-section {
+
+            margin-top: 30px;
+        }
+
+
+        .org-section-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 15px;
+        }
+
+
+        .org-section-header h2 {
+
+            margin: 0;
+
+            font-size: 17px;
+        }
+
+
+        .org-section-header span {
+
+            color: #77717b;
+
+            font-size: 10px;
+        }
+
+
+        /* =====================================================
+           OPPORTUNITY GRID
+        ===================================================== */
+
+        .org-opportunity-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+        }
+
+
+        .org-opportunity-card {
+
+            padding: 22px;
+
+            border-radius: 18px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.07);
+
+            background:
+                rgba(255,255,255,.025);
+
+            transition: .25s ease;
+        }
+
+
+        .org-opportunity-card:hover {
+
+            transform:
+                translateY(-3px);
+
+            border-color:
+                rgba(242,27,143,.25);
+        }
+
+
+        .org-card-type {
+
+            color: #ff72ba;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+        }
+
+
+        .org-opportunity-card h3 {
+
+            margin:
+                9px 0;
+
+            font-size: 17px;
+        }
+
+
+        .org-opportunity-card p {
+
+            margin: 0;
+
+            color: #77717b;
+
+            font-size: 11px;
+
+            line-height: 1.6;
+        }
+
+
+        .org-card-meta {
+
+            display: flex;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+
+            margin-top: 15px;
+
+            color: #96909a;
+
+            font-size: 10px;
+        }
+
+
+        .org-card-actions {
+
+            display: flex;
+
+            gap: 8px;
+
+            margin-top: 18px;
+        }
+
+
+        .org-card-actions button {
+
+            padding: 9px 13px;
+
+            border-radius: 9px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.08);
+
+            background:
+                rgba(255,255,255,.025);
+
+            color: #aaa3ad;
+
+            cursor: pointer;
+
+            font-size: 10px;
+        }
+
+
+        .org-card-actions .delete {
+
+            color: #ff82aa;
+
+            border-color:
+                rgba(255,60,120,.15);
+        }
+
+
+        /* =====================================================
+           CREATE FORM
+        ===================================================== */
+
+        .create-panel {
+
+            display: none;
+
+            padding: 25px;
+
+            border-radius: 20px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.08);
+
+            background:
+                rgba(255,255,255,.025);
+        }
+
+
+        .create-panel.visible {
+            display: block;
+        }
+
+
+        .form-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 15px;
+        }
+
+
+        .form-field {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 7px;
+        }
+
+
+        .form-field.full {
+            grid-column: 1 / -1;
+        }
+
+
+        .form-field label {
+
+            font-size: 10px;
+
+            color: #aaa3ad;
+        }
+
+
+        .form-field input,
+        .form-field select,
+        .form-field textarea {
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            padding: 12px;
+
+            border-radius: 10px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.08);
+
+            background:
+                rgba(0,0,0,.25);
+
+            color: #fff;
+
+            outline: none;
+
+            font-size: 11px;
+        }
+
+
+        .form-field textarea {
+
+            min-height: 100px;
+
+            resize: vertical;
+        }
+
+
+        .form-field option {
+
+            background: #101016;
+        }
+
+
+        .create-submit {
+
+            margin-top: 18px;
+
+            padding: 12px 20px;
+
+            border: 0;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    #a30662,
+                    #f21b8f
+                );
+
+            color: white;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           EMPTY
+        ===================================================== */
+
+        .org-empty {
+
+            padding: 45px;
+
+            text-align: center;
+
+            border:
+                1px dashed
+                rgba(255,255,255,.10);
+
+            border-radius: 18px;
+
+            color: #77717b;
+
+            font-size: 11px;
+        }
+
+
+        /* =====================================================
+           TOAST
+        ===================================================== */
+
+        #orgToast {
+
+            position: fixed;
+
+            right: 25px;
+            bottom: 25px;
+
+            padding: 13px 18px;
+
+            border-radius: 12px;
+
+            background:
+                #15121a;
+
+            border:
+                1px solid
+                rgba(242,27,143,.25);
+
+            color: white;
+
+            font-size: 11px;
+
+            opacity: 0;
+
+            transform:
+                translateY(15px);
+
+            pointer-events: none;
+
+            transition: .25s ease;
+
+            z-index: 100;
+        }
+
+
+        #orgToast.show {
+
+            opacity: 1;
+
+            transform:
+                translateY(0);
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media(max-width:900px) {
+
+            .org-sidebar {
+
+                transform:
+                    translateX(-100%);
+
+                transition: .25s ease;
+            }
+
+
+            .org-sidebar.open {
+
+                transform:
+                    translateX(0);
+            }
+
+
+            .org-main {
+
+                margin-left: 0;
+            }
+
+
+            .org-stats {
+
+                grid-template-columns:
+                    repeat(2,1fr);
+            }
+
+
+            .org-opportunity-grid {
+
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media(max-width:600px) {
+
+            .org-content {
+
+                padding: 20px;
+            }
+
+
+            .org-topbar {
+
+                padding: 0 20px;
+            }
+
+
+            .org-hero {
+
+                padding: 25px;
+            }
+
+
+            .org-hero h1 {
+
+                font-size: 27px;
+            }
+
+
+            .org-stats {
+
+                grid-template-columns: 1fr 1fr;
+            }
+
+
+            .form-grid {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .form-field.full {
+
+                grid-column: auto;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="organizer-app">
+
+    <div class="organizer-bg"></div>
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ===================================================== -->
+
+    <aside
+        class="org-sidebar"
+        id="orgSidebar">
+
+
+        <div class="org-brand">
+
+            <div class="org-logo">
+                A
+            </div>
+
+            <div>
+
+                <div class="org-brand-name">
+                    ACE NEXUS
+                </div>
+
+                <div class="org-brand-sub">
+                    ORGANIZER HUB
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <nav class="org-nav">
+
+            <button
+                class="active"
+                data-section="dashboard">
+
+                ◈
+                Dashboard
+
+            </button>
+
+
+            <button
+                data-section="opportunities">
+
+                ◆
+                My Opportunities
+
+            </button>
+
+
+            <button
+                data-section="create">
+
+                ＋
+                Create Opportunity
+
+            </button>
+
+
+            <button
+                data-section="applicants">
+
+                ◎
+                Applicants
+
+            </button>
+
+
+            <button
+                data-section="profile">
+
+                ◉
+                Organization Profile
+
+            </button>
+
+        </nav>
+
+
+        <div class="org-profile-mini">
+
+            <strong id="sidebarOrgName">
+                Organizer
+            </strong>
+
+            <span id="sidebarOrgEmail">
+                Organizer account
+            </span>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN
+    ===================================================== -->
+
+    <main class="org-main">
+
+
+        <header class="org-topbar">
+
+            <div>
+
+                <div class="org-page-title">
+                    Organizer Hub
+                </div>
+
+                <div class="org-page-subtitle">
+                    Manage opportunities and student engagement
+                </div>
+
+            </div>
+
+
+            <div class="org-top-actions">
+
+                <button
+                    id="mobileMenuButton">
+
+                    ☰
+
+                </button>
+
+                <button
+                    id="logoutButton">
+
+                    Logout
+
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <div class="org-content">
+
+
+            <!-- =================================================
+                 HERO
+            ================================================= -->
+
+            <section class="org-hero">
+
+                <div class="org-hero-label">
+                    OPPORTUNITY INTELLIGENCE
+                </div>
+
+                <h1>
+                    Build opportunities that
+                    <span>students discover.</span>
+                </h1>
+
+                <p>
+                    Publish hackathons, internships, workshops,
+                    competitions and career opportunities through
+                    ACE NEXUS.
+                </p>
+
+            </section>
+
+
+            <!-- =================================================
+                 STATS
+            ================================================= -->
+
+            <section class="org-stats">
+
+                <div class="org-stat">
+
+                    <strong id="statOpportunities">
+                        0
+                    </strong>
+
+                    <span>
+                        Published Opportunities
+                    </span>
+
+                </div>
+
+
+                <div class="org-stat">
+
+                    <strong id="statViews">
+                        0
+                    </strong>
+
+                    <span>
+                        Total Views
+                    </span>
+
+                </div>
+
+
+                <div class="org-stat">
+
+                    <strong id="statApplications">
+                        0
+                    </strong>
+
+                    <span>
+                        Applications
+                    </span>
+
+                </div>
+
+
+                <div class="org-stat">
+
+                    <strong id="statActive">
+                        0
+                    </strong>
+
+                    <span>
+                        Active Listings
+                    </span>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 OPPORTUNITIES
+            ================================================= -->
+
+            <section
+                class="org-section"
+                id="opportunitiesSection">
+
+                <div class="org-section-header">
+
+                    <div>
+
+                        <h2>
+                            My Opportunities
+                        </h2>
+
+                        <span>
+                            Manage your published listings
+                        </span>
+
+                    </div>
+
+                    <button
+                        class="create-submit"
+                        id="openCreateButton">
+
+                        + Create
+
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="org-opportunity-grid"
+                    id="organizerOpportunities">
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 CREATE
+            ================================================= -->
+
+            <section
+                class="org-section create-panel"
+                id="createPanel">
+
+                <div class="org-section-header">
+
+                    <div>
+
+                        <h2>
+                            Create Opportunity
+                        </h2>
+
+                        <span>
+                            Publish a new opportunity for students
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <form
+                    id="createOpportunityForm">
+
+
+                    <div class="form-grid">
+
+
+                        <div class="form-field full">
+
+                            <label>
+                                Opportunity Title
+                            </label>
+
+                            <input
+                                id="opTitle"
+                                required
+                                placeholder="e.g. AI Innovation Challenge">
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label>
+                                Type
+                            </label>
+
+                            <select id="opType">
+
+                                <option>
+                                    Hackathon
+                                </option>
+
+                                <option>
+                                    Internship
+                                </option>
+
+                                <option>
+                                    Competition
+                                </option>
+
+                                <option>
+                                    Workshop
+                                </option>
+
+                                <option>
+                                    Conference
+                                </option>
+
+                                <option>
+                                    Job
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label>
+                                Mode
+                            </label>
+
+                            <select id="opMode">
+
+                                <option value="offline">
+                                    Offline
+                                </option>
+
+                                <option value="online">
+                                    Online
+                                </option>
+
+                                <option value="hybrid">
+                                    Hybrid
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label>
+                                Location
+                            </label>
+
+                            <input
+                                id="opLocation"
+                                placeholder="Mumbai / Online / Pan India">
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label>
+                                Deadline
+                            </label>
+
+                            <input
+                                id="opDeadline"
+                                placeholder="15 October 2026">
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label>
+                                Reward / Prize
+                            </label>
+
+                            <input
+                                id="opReward"
+                                placeholder="₹50,000 / Certificate">
+
+                        </div>
+
+
+                        <div class="form-field">
+
+                            <label>
+                                Tags
+                            </label>
+
+                            <input
+                                id="opTags"
+                                placeholder="AI, Python, Innovation">
+
+                        </div>
+
+
+                        <div class="form-field full">
+
+                            <label>
+                                Description
+                            </label>
+
+                            <textarea
+                                id="opDescription"
+                                placeholder="Describe the opportunity..."
+                                required></textarea>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="create-submit">
+
+                        Publish Opportunity →
+
+                    </button>
+
+
+                </form>
+
+            </section>
+
+
+            <!-- =================================================
+                 APPLICANTS
+            ================================================= -->
+
+            <section
+                class="org-section"
+                id="applicantsSection"
+                style="display:none;">
+
+                <div class="org-section-header">
+
+                    <div>
+
+                        <h2>
+                            Applicants
+                        </h2>
+
+                        <span>
+                            Student application activity
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="org-empty">
+
+                    Applicant management will appear here
+                    as students apply to your opportunities.
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 PROFILE
+            ================================================= -->
+
+            <section
+                class="org-section"
+                id="profileSection"
+                style="display:none;">
+
+                <div class="org-section-header">
+
+                    <div>
+
+                        <h2>
+                            Organization Profile
+                        </h2>
+
+                        <span>
+                            Your organizer information
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="org-empty">
+
+                    <strong id="profileOrgName">
+                        Organization
+                    </strong>
+
+                    <br><br>
+
+                    <span id="profileOrgEmail">
+                        Email
+                    </span>
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<div id="orgToast"></div>
+
+
+<script src="{{ url_for('static', filename='js/organizer.js') }}"></script>
+
+</body>
+
+</html>

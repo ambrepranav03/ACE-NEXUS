@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>ACE NEXUS | Student Registration</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        /* =================================================
+           AUTH PAGE
+        ================================================= */
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background:
+                radial-gradient(
+                    circle at 50% 20%,
+                    rgba(242, 27, 143, .12),
+                    transparent 35%
+                ),
+                #030308;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+
+        .auth-page {
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        /* =================================================
+           COSMIC BACKGROUND
+        ================================================= */
+
+        .auth-stars {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: .75;
+
+            background-image:
+                radial-gradient(
+                    1px 1px at 10% 20%,
+                    white,
+                    transparent
+                ),
+                radial-gradient(
+                    1px 1px at 25% 70%,
+                    white,
+                    transparent
+                ),
+                radial-gradient(
+                    1px 1px at 45% 35%,
+                    white,
+                    transparent
+                ),
+                radial-gradient(
+                    1px 1px at 65% 15%,
+                    white,
+                    transparent
+                ),
+                radial-gradient(
+                    1px 1px at 80% 65%,
+                    white,
+                    transparent
+                ),
+                radial-gradient(
+                    1px 1px at 92% 30%,
+                    white,
+                    transparent
+                ),
+                radial-gradient(
+                    1px 1px at 35% 90%,
+                    white,
+                    transparent
+                );
+        }
+
+
+        .auth-glow {
+            position: fixed;
+
+            width: 500px;
+            height: 500px;
+
+            top: 5%;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(242, 27, 143, .13),
+                    transparent 70%
+                );
+
+            filter: blur(30px);
+
+            pointer-events: none;
+        }
+
+
+        /* =================================================
+           TOP BAR
+        ================================================= */
+
+        .auth-topbar {
+
+            width: 100%;
+            box-sizing: border-box;
+
+            padding: 28px 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            position: relative;
+            z-index: 5;
+        }
+
+
+        .auth-brand {
+
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+
+        .auth-logo {
+
+            width: 42px;
+            height: 42px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 21px;
+            font-weight: 800;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff4bb4,
+                    #7b00ff
+                );
+
+            box-shadow:
+                0 0 25px rgba(242, 27, 143, .55);
+        }
+
+
+        .auth-brand-name {
+
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+
+        .auth-brand-tag {
+
+            margin-top: 4px;
+
+            font-size: 8px;
+            letter-spacing: 1.6px;
+
+            color: #77717b;
+        }
+
+
+        .home-button {
+
+            color: #aaa4ad;
+
+            text-decoration: none;
+
+            padding: 12px 19px;
+
+            border-radius: 30px;
+
+            border:
+                1px solid
+                rgba(255,255,255,.09);
+
+            background:
+                rgba(255,255,255,.025);
+
+            font-size: 12px;
+
+            transition: .25s ease;
+        }
+
+
+        .home-button:hover {
+
+            color: white;
+
+            border-color:
+                rgba(242,27,143,.35);
+
+            background:
+                rgba(242,27,143,.06);
+        }
+
+
+        /* =================================================
+           CARD
+        ================================================= */
+
+        .auth-container {
+
+            flex: 1;
+
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+
+            padding:
+                20px
+                20px
+                70px;
+
+            position: relative;
+            z-index: 2;
+        }
+
+
+        .auth-card {
+
+            width: 100%;
+            max-width: 600px;
+
+            box-sizing: border-box;
+
+            padding: 42px;
+
+            border-radius: 28px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,.075),
+                    rgba(255,255,255,.025)
+                );
+
+            border:
+                1px solid
+                rgba(255,255,255,.11);
+
+            backdrop-filter: blur(25px);
+
+            box-shadow:
+                0 35px 100px
+                rgba(0,0,0,.65),
+
+                0 0 80px
+                rgba(143,6,79,.12);
+        }
+
+
+        .auth-label {
+
+            display: inline-block;
+
+            padding: 8px 14px;
+
+            border-radius: 30px;
+
+            border:
+                1px solid
+                rgba(242,27,143,.25);
+
+            background:
+                rgba(242,27,143,.055);
+
+            color: #ff79bd;
+
+            font-size: 10px;
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+            margin-bottom: 18px;
+        }
+
+
+        .auth-card h1 {
+
+            margin: 0 0 12px;
+
+            font-size: 42px;
+
+            line-height: 1;
+
+            letter-spacing: -2px;
+        }
+
+
+        .auth-card h1 span {
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ffffff,
+                    #ff72ba,
+                    #a30662
+                );
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+
+        .auth-subtitle {
+
+            margin: 0 0 30px;
+
+            color: #8e8790;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =================================================
+           FORM
+        ================================================= */
+
+        .auth-form {
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 18px;
+        }
+
+
+        .field-row {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 15px;
+        }
+
+
+        .field {
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 8px;
+        }
+
+
+        .field label {
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            color: #d3ccd4;
+        }
+
+
+        .field input {
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            padding: 14px 15px;
+
+            border-radius: 11px;
+
+            outline: none;
+
+            border:
+                1px solid
+                rgba(255,255,255,.09);
+
+            background:
+                rgba(0,0,0,.25);
+
+            color: white;
+
+            font-size: 13px;
+
+            transition: .25s ease;
+        }
+
+
+        .field input::placeholder {
+
+            color: #59535b;
+        }
+
+
+        .field input:focus {
+
+            border-color:
+                rgba(242,27,143,.5);
+
+            background:
+                rgba(242,27,143,.035);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(242,27,143,.05);
+        }
+
+
+        .full-field {
+            width: 100%;
+        }
+
+
+        /* =================================================
+           MESSAGE
+        ================================================= */
+
+        #authMessage {
+
+            display: none;
+
+            padding: 12px 15px;
+
+            border-radius: 11px;
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+
+        #authMessage.show {
+            display: block;
+        }
+
+
+        /* =================================================
+           BUTTON
+        ================================================= */
+
+        .register-button {
+
+            width: 100%;
+
+            margin-top: 5px;
+
+            padding: 15px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            background:
+                linear-gradient(
+                    100deg,
+                    #a30662,
+                    #f21b8f
+                );
+
+            box-shadow:
+                0 12px 35px
+                rgba(242,27,143,.2);
+
+            transition: .25s ease;
+        }
+
+
+        .register-button:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 16px 40px
+                rgba(242,27,143,.32);
+        }
+
+
+        .register-button:disabled {
+
+            opacity: .65;
+
+            cursor: wait;
+
+            transform: none;
+        }
+
+
+        /* =================================================
+           FOOTER
+        ================================================= */
+
+        .auth-footer {
+
+            margin-top: 25px;
+
+            text-align: center;
+
+            color: #77717a;
+
+            font-size: 12px;
+        }
+
+
+        .auth-footer a {
+
+            color: #ff72ba;
+
+            text-decoration: none;
+
+            font-weight: 600;
+        }
+
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =================================================
+           RESPONSIVE
+        ================================================= */
+
+        @media (max-width: 650px) {
+
+            .auth-topbar {
+
+                padding:
+                    22px 20px;
+            }
+
+
+            .auth-card {
+
+                padding: 28px 22px;
+
+                border-radius: 22px;
+            }
+
+
+            .auth-card h1 {
+
+                font-size: 34px;
+            }
+
+
+            .field-row {
+
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="auth-page">
+
+    <div class="auth-stars"></div>
+
+    <div class="auth-glow"></div>
+
+
+    <!-- =================================================
+         TOP BAR
+    ================================================= -->
+
+    <header class="auth-topbar">
+
+        <div class="auth-brand">
+
+            <div class="auth-logo">
+                A
+            </div>
+
+            <div>
+
+                <div class="auth-brand-name">
+                    ACE NEXUS
+                </div>
+
+                <div class="auth-brand-tag">
+                    YOUR PATH. OUR UNIVERSE.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <a
+            href="/"
+            class="home-button">
+
+            ← Back to home
+
+        </a>
+
+    </header>
+
+
+    <!-- =================================================
+         REGISTER CARD
+    ================================================= -->
+
+    <main class="auth-container">
+
+        <section class="auth-card">
+
+
+            <div class="auth-label">
+                STUDENT REGISTRATION
+            </div>
+
+
+            <h1>
+                Start your <span>journey</span>
+            </h1>
+
+
+            <p class="auth-subtitle">
+
+                Create your student account and
+                discover opportunities aligned with you.
+
+            </p>
+
+
+            <!-- MESSAGE -->
+
+            <div
+                id="authMessage">
+            </div>
+
+
+            <!-- =================================================
+                 FORM
+            ================================================= -->
+
+            <form
+                id="studentRegisterForm"
+                class="auth-form">
+
+
+                <div class="field-row">
+
+
+                    <div class="field">
+
+                        <label for="name">
+                            Full name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="Your full name"
+                            autocomplete="name"
+                            required>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="email">
+                            Email address
+                        </label>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="field full-field">
+
+                    <label for="college">
+                        College / Institution
+                    </label>
+
+                    <input
+                        type="text"
+                        id="college"
+                        name="college"
+                        placeholder="Your college or university">
+
+                </div>
+
+
+                <div class="field-row">
+
+
+                    <div class="field">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Create a password"
+                            autocomplete="new-password"
+                            required>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="confirmPassword">
+                            Confirm password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            placeholder="Repeat password"
+                            autocomplete="new-password"
+                            required>
+
+                    </div>
+
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="register-button"
+                    id="registerButton">
+
+                    Create Student Account →
+
+                </button>
+
+
+            </form>
+
+
+            <div class="auth-footer">
+
+                Already have an account?
+
+                <a href="/student-login">
+                    Student Login
+                </a>
+
+            </div>
+
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     AUTH JAVASCRIPT
+===================================================== -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const form =
+            document.getElementById(
+                "studentRegisterForm"
+            );
+
+        const message =
+            document.getElementById(
+                "authMessage"
+            );
+
+        const button =
+            document.getElementById(
+                "registerButton"
+            );
+
+
+        function showMessage(
+            text,
+            success = false
+        ) {
+
+            message.textContent =
+                text;
+
+            message.classList.add(
+                "show"
+            );
+
+            if (success) {
+
+                message.style.color =
+                    "#72ffb2";
+
+                message.style.background =
+                    "rgba(40,220,130,.10)";
+
+                message.style.border =
+                    "1px solid rgba(40,220,130,.25)";
+
+            } else {
+
+                message.style.color =
+                    "#ff8bb8";
+
+                message.style.background =
+                    "rgba(255,60,120,.10)";
+
+                message.style.border =
+                    "1px solid rgba(255,60,120,.25)";
+
+            }
+
+        }
+
+
+        form.addEventListener(
+            "submit",
+            async function (event) {
+
+                event.preventDefault();
+
+
+                const name =
+                    document
+                        .getElementById("name")
+                        .value
+                        .trim();
+
+
+                const email =
+                    document
+                        .getElementById("email")
+                        .value
+                        .trim();
+
+
+                const password =
+                    document
+                        .getElementById("password")
+                        .value;
+
+
+                const confirmPassword =
+                    document
+                        .getElementById(
+                            "confirmPassword"
+                        )
+                        .value;
+
+
+                if (!name) {
+
+                    showMessage(
+                        "Please enter your name."
+                    );
+
+                    return;
+
+                }
+
+
+                if (!email) {
+
+                    showMessage(
+                        "Please enter your email."
+                    );
+
+                    return;
+
+                }
+
+
+                if (
+                    password.length < 6
+                ) {
+
+                    showMessage(
+                        "Password must contain at least 6 characters."
+                    );
+
+                    return;
+
+                }
+
+
+                if (
+                    password !==
+                    confirmPassword
+                ) {
+
+                    showMessage(
+                        "Passwords do not match."
+                    );
+
+                    return;
+
+                }
+
+
+                button.disabled =
+                    true;
+
+                button.textContent =
+                    "Creating account...";
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            "/api/register",
+                            {
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json"
+                                },
+
+                                credentials:
+                                    "same-origin",
+
+                                body:
+                                    JSON.stringify({
+
+                                        name:
+                                            name,
+
+                                        email:
+                                            email,
+
+                                        password:
+                                            password,
+
+                                        role:
+                                            "student"
+
+                                    })
+                            }
+                        );
+
+
+                    /*
+                       NEVER blindly call response.json().
+
+                       First check what Flask actually
+                       returned.
+                    */
+
+                    const contentType =
+                        response.headers.get(
+                            "content-type"
+                        ) || "";
+
+
+                    if (
+                        !contentType.includes(
+                            "application/json"
+                        )
+                    ) {
+
+                        const text =
+                            await response.text();
+
+                        console.error(
+                            "SERVER RESPONSE:",
+                            text
+                        );
+
+                        throw new Error(
+                            "Flask returned an HTML page instead of JSON. Check the terminal."
+                        );
+
+                    }
+
+
+                    const data =
+                        await response.json();
+
+
+                    if (
+                        !response.ok ||
+                        !data.success
+                    ) {
+
+                        showMessage(
+                            data.error ||
+                            "Registration failed."
+                        );
+
+                        return;
+
+                    }
+
+
+                    /* =================================
+                       SAVE USER
+                    ================================= */
+
+                    if (data.user) {
+
+                        localStorage.setItem(
+                            "aceUser",
+                            JSON.stringify(
+                                data.user
+                            )
+                        );
+
+                        localStorage.setItem(
+                            "aceUserRole",
+                            "student"
+                        );
+
+                        localStorage.setItem(
+                            "aceStudentName",
+                            data.user.name ||
+                            name
+                        );
+
+                    }
+
+
+                    showMessage(
+                        "Account created successfully. Opening onboarding...",
+                        true
+                    );
+
+
+                    setTimeout(
+                        function () {
+
+                            window.location.href =
+                                "/onboarding";
+
+                        },
+                        700
+                    );
+
+
+                } catch (error) {
+
+                    console.error(
+                        "REGISTRATION ERROR:",
+                        error
+                    );
+
+
+                    showMessage(
+                        error.message ||
+                        "Unable to connect to ACE NEXUS."
+                    );
+
+
+                } finally {
+
+                    button.disabled =
+                        false;
+
+                    button.textContent =
+                        "Create Student Account →";
+
+                }
+
+            }
+        );
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>
